@@ -3,16 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mysterix • Bazar Místico & Tienda Esotérica Premium</title>
+    <title>Mysterix • Bazar Místico</title>
     
     <!-- Meta SEO & Open Graph -->
-    <meta name="description" content="Mysterix: Bazar exclusivo de talismanes, alquimia, cristales sagrados, libros arcanos y amuletos energéticos. Realiza tus pedidos exclusivos con atención personalizada.">
-    <meta name="keywords" content="Mysterix, Bazar Místico, Esoterismo, Alquimia, Cristales, Talismanes, Tarot, Velas Aromáticas">
-    <meta name="author" content="Mysterix Store">
-    <meta property="og:title" content="Mysterix • Bazar Místico & E-Commerce">
-    <meta property="og:description" content="Descubre artefactos místicos, gemas energéticas y talismanes con acabados dorados y calidad suprema.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="logomysterik.png">
+    <meta name="description" content="Mysterix: Bazar exclusivo de talismanes, cristales sagrados y elementos ceremoniales.">
     <meta name="theme-color" content="#050505">
 
     <!-- PWA & Apple Meta Tags -->
@@ -40,15 +34,13 @@
                     colors: {
                         brand: {
                             black: '#050505',
-                            dark: '#0e0e0e',
+                            dark: '#0d0d0d',
                             card: '#141414',
-                            surface: '#1c1c1c',
-                            border: '#2a2618',
+                            surface: '#1a1a1a',
+                            border: '#2a2415',
                             gold: '#D4AF37',
                             goldLight: '#FFF3B0',
-                            goldDark: '#AA771C',
-                            goldMuted: 'rgba(212, 175, 55, 0.15)',
-                            accent: '#F3E5AB'
+                            goldDark: '#AA771C'
                         }
                     },
                     fontFamily: {
@@ -59,27 +51,11 @@
                     backgroundImage: {
                         'gold-gradient': 'linear-gradient(135deg, #FFF3B0 0%, #D4AF37 50%, #AA771C 100%)',
                         'gold-gradient-hover': 'linear-gradient(135deg, #FFFFFF 0%, #FFF3B0 40%, #D4AF37 100%)',
-                        'dark-gradient': 'linear-gradient(180deg, #050505 0%, #121212 100%)',
                         'card-radial': 'radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08) 0%, rgba(14, 14, 14, 0.95) 75%)'
                     },
                     boxShadow: {
                         'gold-sm': '0 0 15px rgba(212, 175, 55, 0.2)',
-                        'gold-md': '0 0 25px rgba(212, 175, 55, 0.3)',
-                        'gold-lg': '0 10px 35px -5px rgba(212, 175, 55, 0.4)'
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'float 4s ease-in-out infinite',
-                        'shimmer': 'shimmer 2.5s infinite'
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-6px)' }
-                        },
-                        shimmer: {
-                            '100%': { transform: 'translateX(100%)' }
-                        }
+                        'gold-md': '0 0 25px rgba(212, 175, 55, 0.3)'
                     }
                 }
             }
@@ -87,21 +63,10 @@
     </script>
 
     <style>
-        /* Custom Scrollbar & Luxury Glows */
-        ::-webkit-scrollbar {
-            width: 7px;
-            height: 7px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #080808;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #4a3e1c;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #D4AF37;
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #080808; }
+        ::-webkit-scrollbar-thumb { background: #3d3316; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
         
         .gold-text-gradient {
             background: linear-gradient(135deg, #FFF3B0 0%, #D4AF37 50%, #AA771C 100%);
@@ -109,764 +74,606 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .gold-border-glow {
-            border: 1px solid rgba(212, 175, 55, 0.28);
-            transition: all 0.3s ease;
-        }
-        .gold-border-glow:hover {
-            border-color: rgba(212, 175, 55, 0.7);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
-        }
-
         .glass-panel {
-            background: rgba(14, 14, 14, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(10, 10, 10, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
         }
 
-        /* Cart Drawer Animation */
         #cart-drawer {
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        #cart-drawer.open {
-            transform: translateX(0);
-        }
-        #cart-drawer.closed {
-            transform: translateX(100%);
-        }
+        #cart-drawer.open { transform: translateX(0); }
+        #cart-drawer.closed { transform: translateX(100%); }
 
-        /* Badge Shimmer Effect */
-        .shimmer-badge::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
-            transform: skewX(-20deg);
-            animation: shimmer 3s infinite;
-        }
-
-        /* Mobile safe-area */
-        .pb-safe {
-            padding-bottom: env(safe-area-inset-bottom, 1rem);
+        .logo-frame {
+            background: radial-gradient(circle, #ffffff 0%, #f4ebd0 60%, #D4AF37 100%);
         }
     </style>
 </head>
 
 <body class="bg-brand-black text-gray-200 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-gold selection:text-black">
 
-    <!-- TOP ANNOUNCEMENT BAR -->
-    <aside aria-label="Anuncios" class="bg-gradient-to-r from-[#0a0a0a] via-[#1a1506] to-[#0a0a0a] border-b border-brand-gold/20 py-2 px-4 text-center text-xs tracking-wider text-brand-goldLight flex items-center justify-center gap-2">
-        <i class="fa-solid fa-moon text-brand-gold animate-pulse"></i>
-        <span>Envío gratis a todo el país en compras superiores a $35.000 • Atención Esotérica Personalizada</span>
-        <i class="fa-solid fa-sparkles text-brand-gold animate-pulse"></i>
+    <!-- ANNOUNCEMENT BAR -->
+    <aside class="bg-gradient-to-r from-[#050505] via-[#1a1506] to-[#050505] border-b border-brand-gold/20 py-1.5 px-4 text-center text-xs tracking-wider text-brand-goldLight flex items-center justify-center gap-2">
+        <i class="fa-solid fa-moon text-brand-gold text-[10px]"></i>
+        <span id="txt-announcement">Envíos a todo el país • Atención Personalizada por WhatsApp</span>
+        <i class="fa-solid fa-sparkles text-brand-gold text-[10px]"></i>
     </aside>
 
     <!-- HEADER / NAVBAR -->
-    <header class="sticky top-0 z-40 glass-panel border-b border-brand-gold/20 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+    <header class="sticky top-0 z-40 glass-panel border-b border-brand-gold/20">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-4">
             
-            <!-- LOGO BRANDING -->
-            <a href="#" class="flex items-center gap-3 group focus:outline-none" aria-label="Mysterix Home">
-                <div class="relative w-12 h-12 rounded-full border-2 border-brand-gold/40 flex items-center justify-center p-1 bg-black overflow-hidden shadow-gold-sm group-hover:border-brand-gold transition duration-300">
-                    <img src="logomysterik.png" alt="Mysterix Logo" id="navbar-logo" class="w-full h-full object-contain filter drop-shadow hover:scale-105 transition-transform" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'46\' fill=\'%23050505\' stroke=\'%23D4AF37\' stroke-width=\'4\'/><polygon points=\'50,15 62,38 85,38 66,54 73,78 50,63 27,78 34,54 15,38 38,38\' fill=\'%23D4AF37\'/><circle cx=\'50\' cy=\'50\' r=\'12\' fill=\'%23050505\' stroke=\'%23FFF3B0\' stroke-width=\'2\'/><path d=\'M50 20 L50 80 M20 50 L80 50\' stroke=\'%23FFF3B0\' stroke-width=\'1\'/></svg>'">
+            <!-- BRANDING / LOGO -->
+            <a href="#" class="flex items-center gap-3 group focus:outline-none">
+                <div class="relative w-12 h-12 rounded-full logo-frame border-2 border-brand-gold p-0.5 overflow-hidden shadow-gold-sm group-hover:scale-105 transition-transform">
+                    <img src="logomysterik.png" alt="Mysterix Logo" class="w-full h-full object-contain filter contrast-125">
                 </div>
                 <div>
-                    <span class="font-cinzel text-2xl font-bold tracking-widest gold-text-gradient block">MYSTERIX</span>
-                    <span class="text-[10px] tracking-[0.25em] text-gray-400 uppercase -mt-1 block font-sans">Bazar & Alquimia</span>
+                    <span class="font-cinzel text-2xl font-bold tracking-widest gold-text-gradient block leading-none">MYSTERIX</span>
+                    <span class="text-[9px] tracking-[0.25em] text-gray-400 uppercase block font-sans mt-0.5">Bazar Místico</span>
                 </div>
             </a>
 
-            <!-- NAVIGATION LINKS (DESKTOP) -->
-            <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
-                <a href="#catalogo" class="text-gray-300 hover:text-brand-gold transition tracking-wide flex items-center gap-1.5">
-                    <i class="fa-solid fa-gem text-xs text-brand-gold"></i> Bazar & Catálogo
+            <!-- NAVIGATION (SIMPLIFICADA) -->
+            <nav class="hidden sm:flex items-center gap-6 text-xs font-medium">
+                <a href="#catalogo" class="text-gray-300 hover:text-brand-gold transition flex items-center gap-1.5" id="nav-catalog">
+                    <i class="fa-solid fa-gem text-brand-gold text-[11px]"></i> <span>Catálogo</span>
                 </a>
-                <a href="#noticias" class="text-gray-300 hover:text-brand-gold transition tracking-wide flex items-center gap-1.5">
-                    <i class="fa-solid fa-scroll text-xs text-brand-gold"></i> Crónicas & Foro
-                </a>
-                <a href="#nosotros" class="text-gray-300 hover:text-brand-gold transition tracking-wide flex items-center gap-1.5">
-                    <i class="fa-solid fa-compass text-xs text-brand-gold"></i> Sobre Nosotros
-                </a>
-                <a href="#faq" class="text-gray-300 hover:text-brand-gold transition tracking-wide flex items-center gap-1.5">
-                    <i class="fa-solid fa-circle-question text-xs text-brand-gold"></i> FAQ
+                <a href="#noticias" class="text-gray-300 hover:text-brand-gold transition flex items-center gap-1.5" id="nav-news">
+                    <i class="fa-solid fa-scroll text-brand-gold text-[11px]"></i> <span>Crónicas</span>
                 </a>
             </nav>
 
-            <!-- ACTION BUTTONS: SEARCH, PWA INSTALL, CART -->
-            <div class="flex items-center gap-3">
-                <!-- PWA Install Button (Conditional) -->
-                <button id="pwa-install-btn" class="hidden items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-brand-gold/15 text-brand-goldLight border border-brand-gold/40 hover:bg-brand-gold hover:text-black transition duration-300 shadow-sm" title="Instalar Aplicación">
-                    <i class="fa-solid fa-download animate-bounce text-xs"></i>
-                    <span class="hidden sm:inline">Instalar App</span>
+            <!-- CONTROLS: IDIOMAS & CARRITO -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                
+                <!-- Language Selector -->
+                <div class="flex items-center bg-brand-surface border border-brand-gold/30 rounded-xl p-1 text-[11px] font-bold text-gray-400">
+                    <button onclick="setLanguage('es')" id="btn-lang-es" class="px-2 py-1 rounded-lg transition" title="Español">ES</button>
+                    <button onclick="setLanguage('en')" id="btn-lang-en" class="px-2 py-1 rounded-lg transition" title="English">EN</button>
+                    <button onclick="setLanguage('pt')" id="btn-lang-pt" class="px-2 py-1 rounded-lg transition" title="Português">PT</button>
+                </div>
+
+                <!-- PWA Install Button -->
+                <button id="pwa-install-btn" class="hidden items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-gold/15 text-brand-gold border border-brand-gold/40 hover:bg-brand-gold hover:text-black transition">
+                    <i class="fa-solid fa-download text-xs"></i>
+                    <span class="hidden md:inline" id="txt-install">Instalar</span>
                 </button>
 
-                <!-- Search trigger mobile/desktop -->
-                <a href="#catalogo" onclick="document.getElementById('search-input')?.focus()" class="p-2.5 rounded-full text-gray-400 hover:text-brand-gold hover:bg-brand-surface border border-transparent hover:border-brand-gold/30 transition" title="Buscar productos">
-                    <i class="fa-solid fa-magnifying-glass text-base"></i>
-                </a>
-
                 <!-- Cart Button -->
-                <button id="cart-toggle-btn" class="relative p-2.5 px-3.5 rounded-full bg-brand-card hover:bg-brand-surface border border-brand-gold/40 text-brand-gold hover:text-brand-goldLight transition duration-300 flex items-center gap-2 shadow-gold-sm group" aria-label="Ver Carrito">
-                    <i class="fa-solid fa-bag-shopping text-lg group-hover:scale-110 transition-transform"></i>
-                    <span class="font-cinzel text-xs font-bold hidden sm:inline">Carrito</span>
-                    <span id="cart-count" class="bg-gradient-to-r from-brand-goldDark to-brand-gold text-black text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center -mr-1 shadow">0</span>
+                <button id="cart-toggle-btn" class="relative p-2.5 px-3.5 rounded-xl bg-brand-card hover:bg-brand-surface border border-brand-gold/40 text-brand-gold transition flex items-center gap-2 shadow-gold-sm" aria-label="Carrito">
+                    <i class="fa-solid fa-bag-shopping text-base"></i>
+                    <span id="cart-count" class="bg-brand-gold text-black text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center">0</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- HERO SECTION -->
-    <section class="relative overflow-hidden bg-brand-black py-16 lg:py-24 border-b border-brand-gold/15">
-        <!-- Background Ambient Glow & Star Particles -->
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(212,175,55,0.12),transparent_45%)] pointer-events-none"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_80%_80%,rgba(170,119,28,0.1),transparent_50%)] pointer-events-none"></div>
-        <div class="absolute inset-0 bg-[linear-gradient(to_right,#050505_1px,transparent_1px),linear-gradient(to_bottom,#050505_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30 pointer-events-none"></div>
+    <!-- HERO SECTION (STREAMLINED) -->
+    <section class="relative overflow-hidden bg-brand-black py-12 sm:py-16 border-b border-brand-gold/15">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(212,175,55,0.1),transparent_60%)] pointer-events-none"></div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                
-                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-gold/10 border border-brand-gold/30 text-brand-goldLight text-xs tracking-widest uppercase font-semibold">
-                        <i class="fa-solid fa-wand-magic-sparkles text-brand-gold"></i>
-                        Artefactos Sagrados & Alta Vibración
-                    </div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-5 relative z-10">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/30 text-brand-goldLight text-xs tracking-wider uppercase font-semibold">
+                <i class="fa-solid fa-sparkles text-brand-gold text-xs"></i>
+                <span id="hero-badge">Artefactos de Alta Vibración</span>
+            </div>
 
-                    <h1 class="font-cinzel text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-white">
-                        Conecta con lo Oculto. <br>
-                        <span class="gold-text-gradient">Eleva tu Energía.</span>
-                    </h1>
+            <h1 class="font-cinzel text-3xl sm:text-5xl font-bold leading-tight text-white">
+                <span class="gold-text-gradient" id="hero-title">Conecta con lo Místico</span>
+            </h1>
 
-                    <p class="text-gray-300 text-base sm:text-lg max-w-2xl leading-relaxed font-light">
-                        Bienvenido a <strong>Mysterix</strong>, el santuario para buscadores de sabiduría ancestral, talismanes consagrados, gemas auténticas y elementos de alquimia ceremonial cuidadosamente seleccionados.
-                    </p>
+            <p class="text-gray-300 text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed" id="hero-subtitle">
+                Talismanes consagrados, gemas auténticas y elementos ceremoniales para elevar tu energía diaria.
+            </p>
 
-                    <div class="pt-4 flex flex-wrap gap-4 justify-center lg:justify-start">
-                        <a href="#catalogo" class="px-8 py-3.5 rounded-xl bg-gold-gradient hover:bg-gold-gradient-hover text-black font-cinzel font-bold text-sm tracking-wider shadow-gold-md hover:shadow-gold-lg hover:-translate-y-0.5 transition duration-300 flex items-center gap-3">
-                            <i class="fa-solid fa-compass"></i> Explorar Bazar
-                        </a>
-                        <a href="#noticias" class="px-7 py-3.5 rounded-xl bg-brand-card hover:bg-brand-surface text-brand-goldLight border border-brand-gold/40 font-cinzel text-sm font-semibold tracking-wider hover:border-brand-gold transition duration-300 flex items-center gap-2">
-                            <i class="fa-solid fa-book-open"></i> Leer Crónicas
-                        </a>
-                    </div>
-
-                    <!-- Trust Badges -->
-                    <div class="pt-6 grid grid-cols-3 gap-4 border-t border-brand-gold/20 text-xs text-gray-400">
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-shield-halved text-brand-gold text-base"></i>
-                            <span>Consagración Auténtica</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <i class="fa-brands fa-whatsapp text-green-500 text-base"></i>
-                            <span>Atención por WhatsApp</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-truck-fast text-brand-gold text-base"></i>
-                            <span>Despacho Rápido & Seguro</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Hero Visual Presentation -->
-                <div class="lg:col-span-5 relative flex justify-center">
-                    <div class="relative w-72 sm:w-80 md:w-96 aspect-square rounded-3xl p-1 bg-gradient-to-tr from-brand-goldDark via-brand-gold to-brand-goldLight shadow-gold-lg animate-float">
-                        <div class="w-full h-full bg-brand-dark rounded-[22px] overflow-hidden relative flex flex-col justify-end p-6 group">
-                            <img src="https://images.unsplash.com/photo-1515942400420-2b98fed1f515?auto=format&fit=crop&w=800&q=80" alt="Alquimia y Cristales Mysterix" class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
-                            
-                            <div class="relative z-10 space-y-2">
-                                <span class="inline-block px-2.5 py-1 rounded bg-brand-gold text-black text-[10px] font-bold uppercase tracking-wider font-cinzel">Edición de Luna Nueva</span>
-                                <h3 class="font-cinzel text-xl font-bold text-brand-goldLight">Talismanes de Protección & Luz</h3>
-                                <p class="text-xs text-gray-300">Cada pieza es limpiada con cuarzos maestros e inciensos de resina pura antes del despacho.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+            <div class="pt-2 flex flex-wrap gap-3 justify-center">
+                <a href="#catalogo" class="px-6 py-2.5 rounded-xl bg-gold-gradient text-black font-cinzel font-bold text-xs tracking-wider shadow-sm hover:brightness-110 transition flex items-center gap-2" id="hero-btn-shop">
+                    <i class="fa-solid fa-compass"></i> <span>Ver Catálogo</span>
+                </a>
+                <a href="https://wa.me/5492617094195" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-xl bg-brand-card hover:bg-brand-surface text-brand-goldLight border border-brand-gold/40 text-xs font-semibold tracking-wider transition flex items-center gap-2" id="hero-btn-wa">
+                    <i class="fa-brands fa-whatsapp text-green-400"></i> <span>Contacto Directo</span>
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- MAIN CONTENT CONTAINER -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 flex-grow space-y-20 w-full">
+    <!-- MAIN CONTENT -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-10 flex-grow space-y-16 w-full">
 
-        <!-- ==================== SECCIÓN 1: CATÁLOGO BAZAR ==================== -->
-        <section id="catalogo" class="scroll-mt-24 space-y-8">
+        <!-- ==================== CATÁLOGO BAZAR ==================== -->
+        <section id="catalogo" class="scroll-mt-24 space-y-6">
             
-            <!-- Section Title & Subtitle -->
-            <div class="text-center space-y-3 max-w-2xl mx-auto">
-                <span class="text-brand-gold text-xs font-semibold tracking-[0.3em] uppercase">Colección Exclusiva</span>
-                <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-white tracking-wide">
-                    Catálogo de Bazar Místico
+            <div class="text-center space-y-2 max-w-lg mx-auto">
+                <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-white" id="cat-title">
+                    Catálogo de Bazar
                 </h2>
-                <p class="text-gray-400 text-sm">
-                    Selecciona tus herramientas mágicas. Añádelas al carrito y finaliza tu pedido de manera directa e instantánea a través de WhatsApp.
-                </p>
-                <div class="w-24 h-1 bg-gold-gradient mx-auto rounded-full mt-2"></div>
+                <div class="w-16 h-0.5 bg-gold-gradient mx-auto rounded-full"></div>
             </div>
 
-            <!-- Filter & Search Bar Controls -->
-            <div class="bg-brand-card/80 border border-brand-gold/30 rounded-2xl p-4 sm:p-5 backdrop-blur-md shadow-lg space-y-4">
+            <!-- CONTROLES SIMPLIFICADOS (3-4 CATEGORÍAS CLAVE + BUSCADOR) -->
+            <div class="flex flex-col sm:flex-row gap-3 items-center justify-between bg-brand-card/90 border border-brand-gold/25 rounded-2xl p-3.5">
                 
                 <!-- Category Pills -->
-                <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin" id="category-filters-container">
+                <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0" id="category-filters-container">
                     <!-- Populated dynamically via JS -->
                 </div>
 
-                <!-- Search Input & Sort Selector -->
-                <div class="flex flex-col sm:flex-row gap-3 items-center justify-between pt-2 border-t border-brand-border/60">
-                    <div class="relative w-full sm:w-80">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                        <input type="text" id="search-input" placeholder="Buscar por nombre o descripción..." class="w-full bg-brand-surface text-gray-200 text-xs sm:text-sm pl-10 pr-8 py-2.5 rounded-xl border border-brand-gold/20 focus:border-brand-gold focus:outline-none transition placeholder-gray-500">
-                        <button id="clear-search-btn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-gold text-xs" title="Limpiar búsqueda">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
-                    </div>
-
-                    <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
-                        <label for="sort-select" class="text-xs text-gray-400 whitespace-nowrap">Ordenar por:</label>
-                        <select id="sort-select" class="bg-brand-surface text-gray-200 text-xs sm:text-sm px-3 py-2 rounded-xl border border-brand-gold/20 focus:border-brand-gold focus:outline-none transition cursor-pointer">
-                            <option value="featured">Destacados</option>
-                            <option value="price-asc">Precio: Menor a Mayor</option>
-                            <option value="price-desc">Precio: Mayor a Menor</option>
-                            <option value="name-asc">Nombre (A - Z)</option>
-                        </select>
-                    </div>
+                <!-- Search Input -->
+                <div class="relative w-full sm:w-64">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+                    <input type="text" id="search-input" placeholder="Buscar..." class="w-full bg-brand-surface text-gray-200 text-xs pl-8 pr-7 py-2 rounded-xl border border-brand-gold/20 focus:border-brand-gold focus:outline-none transition">
+                    <button id="clear-search-btn" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-gold text-xs">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
 
             </div>
 
             <!-- Product Grid -->
-            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <!-- Populated dynamically via JS -->
+            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Injected via JS -->
             </div>
 
-            <!-- Empty State for Search -->
-            <div id="empty-catalog" class="hidden py-16 text-center space-y-4 bg-brand-card/40 rounded-2xl border border-brand-gold/10">
-                <div class="w-16 h-16 rounded-full bg-brand-gold/10 text-brand-gold mx-auto flex items-center justify-center text-2xl">
-                    <i class="fa-solid fa-crystal-ball"></i>
-                </div>
-                <h3 class="font-cinzel text-lg text-white font-semibold">No se hallaron artefactos</h3>
-                <p class="text-gray-400 text-xs max-w-sm mx-auto">No hay productos que coincidan con los filtros o término de búsqueda ingresado.</p>
-                <button onclick="resetFilters()" class="px-4 py-2 bg-brand-surface hover:bg-brand-card text-brand-gold border border-brand-gold/30 rounded-xl text-xs font-semibold transition">
-                    Restablecer Filtros
+            <!-- Empty State -->
+            <div id="empty-catalog" class="hidden py-12 text-center space-y-3 bg-brand-card/40 rounded-2xl border border-brand-gold/10">
+                <i class="fa-solid fa-crystal-ball text-2xl text-brand-gold"></i>
+                <h3 class="font-cinzel text-sm text-white font-semibold" id="empty-title">Sin resultados</h3>
+                <button onclick="resetFilters()" class="px-3.5 py-1.5 bg-brand-surface text-brand-gold border border-brand-gold/30 rounded-xl text-xs font-semibold" id="empty-btn">
+                    Restablecer
                 </button>
             </div>
 
         </section>
 
 
-        <!-- ==================== SECCIÓN 2: FORO / FEED DE NOTICIAS ==================== -->
-        <section id="noticias" class="scroll-mt-24 space-y-8 pt-8 border-t border-brand-gold/15">
+        <!-- ==================== CRÓNICAS / FORO ==================== -->
+        <section id="noticias" class="scroll-mt-24 space-y-6 pt-4 border-t border-brand-gold/15">
             
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                    <span class="text-brand-gold text-xs font-semibold tracking-[0.3em] uppercase">Sabiduría & Divulgación</span>
-                    <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-white tracking-wide">
-                        Crónicas Arcanas & Foro
-                    </h2>
-                    <p class="text-gray-400 text-sm mt-1">
-                        Artículos ceremoniales, guías lunares y rituales compartidos por maestros de la orden Mysterix.
-                    </p>
-                </div>
-                <div class="text-xs text-brand-goldLight bg-brand-gold/10 border border-brand-gold/20 px-3.5 py-1.5 rounded-full w-fit flex items-center gap-2">
-                    <i class="fa-solid fa-feather-pointed"></i> Actualizaciones semanales
-                </div>
-            </div>
-
-            <!-- News Grid -->
-            <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Populated dynamically via JS -->
-            </div>
-
-        </section>
-
-
-        <!-- ==================== SECCIÓN 3: SOBRE MYSTERIX & EXPERIENCIA ==================== -->
-        <section id="nosotros" class="scroll-mt-24 bg-card-radial rounded-3xl border border-brand-gold/25 p-8 sm:p-12 relative overflow-hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-                <div class="space-y-6">
-                    <span class="text-brand-gold text-xs font-semibold tracking-widest uppercase">Nuestra Filosofía</span>
-                    <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-white">
-                        La Excelencia del Arte Místico
-                    </h2>
-                    <p class="text-gray-300 text-sm leading-relaxed">
-                        En <strong>Mysterix</strong> concebimos cada producto no solo como un objeto ornamental, sino como una herramienta canalizadora. Nuestros orfebres y herbolarios trabajan con metales nobles, cristales naturales no tratados químicamente y resinas de origen sostenible recolectadas bajo fases lunares propicias.
-                    </p>
-                    <div class="grid grid-cols-2 gap-4 pt-2">
-                        <div class="p-4 rounded-2xl bg-black/50 border border-brand-gold/20">
-                            <span class="font-cinzel text-2xl font-bold gold-text-gradient">100%</span>
-                            <p class="text-xs text-gray-400 mt-1">Minerales Auténticos Certificados</p>
-                        </div>
-                        <div class="p-4 rounded-2xl bg-black/50 border border-brand-gold/20">
-                            <span class="font-cinzel text-2xl font-bold gold-text-gradient">+10.000</span>
-                            <p class="text-xs text-gray-400 mt-1">Órdenes Despachadas con Éxito</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-4">
-                    <div class="p-5 rounded-2xl bg-black/60 border border-brand-gold/20 flex gap-4 items-start">
-                        <div class="w-10 h-10 rounded-xl bg-brand-gold/15 text-brand-gold flex items-center justify-center text-lg flex-shrink-0">
-                            <i class="fa-solid fa-sparkles"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-cinzel text-sm font-bold text-brand-goldLight">Limpieza y Consagración</h4>
-                            <p class="text-xs text-gray-400 mt-1">Cada amuleto es neutralizado con sahúmo sagrado y sellado herméticamente para preservar su pureza energética hasta tus manos.</p>
-                        </div>
-                    </div>
-
-                    <div class="p-5 rounded-2xl bg-black/60 border border-brand-gold/20 flex gap-4 items-start">
-                        <div class="w-10 h-10 rounded-xl bg-brand-gold/15 text-brand-gold flex items-center justify-center text-lg flex-shrink-0">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-cinzel text-sm font-bold text-brand-goldLight">Asesoramiento Directo e Inmediato</h4>
-                            <p class="text-xs text-gray-400 mt-1">Al finalizar tu pedido en la web, serás conectado al instante con un especialista para confirmar detalles de envío y métodos de pago.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- ==================== SECCIÓN 4: PREGUNTAS FRECUENTES (FAQ) ==================== -->
-        <section id="faq" class="scroll-mt-24 space-y-6">
             <div class="text-center space-y-2">
-                <span class="text-brand-gold text-xs font-semibold tracking-widest uppercase">Dudas Comunes</span>
-                <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-white">Preguntas Frecuentes</h2>
+                <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-white" id="news-title">
+                    Crónicas Arcanas
+                </h2>
+                <div class="w-16 h-0.5 bg-gold-gradient mx-auto rounded-full"></div>
             </div>
 
-            <div class="max-w-3xl mx-auto space-y-3">
-                <details class="group bg-brand-card border border-brand-gold/20 rounded-xl p-4 transition-all duration-200">
-                    <summary class="flex justify-between items-center font-cinzel text-sm text-brand-goldLight font-semibold cursor-pointer list-none">
-                        <span>¿Cómo realizo el pago de mi pedido?</span>
-                        <i class="fa-solid fa-chevron-down text-xs text-brand-gold transition-transform group-open:rotate-180"></i>
-                    </summary>
-                    <p class="text-xs text-gray-300 mt-3 leading-relaxed border-t border-brand-border/40 pt-3">
-                        Al armar tu carrito y presionar "Finalizar Pedido", se abrirá WhatsApp con el resumen de tu compra. Aceptamos Transferencias Bancarias, Mercado Pago, Tarjetas de Crédito/Débito y Criptomonedas (USDT/BTC).
-                    </p>
-                </details>
-
-                <details class="group bg-brand-card border border-brand-gold/20 rounded-xl p-4 transition-all duration-200">
-                    <summary class="flex justify-between items-center font-cinzel text-sm text-brand-goldLight font-semibold cursor-pointer list-none">
-                        <span>¿Hacen envíos a todo el territorio?</span>
-                        <i class="fa-solid fa-chevron-down text-xs text-brand-gold transition-transform group-open:rotate-180"></i>
-                    </summary>
-                    <p class="text-xs text-gray-300 mt-3 leading-relaxed border-t border-brand-border/40 pt-3">
-                        Sí, despachamos a través de Correo Argentino y Andreani con número de seguimiento en tiempo real. Los pedidos superiores a $35.000 cuentan con envío bonificado.
-                    </p>
-                </details>
-
-                <details class="group bg-brand-card border border-brand-gold/20 rounded-xl p-4 transition-all duration-200">
-                    <summary class="flex justify-between items-center font-cinzel text-sm text-brand-goldLight font-semibold cursor-pointer list-none">
-                        <span>¿Puedo instalar esta tienda en mi celular (PWA)?</span>
-                        <i class="fa-solid fa-chevron-down text-xs text-brand-gold transition-transform group-open:rotate-180"></i>
-                    </summary>
-                    <p class="text-xs text-gray-300 mt-3 leading-relaxed border-t border-brand-border/40 pt-3">
-                        ¡Absolutamente! Mysterix es una PWA (Progressive Web App). Puedes pulsar el botón "Instalar App" en la barra superior o seleccionar "Agregar a la pantalla de inicio" desde tu navegador móvil para tener acceso instantáneo sin ocupar almacenamiento de tiendas de aplicaciones.
-                    </p>
-                </details>
+            <div id="news-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Injected via JS -->
             </div>
+
         </section>
 
     </main>
 
 
-    <!-- ==================== FOOTER ==================== -->
-    <footer class="bg-brand-dark border-t border-brand-gold/25 pt-12 pb-8 mt-16 text-gray-400 text-xs">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+    <!-- FOOTER -->
+    <footer class="bg-brand-dark border-t border-brand-gold/20 py-8 text-gray-400 text-xs">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full logo-frame border border-brand-gold p-0.5 overflow-hidden">
+                    <img src="logomysterik.png" alt="Mysterix" class="w-full h-full object-contain">
+                </div>
+                <span class="font-cinzel text-sm font-bold gold-text-gradient">MYSTERIX STORE</span>
+            </div>
             
-            <div class="space-y-3 md:col-span-2">
-                <div class="flex items-center gap-3">
-                    <img src="logomysterik.png" alt="Mysterix" class="w-8 h-8 object-contain" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'46\' fill=\'%23050505\' stroke=\'%23D4AF37\' stroke-width=\'4\'/><polygon points=\'50,15 62,38 85,38 66,54 73,78 50,63 27,78 34,54 15,38 38,38\' fill=\'%23D4AF37\'/></svg>'">
-                    <span class="font-cinzel text-lg font-bold gold-text-gradient">MYSTERIX</span>
-                </div>
-                <p class="text-gray-400 max-w-md text-xs leading-relaxed">
-                    Bazar místico premium y templo de conocimiento esotérico. Fabricación y consagración de artefactos para elevar la vibración espiritual de tu espacio.
-                </p>
-                <div class="flex items-center gap-3 pt-2">
-                    <a href="https://wa.me/5492617094195" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-brand-surface hover:bg-green-600 hover:text-white text-gray-300 flex items-center justify-center transition" aria-label="WhatsApp Oficial">
-                        <i class="fa-brands fa-whatsapp text-sm"></i>
-                    </a>
-                    <a href="#" class="w-8 h-8 rounded-full bg-brand-surface hover:bg-brand-gold hover:text-black text-gray-300 flex items-center justify-center transition" aria-label="Instagram">
-                        <i class="fa-brands fa-instagram text-sm"></i>
-                    </a>
-                    <a href="#" class="w-8 h-8 rounded-full bg-brand-surface hover:bg-brand-gold hover:text-black text-gray-300 flex items-center justify-center transition" aria-label="Telegram">
-                        <i class="fa-brands fa-telegram text-sm"></i>
-                    </a>
-                </div>
+            <div class="flex items-center gap-4 text-[11px]">
+                <a href="https://wa.me/5492617094195" target="_blank" rel="noopener noreferrer" class="hover:text-brand-gold transition flex items-center gap-1">
+                    <i class="fa-brands fa-whatsapp text-green-500"></i> +54 9 261 709-4195
+                </a>
             </div>
 
-            <div>
-                <h4 class="font-cinzel text-brand-gold font-semibold text-sm mb-3">Navegación</h4>
-                <ul class="space-y-2">
-                    <li><a href="#catalogo" class="hover:text-brand-gold transition">Catálogo Completo</a></li>
-                    <li><a href="#noticias" class="hover:text-brand-gold transition">Crónicas y Foro</a></li>
-                    <li><a href="#nosotros" class="hover:text-brand-gold transition">Nuestra Filosofía</a></li>
-                    <li><a href="#faq" class="hover:text-brand-gold transition">Preguntas Frecuentes</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="font-cinzel text-brand-gold font-semibold text-sm mb-3">Contacto Directo</h4>
-                <p class="text-gray-400">Atención WhatsApp:</p>
-                <p class="text-brand-goldLight font-mono font-medium text-xs mt-0.5">+54 9 261 709-4195</p>
-                <p class="text-gray-400 mt-2">Horarios:</p>
-                <p class="text-gray-300 text-[11px]">Lunes a Sábado: 09:00 - 20:00 hs</p>
-            </div>
-
-        </div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 border-t border-brand-gold/15 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-gray-500">
-            <p>© <span id="current-year">2026</span> Mysterix Store. Todos los derechos reservados.</p>
-            <p class="flex items-center gap-1">
-                Optimizado para <span class="text-brand-gold">Cloudflare Pages</span> & GitHub
-            </p>
+            <p class="text-[10px] text-gray-500">© <span id="current-year">2026</span> Mysterix. Todos los derechos reservados.</p>
         </div>
     </footer>
 
 
-    <!-- ==================== COMPONENTE: CARRITO DE COMPRAS SLIDEOUT ==================== -->
+    <!-- ==================== CARRITO SLIDEOUT ==================== -->
     <div id="cart-overlay" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300" onclick="toggleCart(false)"></div>
 
-    <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[420px] max-w-full bg-brand-dark border-l border-brand-gold/30 z-50 closed shadow-2xl flex flex-col justify-between" aria-label="Carrito de compras">
+    <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[380px] max-w-full bg-brand-dark border-l border-brand-gold/30 z-50 closed shadow-2xl flex flex-col justify-between" aria-label="Carrito">
         
-        <!-- Cart Header -->
-        <div class="p-5 border-b border-brand-gold/20 flex items-center justify-between bg-black/60">
-            <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-full bg-brand-gold/15 text-brand-gold flex items-center justify-center">
-                    <i class="fa-solid fa-bag-shopping text-sm"></i>
-                </div>
-                <div>
-                    <h3 class="font-cinzel text-base font-bold text-brand-goldLight">Tu Canasta Mística</h3>
-                    <p class="text-[11px] text-gray-400"><span id="cart-items-total-badge">0</span> productos seleccionados</p>
-                </div>
+        <!-- Header -->
+        <div class="p-4 border-b border-brand-gold/20 flex items-center justify-between bg-black/60">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-bag-shopping text-brand-gold"></i>
+                <h3 class="font-cinzel text-sm font-bold text-brand-goldLight" id="cart-title">Tu Canasta</h3>
+                <span id="cart-items-total-badge" class="text-xs text-gray-400">(0)</span>
             </div>
-            <button onclick="toggleCart(false)" class="p-2 text-gray-400 hover:text-brand-gold hover:bg-brand-surface rounded-full transition" aria-label="Cerrar carrito">
-                <i class="fa-solid fa-xmark text-lg"></i>
+            <button onclick="toggleCart(false)" class="p-1.5 text-gray-400 hover:text-brand-gold rounded-full" aria-label="Cerrar">
+                <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
 
-        <!-- Cart Items List (Scrollable) -->
-        <div id="cart-items-container" class="flex-grow overflow-y-auto p-5 space-y-3.5 divide-y divide-brand-border/40">
-            <!-- Items injected via JS -->
+        <!-- Items Container -->
+        <div id="cart-items-container" class="flex-grow overflow-y-auto p-4 space-y-3 divide-y divide-brand-border/40">
+            <!-- Items -->
         </div>
 
-        <!-- Cart Empty Placeholder -->
-        <div id="cart-empty-view" class="flex flex-col items-center justify-center p-8 text-center space-y-4 my-auto">
-            <div class="w-16 h-16 rounded-full bg-brand-gold/10 text-brand-gold/60 flex items-center justify-center text-3xl">
-                <i class="fa-solid fa-cart-arrow-down"></i>
-            </div>
+        <!-- Empty State -->
+        <div id="cart-empty-view" class="flex flex-col items-center justify-center p-6 text-center space-y-3 my-auto">
+            <i class="fa-solid fa-bag-shopping text-3xl text-brand-gold/40"></i>
+            <p class="text-xs text-gray-400" id="cart-empty-msg">Tu carrito está vacío.</p>
+        </div>
+
+        <!-- Footer -->
+        <div id="cart-footer" class="p-4 border-t border-brand-gold/20 bg-black/80 space-y-3">
             <div>
-                <h4 class="font-cinzel text-base text-gray-300 font-semibold">El carrito está vacío</h4>
-                <p class="text-xs text-gray-500 mt-1 max-w-[240px]">Agrega talismanes o artefactos desde nuestro catálogo para iniciar tu pedido.</p>
+                <label for="cart-note" class="text-[11px] text-gray-400 block mb-1" id="cart-note-label">Nombre / Notas:</label>
+                <input type="text" id="cart-note" placeholder="..." class="w-full bg-brand-surface text-gray-200 text-xs px-3 py-1.5 rounded-lg border border-brand-gold/20 focus:border-brand-gold focus:outline-none">
             </div>
-            <button onclick="toggleCart(false)" class="px-5 py-2 rounded-xl bg-brand-gold/15 text-brand-gold hover:bg-brand-gold hover:text-black border border-brand-gold/40 text-xs font-semibold transition">
-                Ver Catálogo
+
+            <div class="flex justify-between items-center text-sm font-bold pt-1 border-t border-brand-gold/20">
+                <span class="font-cinzel text-brand-gold" id="cart-total-label">Total</span>
+                <span id="cart-total-price" class="gold-text-gradient font-mono text-base">$0</span>
+            </div>
+
+            <!-- WhatsApp CTA Button -->
+            <button id="checkout-whatsapp-btn" onclick="checkoutWhatsApp()" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:brightness-110 text-white font-cinzel font-bold text-xs tracking-wider flex items-center justify-center gap-2 shadow-lg transition active:scale-[0.99]">
+                <i class="fa-brands fa-whatsapp text-base"></i>
+                <span id="cart-btn-checkout">Finalizar Pedido</span>
             </button>
-        </div>
 
-        <!-- Cart Footer & Checkout Action -->
-        <div id="cart-footer" class="p-5 border-t border-brand-gold/20 bg-black/80 space-y-4 pb-safe">
-            
-            <!-- Optional Customer Note -->
-            <div class="space-y-1.5">
-                <label for="cart-note" class="text-[11px] text-gray-400 flex items-center gap-1.5">
-                    <i class="fa-solid fa-pen text-brand-gold text-[10px]"></i> Nombre del destinatario / Notas opcionales:
-                </label>
-                <input type="text" id="cart-note" placeholder="Ej: Lucas - Envío a Mendoza" class="w-full bg-brand-surface text-gray-200 text-xs px-3 py-2 rounded-lg border border-brand-gold/20 focus:border-brand-gold focus:outline-none transition">
-            </div>
-
-            <!-- Price Breakdown -->
-            <div class="space-y-1.5 text-xs text-gray-300 pt-1">
-                <div class="flex justify-between">
-                    <span>Subtotal</span>
-                    <span id="cart-subtotal" class="font-mono font-medium">$0</span>
-                </div>
-                <div class="flex justify-between text-gray-400">
-                    <span>Envío</span>
-                    <span id="cart-shipping-text" class="text-brand-goldLight text-[11px]">Calculado al coordinar</span>
-                </div>
-                <div class="flex justify-between text-sm font-bold pt-2 border-t border-brand-gold/20 text-white">
-                    <span class="font-cinzel text-brand-gold">Total Estimado</span>
-                    <span id="cart-total-price" class="gold-text-gradient font-mono text-base">$0</span>
-                </div>
-            </div>
-
-            <!-- Prominent WhatsApp Checkout Button -->
-            <button id="checkout-whatsapp-btn" onclick="checkoutWhatsApp()" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#25D366] via-[#20BA5A] to-[#128C7E] hover:brightness-110 text-white font-cinzel font-bold text-sm tracking-wider flex items-center justify-center gap-2.5 shadow-lg hover:shadow-green-900/40 transition duration-300 active:scale-[0.99]">
-                <i class="fa-brands fa-whatsapp text-lg"></i>
-                <span>Finalizar Pedido por WhatsApp</span>
+            <button onclick="clearCart()" class="w-full text-center text-[10px] text-red-400/80 hover:text-red-400 transition" id="cart-btn-clear">
+                Vaciar Carrito
             </button>
-            
-            <div class="flex items-center justify-between text-[10px] text-gray-400">
-                <button onclick="clearCart()" class="text-red-400/80 hover:text-red-400 underline transition">
-                    Vaciar Carrito
-                </button>
-                <span class="flex items-center gap-1 text-gray-500">
-                    <i class="fa-solid fa-lock text-[9px]"></i> Compra Segura Directa
-                </span>
-            </div>
         </div>
 
     </aside>
 
 
-    <!-- ==================== MODAL: LECTURA DE NOTICIA / FORO ==================== -->
+    <!-- ==================== MODAL: LECTURA DE NOTICIA ==================== -->
     <div id="news-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-        <div class="bg-brand-dark border border-brand-gold/40 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative animate-fadeIn" onclick="event.stopPropagation()">
-            
-            <!-- Modal Header with Image -->
-            <div class="relative h-60 w-full overflow-hidden rounded-t-3xl">
-                <img id="modal-news-img" src="" alt="Noticia Mysterix" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/40 to-transparent"></div>
-                <button onclick="closeNewsModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/70 hover:bg-brand-gold hover:text-black text-white flex items-center justify-center transition border border-white/20" aria-label="Cerrar modal">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-                <div class="absolute bottom-4 left-6 right-6">
-                    <span id="modal-news-tag" class="px-2.5 py-1 rounded bg-brand-gold text-black text-[10px] font-bold uppercase tracking-wider font-cinzel"></span>
-                    <h3 id="modal-news-title" class="font-cinzel text-xl sm:text-2xl font-bold text-white mt-1"></h3>
-                    <p id="modal-news-date" class="text-xs text-brand-goldLight mt-0.5"></p>
-                </div>
-            </div>
-
-            <!-- Modal Body -->
-            <div class="p-6 sm:p-8 space-y-4">
-                <div id="modal-news-content" class="text-gray-300 text-sm leading-relaxed space-y-3 font-serif">
-                    <!-- Text injected dynamically -->
-                </div>
-
-                <div class="pt-6 border-t border-brand-gold/20 flex flex-wrap items-center justify-between gap-3">
-                    <div class="text-xs text-gray-400 italic">
-                        Publicado en las Crónicas de la Orden Mysterix
-                    </div>
-                    <button onclick="closeNewsModal()" class="px-5 py-2 rounded-xl bg-brand-surface hover:bg-brand-card text-brand-gold border border-brand-gold/30 text-xs font-semibold transition">
-                        Cerrar Lectura
-                    </button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-
-    <!-- ==================== MODAL: VISTA RÁPIDA DE PRODUCTO (QUICK VIEW) ==================== -->
-    <div id="product-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-        <div class="bg-brand-dark border border-brand-gold/40 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative" onclick="event.stopPropagation()">
-            
-            <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/70 hover:bg-brand-gold hover:text-black text-white flex items-center justify-center transition border border-white/20" aria-label="Cerrar">
+        <div class="bg-brand-dark border border-brand-gold/40 rounded-2xl max-w-xl w-full max-h-[85vh] overflow-y-auto shadow-2xl relative p-6 space-y-4" onclick="event.stopPropagation()">
+            <button onclick="closeNewsModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/70 text-white hover:text-brand-gold flex items-center justify-center" aria-label="Cerrar">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-6 sm:p-8">
-                <!-- Image -->
-                <div class="relative rounded-2xl overflow-hidden aspect-square border border-brand-gold/20 bg-black">
-                    <img id="modal-product-img" src="" alt="Producto" class="w-full h-full object-cover">
-                    <span id="modal-product-badge" class="absolute top-3 left-3 px-2.5 py-1 rounded bg-brand-gold text-black text-[10px] font-bold uppercase tracking-wider font-cinzel"></span>
-                </div>
+            <span id="modal-news-tag" class="px-2 py-0.5 rounded bg-brand-gold text-black text-[10px] font-bold uppercase font-cinzel"></span>
+            <h3 id="modal-news-title" class="font-cinzel text-xl font-bold text-white"></h3>
+            <p id="modal-news-date" class="text-xs text-brand-goldLight"></p>
 
-                <!-- Product Info -->
-                <div class="flex flex-col justify-between space-y-4">
-                    <div class="space-y-2">
-                        <span id="modal-product-category" class="text-brand-gold text-xs font-semibold uppercase tracking-wider"></span>
-                        <h3 id="modal-product-name" class="font-cinzel text-xl sm:text-2xl font-bold text-white"></h3>
-                        <p id="modal-product-price" class="font-mono text-2xl font-bold gold-text-gradient"></p>
-                        <p id="modal-product-desc" class="text-xs sm:text-sm text-gray-300 leading-relaxed pt-2 border-t border-brand-gold/20"></p>
-                    </div>
+            <div id="modal-news-content" class="text-gray-300 text-xs sm:text-sm leading-relaxed space-y-2 pt-2 border-t border-brand-gold/20"></div>
+        </div>
+    </div>
 
-                    <div class="space-y-3 pt-4">
-                        <div class="flex items-center gap-3">
-                            <label class="text-xs text-gray-400">Cantidad:</label>
-                            <div class="flex items-center border border-brand-gold/30 rounded-lg overflow-hidden bg-brand-surface">
-                                <button onclick="changeModalQty(-1)" class="px-3 py-1 text-gray-300 hover:bg-brand-gold/20 hover:text-brand-gold">-</button>
-                                <span id="modal-product-qty" class="px-4 py-1 text-xs font-mono font-bold text-white">1</span>
-                                <button onclick="changeModalQty(1)" class="px-3 py-1 text-gray-300 hover:bg-brand-gold/20 hover:text-brand-gold">+</button>
-                            </div>
-                        </div>
 
-                        <button id="modal-add-cart-btn" class="w-full py-3 rounded-xl bg-gold-gradient hover:bg-gold-gradient-hover text-black font-cinzel font-bold text-xs tracking-wider shadow-gold-sm transition">
-                            <i class="fa-solid fa-cart-plus mr-2"></i> Añadir a la Canasta
-                        </button>
-                    </div>
-                </div>
+    <!-- ==================== MODAL: VISTA RÁPIDA PRODUCTO ==================== -->
+    <div id="product-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-brand-dark border border-brand-gold/40 rounded-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto shadow-2xl relative p-6 space-y-4" onclick="event.stopPropagation()">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/70 text-white hover:text-brand-gold flex items-center justify-center" aria-label="Cerrar">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="relative aspect-video rounded-xl overflow-hidden bg-black border border-brand-gold/20">
+                <img id="modal-product-img" src="" alt="" class="w-full h-full object-cover">
             </div>
 
+            <div class="space-y-2">
+                <span id="modal-product-category" class="text-brand-gold text-[10px] font-semibold uppercase"></span>
+                <h3 id="modal-product-name" class="font-cinzel text-xl font-bold text-white"></h3>
+                <p id="modal-product-price" class="font-mono text-xl font-bold gold-text-gradient"></p>
+                <p id="modal-product-desc" class="text-xs text-gray-300 leading-relaxed"></p>
+            </div>
+
+            <button id="modal-add-cart-btn" class="w-full py-2.5 rounded-xl bg-gold-gradient text-black font-cinzel font-bold text-xs tracking-wider transition">
+                <i class="fa-solid fa-cart-plus mr-1.5"></i> <span id="modal-btn-add">Añadir al Carrito</span>
+            </button>
         </div>
     </div>
 
 
-    <!-- ==================== TOAST NOTIFICATION ==================== -->
-    <div id="toast" class="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-brand-card border border-brand-gold/60 text-white px-5 py-3.5 rounded-2xl shadow-gold-md translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
-        <div id="toast-icon" class="w-7 h-7 rounded-full bg-brand-gold/20 text-brand-gold flex items-center justify-center flex-shrink-0 text-sm">
-            <i class="fa-solid fa-check"></i>
-        </div>
-        <div>
-            <p id="toast-title" class="font-cinzel text-xs font-bold text-brand-goldLight"></p>
-            <p id="toast-msg" class="text-[11px] text-gray-300"></p>
-        </div>
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-brand-card border border-brand-gold/60 text-white px-4 py-3 rounded-xl shadow-gold-sm translate-y-24 opacity-0 transition-all duration-300 pointer-events-none text-xs">
+        <i class="fa-solid fa-check text-brand-gold"></i>
+        <span id="toast-msg"></span>
     </div>
 
 
-    <!-- ==================== JAVASCRIPT LOGIC & PWA SCRIPTS ==================== -->
+    <!-- ==================== JAVASCRIPT & MULTILINGUAL LOGIC ==================== -->
     <script>
-        /* ==========================================================================
-           2. ESTRUCTURA DE DATOS EDITABLE (PRODUCTS & NEWS)
-           ========================================================================== */
-        
+        /* ==================== 1. SISTEMA MULTI-IDIOMA (ES, EN, PT) ==================== */
+        let currentLang = localStorage.getItem("mysterix_lang") || "es";
+
+        const i18n = {
+            es: {
+                announcement: "Envíos a todo el país • Atención Personalizada por WhatsApp",
+                navCatalog: "Catálogo",
+                navNews: "Crónicas",
+                install: "Instalar",
+                heroBadge: "Artefactos de Alta Vibración",
+                heroTitle: "Conecta con lo Místico",
+                heroSubtitle: "Talismanes consagrados, gemas auténticas y elementos ceremoniales para elevar tu energía diaria.",
+                heroBtnShop: "Ver Catálogo",
+                heroBtnWa: "Contacto Directo",
+                catTitle: "Catálogo de Bazar",
+                searchPlaceholder: "Buscar artefacto...",
+                emptyTitle: "Sin resultados para tu búsqueda",
+                emptyBtn: "Restablecer Filtros",
+                newsTitle: "Crónicas Arcanas",
+                readMore: "Leer artículo",
+                cartTitle: "Tu Canasta",
+                cartEmpty: "Tu carrito está vacío.",
+                cartNoteLabel: "Nombre / Notas opcionales:",
+                cartTotalLabel: "Total Estimado",
+                cartBtnCheckout: "Finalizar Pedido por WhatsApp",
+                cartBtnClear: "Vaciar Carrito",
+                modalBtnAdd: "Añadir a la Canasta",
+                toastAdded: "añadido a tu canasta.",
+                toastRemoved: "Artefacto eliminado del carrito.",
+                toastCleared: "Se vació la canasta.",
+                waHeader: "✨ *NUEVO PEDIDO - MYSTERIX STORE* ✨",
+                waDate: "🗓️ *Fecha:*",
+                waClient: "👤 *Cliente / Notas:*",
+                waDetail: "🛍️ *DETALLE DE PRODUCTOS:*",
+                waTotal: "💰 *TOTAL FINAL:*",
+                waFooter: "🔮 _Deseo coordinar el pago y envío de este pedido._",
+                cats: {
+                    all: "Todos",
+                    talismans: "Talismanes",
+                    crystals: "Cristales",
+                    rituals: "Rituales"
+                }
+            },
+            en: {
+                announcement: "Worldwide Shipping • Personalized WhatsApp Support",
+                navCatalog: "Catalog",
+                navNews: "Chronicles",
+                install: "Install",
+                heroBadge: "High Frequency Sacred Artifacts",
+                heroTitle: "Connect with the Arcane",
+                heroSubtitle: "Consecrated talismans, authentic crystals, and ceremonial items to elevate your daily energy.",
+                heroBtnShop: "Explore Catalog",
+                heroBtnWa: "Direct WhatsApp",
+                catTitle: "Bazaar Catalog",
+                searchPlaceholder: "Search artifact...",
+                emptyTitle: "No artifacts found",
+                emptyBtn: "Reset Filters",
+                newsTitle: "Arcane Chronicles",
+                readMore: "Read article",
+                cartTitle: "Your Basket",
+                cartEmpty: "Your basket is currently empty.",
+                cartNoteLabel: "Name / Optional notes:",
+                cartTotalLabel: "Estimated Total",
+                cartBtnCheckout: "Complete Order via WhatsApp",
+                cartBtnClear: "Empty Basket",
+                modalBtnAdd: "Add to Basket",
+                toastAdded: "added to your basket.",
+                toastRemoved: "Item removed from basket.",
+                toastCleared: "Basket cleared.",
+                waHeader: "✨ *NEW ORDER - MYSTERIX STORE* ✨",
+                waDate: "🗓️ *Date:*",
+                waClient: "👤 *Customer / Notes:*",
+                waDetail: "🛍️ *ORDER BREAKDOWN:*",
+                waTotal: "💰 *FINAL TOTAL:*",
+                waFooter: "🔮 _I would like to arrange payment and delivery for this order._",
+                cats: {
+                    all: "All",
+                    talismans: "Talismans",
+                    crystals: "Crystals",
+                    rituals: "Rituals"
+                }
+            },
+            pt: {
+                announcement: "Envios para todo o país • Atendimento Personalizado por WhatsApp",
+                navCatalog: "Catálogo",
+                navNews: "Crônicas",
+                install: "Instalar",
+                heroBadge: "Artefatos de Alta Vibração",
+                heroTitle: "Conecte-se com o Oculto",
+                heroSubtitle: "Talismãs consagrados, cristais autênticos e elementos cerimoniais para elevar sua energia diária.",
+                heroBtnShop: "Ver Catálogo",
+                heroBtnWa: "Contato Direto",
+                catTitle: "Catálogo do Bazar",
+                searchPlaceholder: "Buscar artefato...",
+                emptyTitle: "Nenhum resultado encontrado",
+                emptyBtn: "Redefinir Filtros",
+                newsTitle: "Crônicas Arcanas",
+                readMore: "Ler artigo",
+                cartTitle: "Sua Cesta",
+                cartEmpty: "Sua cesta está vazia.",
+                cartNoteLabel: "Nome / Notas opcionais:",
+                cartTotalLabel: "Total Estimado",
+                cartBtnCheckout: "Finalizar Pedido via WhatsApp",
+                cartBtnClear: "Esvaziar Cesta",
+                modalBtnAdd: "Adicionar à Cesta",
+                toastAdded: "adicionado à sua cesta.",
+                toastRemoved: "Artefato removido da cesta.",
+                toastCleared: "Cesta esvaziada.",
+                waHeader: "✨ *NOVO PEDIDO - MYSTERIX STORE* ✨",
+                waDate: "🗓️ *Data:*",
+                waClient: "👤 *Cliente / Notas:*",
+                waDetail: "🛍️ *DETALHE DOS PRODUTOS:*",
+                waTotal: "💰 *TOTAL FINAL:*",
+                waFooter: "🔮 _Desejo coordenar o pagamento e envio deste pedido._",
+                cats: {
+                    all: "Todos",
+                    talismans: "Talismãs",
+                    crystals: "Cristais",
+                    rituals: "Rituais"
+                }
+            }
+        };
+
+
+        /* ==================== 2. CATÁLOGO REDUCIDO & MULTI-IDIOMA ==================== */
         const products = [
             {
                 id: "prod-1",
-                nombre: "Talisman Pentagrama Áureo de Salomón",
+                categoryKey: "talismans",
                 precio: 18500,
-                categoria: "Talismanes",
-                descripcion: "Colgante tallado a mano en aleación de bronce con baño en oro de 24k. Diseñado bajo las claves salomónicas para protección absoluta y consagración astral.",
                 imagen: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=700&q=80",
-                badge: "Más Vendido",
-                rating: 5.0
+                nombre: {
+                    es: "Pentagrama Áureo de Salomón",
+                    en: "Golden Solomon Pentagram",
+                    pt: "Pentagrama Áureo de Salomão"
+                },
+                descripcion: {
+                    es: "Colgante tallado con baño de oro 24k para protección astral y consagración.",
+                    en: "Hand-carved pendant with 24k gold plating for astral protection.",
+                    pt: "Pingente entalhado com banho de ouro 24k para proteção astral."
+                },
+                badge: { es: "Exclusivo", en: "Exclusive", pt: "Exclusivo" }
             },
             {
                 id: "prod-2",
-                nombre: "Kit Alquímico de 7 Velas de Cera de Soja & Oro",
+                categoryKey: "rituals",
                 precio: 14200,
-                categoria: "Velas & Alquimia",
-                descripcion: "Set de velas consagradas aromatizadas con resinas sagradas de Copal, Mirra e Incienso de Olibano, decoradas con láminas de oro comestible y hierbas lunares.",
                 imagen: "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=700&q=80",
-                badge: "Envío Gratis",
-                rating: 4.9
+                nombre: {
+                    es: "Set Alquímico de Velas de Soja",
+                    en: "Alchemical Soy Candle Set",
+                    pt: "Conjunto Alquímico de Velas de Soja"
+                },
+                descripcion: {
+                    es: "Velas aromatizadas con Copal, Mirra y láminas de oro para purificación.",
+                    en: "Scented candles with Copal, Myrrh and gold flakes for purification.",
+                    pt: "Velas aromatizadas com Copal, Mirra e folhas de ouro para purificação."
+                },
+                badge: { es: "Popular", en: "Popular", pt: "Popular" }
             },
             {
                 id: "prod-3",
-                nombre: "Geoda de Amatista Cristalina de Alta Frecuencia",
+                categoryKey: "crystals",
                 precio: 28900,
-                categoria: "Cristales & Gemas",
-                descripcion: "Pieza única de amatista uruguaya de color violeta profundo. Ideal para transmutación de energías densas, meditación profunda y armonización de altares.",
                 imagen: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=700&q=80",
-                badge: "Pieza Única",
-                rating: 5.0
+                nombre: {
+                    es: "Geoda de Amatista Cristalina",
+                    en: "Crystalline Amethyst Geode",
+                    pt: "Geodo de Ametista Cristalina"
+                },
+                descripcion: {
+                    es: "Pieza natural seleccionada para transmutación energética y meditación.",
+                    en: "Hand-selected natural specimen for energetic transmutation.",
+                    pt: "Peça natural selecionada para transmutação energética e meditação."
+                },
+                badge: { es: "Auténtico", en: "Authentic", pt: "Autêntico" }
             },
             {
                 id: "prod-4",
-                nombre: "Tarot Arcano de Marsella con Canto Dorado",
+                categoryKey: "rituals",
                 precio: 22400,
-                categoria: "Libros & Tarot",
-                descripcion: "Edición coleccionista con 78 cartas plastificadas de gramaje superior, detalles dorados metalizados en relieve y manual de interpretación arcana de 160 páginas.",
                 imagen: "https://images.unsplash.com/photo-1632516643720-e7f5d7d6ecc9?auto=format&fit=crop&w=700&q=80",
-                badge: "Exclusivo",
-                rating: 4.8
+                nombre: {
+                    es: "Tarot Arcano de Marsella Dorado",
+                    en: "Golden Marseille Arcana Tarot",
+                    pt: "Tarô Arcano de Marselha Dourado"
+                },
+                descripcion: {
+                    es: "Edición con cantos dorados y guía de interpretación simbólica.",
+                    en: "Collector edition with gilded edges and full guidebook.",
+                    pt: "Edição com bordas douradas e guia de interpretação simbólica."
+                },
+                badge: { es: "Colección", en: "Collection", pt: "Coleção" }
             },
             {
                 id: "prod-5",
-                nombre: "Caldero Ceremonial de Hierro Fundido con Tríquetra",
-                precio: 26500,
-                categoria: "Altar & Ceremonia",
-                descripcion: "Caldero pesado tradicional con soporte de tres patas y grabado celta de triple diosa. Perfecto para quemar sahúmos, resinas y mezclas herbales.",
-                imagen: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=700&q=80",
-                badge: "Artesanal",
-                rating: 4.9
+                categoryKey: "crystals",
+                precio: 21000,
+                imagen: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=700&q=80",
+                nombre: {
+                    es: "Esfera de Obsidiana Negra",
+                    en: "Black Obsidian Scrying Sphere",
+                    pt: "Esfera de Obsidiana Negra"
+                },
+                descripcion: {
+                    es: "Espejo volcánico pulido para bloqueo de energías densas y videncia.",
+                    en: "Polished volcanic glass for energetic shielding and scrying.",
+                    pt: "Espelho vulcânico polido para bloqueio de energias densas."
+                },
+                badge: { es: "Protección", en: "Protection", pt: "Proteção" }
             },
             {
                 id: "prod-6",
-                nombre: "Esfera de Obsidiana Negra de Adivinación (Scrying)",
-                precio: 21000,
-                categoria: "Cristales & Gemas",
-                descripcion: "Esfera pulida como espejo de 10cm en obsidiana volcánica pura. Incluye pedestal tallado en madera de roble oscuro para videncia y bloqueo de negatividad.",
-                imagen: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=700&q=80",
-                badge: "Oferta Oro",
-                rating: 4.7
-            },
-            {
-                id: "prod-7",
-                nombre: "Grimorio de Cuero Genuino 'Sello de Salomón'",
-                precio: 31200,
-                categoria: "Libros & Tarot",
-                descripcion: "Libro de las sombras encuadernado artesanalmente en cuero repujado con 240 páginas de papel pergamino envejecido a mano libre de ácido.",
-                imagen: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=700&q=80",
-                badge: "Edición Límite",
-                rating: 5.0
-            },
-            {
-                id: "prod-8",
-                nombre: "Incensario Colgante de Latón Dorado Litúrgico",
+                categoryKey: "talismans",
                 precio: 16800,
-                categoria: "Altar & Ceremonia",
-                descripcion: "Naveta e incensario con cadenas reforzadas de bronce, calado arabesco para dispersión uniforme del humo ceremonial y aislamiento térmico.",
                 imagen: "https://images.unsplash.com/photo-1506806732259-39c2d0268443?auto=format&fit=crop&w=700&q=80",
-                badge: "Popular",
-                rating: 4.8
+                nombre: {
+                    es: "Incensario Litúrgico de Latón",
+                    en: "Brass Liturgical Incense Burner",
+                    pt: "Incensário Litúrgico de Latão"
+                },
+                descripcion: {
+                    es: "Diseño colgante con cadenas reforzadas y calado para sahúmos.",
+                    en: "Hanging brass censer with reinforced chains for rituals.",
+                    pt: "Design suspenso com correntes reforçadas para defumação."
+                },
+                badge: { es: "Ceremonial", en: "Ceremonial", pt: "Cerimonial" }
             }
         ];
 
         const news = [
             {
                 id: "news-1",
-                titulo: "Guía de Luna Llena: Cómo Consagrar tus Amuletos y Cuarzos",
-                fecha: "24 de Agosto, 2026",
-                extracto: "Aprende los pasos esenciales para purificar la memoria energética de tus talismanes y cargarlos con la máxima frecuencia luminosa durante el cenit lunar.",
-                tag: "Rituales & Fases",
-                imagen: "https://images.unsplash.com/photo-1532693322450-2cb5c511067d?auto=format&fit=crop&w=700&q=80",
-                autor: "Maestra Evelyn V.",
-                contenido: `
-                    <p class="mb-4">La luna llena representa el punto de máxima iluminación y expansión en el ciclo sinódico. Durante estas 48 horas de mayor influencia magnética, los cristales y metales nobles aumentan su capacidad de retención de frecuencias etéricas.</p>
-                    <h4 class="font-cinzel text-brand-gold font-bold text-base my-3">1. Purificación Inicial (Descarga)</h4>
-                    <p class="mb-4">Antes de cargar, es imprescindible desprogramar cualquier vibración acumulada. Sumerge tus piedras no porosas en agua de manantial con sal marina pura durante 15 minutos, o bien sahuméalas con resina de Benjuí y Romero.</p>
-                    <h4 class="font-cinzel text-brand-gold font-bold text-base my-3">2. Exposición a la Luz Celeste</h4>
-                    <p class="mb-4">Coloca tus artefactos sobre una tela de lino oscuro o bandeja de plata en el exterior o alféizar donde reciban la luz directa de la Luna. Deja que repose desde las 22:00 hasta antes del amanecer.</p>
-                    <h4 class="font-cinzel text-brand-gold font-bold text-base my-3">3. Sello con la Intención</h4>
-                    <p>Sostén el amuleto entre tus palmas a la altura del corazón y vocaliza tu propósito en presente y gratitud. ¡El artefacto estará consagrado para servir a tu camino!</p>
-                `
+                tag: { es: "Rituales", en: "Rituals", pt: "Rituais" },
+                fecha: "24 Ago 2026",
+                titulo: {
+                    es: "Consagración de Cristales en Luna Llena",
+                    en: "Consecration of Crystals on Full Moon",
+                    pt: "Consagração de Cristais na Lua Cheia"
+                },
+                extracto: {
+                    es: "Aprende los pasos esenciales para purificar y recargar la vibración de tus gemas.",
+                    en: "Learn the essential steps to cleanse and recharge the vibration of your stones.",
+                    pt: "Aprenda os passos essenciais para purificar e recarregar a vibração das suas pedras."
+                },
+                contenido: {
+                    es: "<p>Durante el plenilunio, la fuerza magnética permite neutralizar energías residuales. Deja tus cristales reposar bajo la luz lunar y séllalos con una intención clara.</p>",
+                    en: "<p>During the full moon, magnetic fields maximize crystal recharging. Let your stones rest under direct moonlight and seal them with clear intentions.</p>",
+                    pt: "<p>Durante a lua cheia, a força magnética permite neutralizar energias residuais. Deixe seus cristais sob o luar e sele-os com sua intenção.</p>"
+                }
             },
             {
                 id: "news-2",
-                titulo: "El Misterio de la Obsidiana: El Escudo contra el Vampirismo Energético",
-                fecha: "18 de Agosto, 2026",
-                extracto: "Descubre por qué esta piedra volcánica de origen ígneo es venerada como el cortafuegos más potente del mundo mineral.",
-                tag: "Gemas Ocultas",
-                imagen: "https://images.unsplash.com/photo-1567095761054-7a02e69e5c43?auto=format&fit=crop&w=700&q=80",
-                autor: "Hermano David M.",
-                contenido: `
-                    <p class="mb-4">A diferencia de otros minerales con estructuras cristalinas convencionales, la obsidiana es un vidrio volcánico natural que se enfría con tal rapidez que no permite la formación de red geométrica atómica, confiriéndole un vacío único de transmutación.</p>
-                    <h4 class="font-cinzel text-brand-gold font-bold text-base my-3">Propiedades Psíquicas</h4>
-                    <p class="mb-4">Actúa como un espejo sin contemplaciones que expone la sombra interna para integrarla. No tolera engaños ni proyecciones falsas, siendo la aliada perfecta para terapeutas y personas expuestas a entornos densos.</p>
-                    <h4 class="font-cinzel text-brand-gold font-bold text-base my-3">Cómo Portarla</h4>
-                    <p>Se recomienda llevarla a la altura del plexo solar o en el bolsillo izquierdo. Es vital descargarla semanalmente colocándola directamente sobre tierra fértil durante unas horas.</p>
-                `
+                tag: { es: "Gemas", en: "Gems", pt: "Gemas" },
+                fecha: "18 Ago 2026",
+                titulo: {
+                    es: "El Poder Protector de la Obsidiana",
+                    en: "The Protective Power of Obsidian",
+                    pt: "O Poder Protetor da Obsidiana"
+                },
+                extracto: {
+                    es: "Por qué este vidrio volcánico es considerado el escudo definitivo contra la densidad.",
+                    en: "Why this natural volcanic glass is regarded as the ultimate energy shield.",
+                    pt: "Por que este vidro vulcânico é considerado o escudo definitivo contra a negatividade."
+                },
+                contenido: {
+                    es: "<p>La obsidiana actúa como un espejo implacable que disuelve bloqueos y protege el campo áurico de interferencias externas.</p>",
+                    en: "<p>Obsidian functions as an uncompromising mirror that dissolves blockages and shields your auric field.</p>",
+                    pt: "<p>A obsidiana atua como um espelho que dissolve bloqueios e protege o campo áurico de interferências externas.</p>"
+                }
             },
             {
                 id: "news-3",
-                titulo: "Alquimia de las Velas: Qué Revela la Forma de la Llama y la Cera",
-                fecha: "10 de Agosto, 2026",
-                extracto: "La Ceromancia y Piromancia básica para interpretar los mensajes que el fuego entrega durante tus meditaciones y peticiones.",
-                tag: "Ceremonial",
-                imagen: "https://images.unsplash.com/photo-1572883454114-1cf0031ede2a?auto=format&fit=crop&w=700&q=80",
-                autor: "Orden Mysterix",
-                contenido: `
-                    <p class="mb-4">El fuego es el único elemento que no puede ser contaminado. Cuando encendemos una vela consagrada, creamos un canal directo entre el plano tangible y las fuerzas sutiles.</p>
-                    <h4 class="font-cinzel text-brand-gold font-bold text-base my-3">Signos en la Llama</h4>
-                    <ul class="list-disc pl-5 space-y-2 mb-4">
-                        <li><strong>Llama alta y brillante:</strong> La energía fluye sin resistencia; petición favorable.</li>
-                        <li><strong>Chisporroteo o crujido:</strong> Presencia de interferencias astrales que están siendo quemadas y disueltas.</li>
-                        <li><strong>Llama vacilante sin viento:</strong> Es necesario reforzar el enfoque mental y la claridad de la intención.</li>
-                    </ul>
-                    <h4 class="font-cinzel text-brand-gold font-bold text-base my-3">Restos de Cera</h4>
-                    <p>Si la vela se consume sin dejar apenas cera, el trabajo ha sido completado con éxito rotundo. Si forma figuras en la base, examina las formas con paciencia para obtener consejos simbólicos.</p>
-                `
+                tag: { es: "Alquimia", en: "Alchemy", pt: "Alquimia" },
+                fecha: "10 Ago 2026",
+                titulo: {
+                    es: "Interpretación del Fuego en tus Velas",
+                    en: "Interpreting Fire & Candle Wax",
+                    pt: "Interpretação do Fogo nas Velas"
+                },
+                extracto: {
+                    es: "Claves simples para comprender los movimientos de la llama durante tus peticiones.",
+                    en: "Simple keys to understand flame behavior and wax formations during ceremonies.",
+                    pt: "Dicas simples para compreender os movimentos da chama durante suas orações."
+                },
+                contenido: {
+                    es: "<p>Una llama alta y serena indica un flujo energético limpio; los crujidos señalan la disolución de bloqueos astrales.</p>",
+                    en: "<p>A steady and bright flame indicates clear energy flow; crackles reveal the active dissolution of astral resistance.</p>",
+                    pt: "<p>Uma chama alta e serena indica um fluxo de energia limpo; estalos indicam a dissolução de bloqueios.</p>"
+                }
             }
         ];
 
 
-        /* ==========================================================================
-           3. ESTADO GLOBAL & PERSISTENCIA (LOCALSTORAGE)
-           ========================================================================== */
-        
+        /* ==================== 3. ESTADO GLOBAL & PERSISTENCIA ==================== */
         const STORAGE_KEY = "mysterix_cart_data_v1";
         let cart = [];
-        let selectedCategory = "Todos";
+        let selectedCategoryKey = "all";
         let searchQuery = "";
-        let currentSort = "featured";
         let modalQuickViewProduct = null;
-        let modalQty = 1;
 
-        // Formateador de moneda (ARS)
         const formatMoney = (amount) => {
             return new Intl.NumberFormat('es-AR', {
                 style: 'currency',
@@ -875,84 +682,90 @@
             }).format(amount);
         };
 
-        // Inicialización de la aplicación
-        function initApp() {
-            loadCart();
+        function setLanguage(lang) {
+            if (!i18n[lang]) return;
+            currentLang = lang;
+            localStorage.setItem("mysterix_lang", lang);
+            updateLanguageUI();
             renderCategoryFilters();
             renderProducts();
             renderNews();
-            setupEventListeners();
-            initPWA();
-            document.getElementById('current-year').textContent = new Date().getFullYear();
-        }
-
-        // Carga de Carrito desde LocalStorage
-        function loadCart() {
-            try {
-                const stored = localStorage.getItem(STORAGE_KEY);
-                cart = stored ? JSON.parse(stored) : [];
-            } catch (e) {
-                console.error("Error al cargar carrito:", e);
-                cart = [];
-            }
             updateCartUI();
         }
 
-        // Guardado de Carrito en LocalStorage
-        function saveCart() {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
-            } catch (e) {
-                console.error("Error al guardar carrito:", e);
-            }
-            updateCartUI();
-        }
+        function updateLanguageUI() {
+            const t = i18n[currentLang];
 
-
-        /* ==========================================================================
-           4. RENDERIZADO DEL CATÁLOGO & FILTROS
-           ========================================================================== */
-
-        function getCategories() {
-            const cats = ["Todos"];
-            products.forEach(p => {
-                if (!cats.includes(p.categoria)) cats.push(p.categoria);
+            // Botones selector
+            ['es', 'en', 'pt'].forEach(l => {
+                const btn = document.getElementById(`btn-lang-${l}`);
+                if (btn) {
+                    if (l === currentLang) {
+                        btn.className = "px-2 py-1 rounded-lg bg-brand-gold text-black font-bold shadow-sm";
+                    } else {
+                        btn.className = "px-2 py-1 rounded-lg text-gray-400 hover:text-white transition";
+                    }
+                }
             });
-            return cats;
+
+            // Textos estáticos
+            document.getElementById("txt-announcement").textContent = t.announcement;
+            document.getElementById("nav-catalog").querySelector("span").textContent = t.navCatalog;
+            document.getElementById("nav-news").querySelector("span").textContent = t.navNews;
+            document.getElementById("txt-install").textContent = t.install;
+            document.getElementById("hero-badge").textContent = t.heroBadge;
+            document.getElementById("hero-title").textContent = t.heroTitle;
+            document.getElementById("hero-subtitle").textContent = t.heroSubtitle;
+            document.getElementById("hero-btn-shop").querySelector("span").textContent = t.heroBtnShop;
+            document.getElementById("hero-btn-wa").querySelector("span").textContent = t.heroBtnWa;
+            document.getElementById("cat-title").textContent = t.catTitle;
+            document.getElementById("search-input").placeholder = t.searchPlaceholder;
+            document.getElementById("empty-title").textContent = t.emptyTitle;
+            document.getElementById("empty-btn").textContent = t.emptyBtn;
+            document.getElementById("news-title").textContent = t.newsTitle;
+            document.getElementById("cart-title").textContent = t.cartTitle;
+            document.getElementById("cart-empty-msg").textContent = t.cartEmpty;
+            document.getElementById("cart-note-label").textContent = t.cartNoteLabel;
+            document.getElementById("cart-total-label").textContent = t.cartTotalLabel;
+            document.getElementById("cart-btn-checkout").textContent = t.cartBtnCheckout;
+            document.getElementById("cart-btn-clear").textContent = t.cartBtnClear;
+            document.getElementById("modal-btn-add").textContent = t.modalBtnAdd;
         }
 
+
+        /* ==================== 4. FILTROS & RENDERIZADO ==================== */
         function renderCategoryFilters() {
             const container = document.getElementById("category-filters-container");
-            const categories = getCategories();
+            const t = i18n[currentLang];
+            const categories = ["all", "talismans", "crystals", "rituals"];
 
-            container.innerHTML = categories.map(cat => {
-                const isActive = cat === selectedCategory;
+            container.innerHTML = categories.map(catKey => {
+                const isActive = catKey === selectedCategoryKey;
+                const label = t.cats[catKey] || catKey;
                 return `
-                    <button onclick="setCategory('${cat}')" 
-                        class="px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-300 ${
+                    <button onclick="setCategory('${catKey}')" 
+                        class="px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                             isActive 
-                            ? 'bg-gold-gradient text-black shadow-gold-sm font-bold scale-[1.02]' 
-                            : 'bg-brand-surface text-gray-300 hover:text-brand-gold hover:bg-brand-card border border-brand-gold/20'
+                            ? 'bg-gold-gradient text-black font-bold shadow-sm scale-[1.02]' 
+                            : 'bg-brand-surface text-gray-300 hover:text-brand-gold border border-brand-gold/20'
                         }">
-                        ${cat}
+                        ${label}
                     </button>
                 `;
             }).join("");
         }
 
-        function setCategory(cat) {
-            selectedCategory = cat;
+        function setCategory(catKey) {
+            selectedCategoryKey = catKey;
             renderCategoryFilters();
             renderProducts();
         }
 
         function resetFilters() {
-            selectedCategory = "Todos";
+            selectedCategoryKey = "all";
             searchQuery = "";
             document.getElementById("search-input").value = "";
             document.getElementById("clear-search-btn").classList.add("hidden");
-            currentSort = "featured";
-            document.getElementById("sort-select").value = "featured";
             renderCategoryFilters();
             renderProducts();
         }
@@ -960,26 +773,16 @@
         function renderProducts() {
             const grid = document.getElementById("products-grid");
             const emptyState = document.getElementById("empty-catalog");
+            const t = i18n[currentLang];
 
-            // Filtrado
             let filtered = products.filter(item => {
-                const matchesCategory = (selectedCategory === "Todos") || (item.categoria === selectedCategory);
+                const matchesCategory = (selectedCategoryKey === "all") || (item.categoryKey === selectedCategoryKey);
                 const query = searchQuery.toLowerCase().trim();
-                const matchesSearch = !query || 
-                    item.nombre.toLowerCase().includes(query) || 
-                    item.descripcion.toLowerCase().includes(query) ||
-                    item.categoria.toLowerCase().includes(query);
+                const nameStr = (item.nombre[currentLang] || item.nombre.es).toLowerCase();
+                const descStr = (item.descripcion[currentLang] || item.descripcion.es).toLowerCase();
+                const matchesSearch = !query || nameStr.includes(query) || descStr.includes(query);
                 return matchesCategory && matchesSearch;
             });
-
-            // Ordenamiento
-            if (currentSort === "price-asc") {
-                filtered.sort((a, b) => a.precio - b.precio);
-            } else if (currentSort === "price-desc") {
-                filtered.sort((a, b) => b.precio - a.precio);
-            } else if (currentSort === "name-asc") {
-                filtered.sort((a, b) => a.nombre.localeCompare(b.nombre));
-            }
 
             if (filtered.length === 0) {
                 grid.innerHTML = "";
@@ -989,49 +792,39 @@
 
             emptyState.classList.add("hidden");
 
-            grid.innerHTML = filtered.map(product => {
-                return `
-                    <div class="bg-brand-card rounded-2xl border border-brand-gold/25 overflow-hidden flex flex-col justify-between group hover:border-brand-gold/70 hover:shadow-gold-md transition-all duration-300">
-                        
-                        <!-- Product Media & Badges -->
-                        <div class="relative aspect-square overflow-hidden bg-black cursor-pointer" onclick="openProductModal('${product.id}')">
-                            <img src="${product.imagen}" alt="${product.nombre}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100">
-                            <div class="absolute inset-0 bg-gradient-to-t from-brand-card via-transparent to-transparent opacity-60"></div>
-                            
-                            <!-- Category & Badge -->
-                            <div class="absolute top-3 left-3 flex flex-col gap-1.5 items-start">
-                                <span class="shimmer-badge relative overflow-hidden px-2.5 py-1 rounded bg-brand-gold text-black text-[10px] font-bold uppercase tracking-wider font-cinzel shadow">
-                                    ${product.badge || 'Sagrado'}
-                                </span>
-                            </div>
+            grid.innerHTML = filtered.map(prod => {
+                const name = prod.nombre[currentLang] || prod.nombre.es;
+                const desc = prod.descripcion[currentLang] || prod.descripcion.es;
+                const badge = prod.badge[currentLang] || prod.badge.es;
+                const catName = t.cats[prod.categoryKey] || prod.categoryKey;
 
-                            <button onclick="event.stopPropagation(); openProductModal('${product.id}')" class="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-black/70 hover:bg-brand-gold hover:text-black text-brand-gold border border-brand-gold/30 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-all duration-300" title="Vista Rápida">
-                                <i class="fa-solid fa-eye"></i>
-                            </button>
+                return `
+                    <div class="bg-brand-card rounded-2xl border border-brand-gold/25 overflow-hidden flex flex-col justify-between group hover:border-brand-gold/60 transition duration-300">
+                        
+                        <div class="relative aspect-square overflow-hidden bg-black cursor-pointer" onclick="openProductModal('${prod.id}')">
+                            <img src="${prod.imagen}" alt="${name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-90 group-hover:opacity-100">
+                            
+                            <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-brand-gold text-black text-[10px] font-bold uppercase font-cinzel shadow">
+                                ${badge}
+                            </span>
                         </div>
 
-                        <!-- Product Content -->
-                        <div class="p-5 flex flex-col flex-grow justify-between space-y-4">
-                            <div class="space-y-1.5">
-                                <span class="text-[11px] font-semibold text-brand-gold uppercase tracking-wider">${product.categoria}</span>
-                                <h3 class="font-cinzel text-base font-bold text-white group-hover:text-brand-goldLight transition line-clamp-1 cursor-pointer" onclick="openProductModal('${product.id}')">
-                                    ${product.nombre}
+                        <div class="p-4 flex flex-col flex-grow justify-between space-y-3">
+                            <div class="space-y-1">
+                                <span class="text-[10px] font-semibold text-brand-gold uppercase">${catName}</span>
+                                <h3 class="font-cinzel text-sm font-bold text-white group-hover:text-brand-goldLight transition line-clamp-1 cursor-pointer" onclick="openProductModal('${prod.id}')">
+                                    ${name}
                                 </h3>
                                 <p class="text-xs text-gray-400 line-clamp-2 leading-relaxed">
-                                    ${product.descripcion}
+                                    ${desc}
                                 </p>
                             </div>
 
-                            <!-- Price & Add Button -->
-                            <div class="pt-3 border-t border-brand-gold/15 flex items-center justify-between gap-3">
-                                <div>
-                                    <span class="text-[10px] text-gray-500 block uppercase">Precio</span>
-                                    <span class="font-mono text-lg font-bold gold-text-gradient">${formatMoney(product.precio)}</span>
-                                </div>
-
-                                <button onclick="addToCart('${product.id}', 1)" class="px-3.5 py-2.5 rounded-xl bg-gold-gradient hover:bg-gold-gradient-hover text-black font-cinzel font-bold text-xs tracking-wider shadow-sm hover:shadow-gold-sm transition active:scale-95 flex items-center gap-1.5" title="Agregar al Carrito">
-                                    <i class="fa-solid fa-cart-plus text-xs"></i>
-                                    <span>Agregar</span>
+                            <div class="pt-2 border-t border-brand-gold/15 flex items-center justify-between gap-2">
+                                <span class="font-mono text-base font-bold gold-text-gradient">${formatMoney(prod.precio)}</span>
+                                <button onclick="addToCart('${prod.id}')" class="px-3 py-1.5 rounded-xl bg-gold-gradient text-black font-cinzel font-bold text-xs shadow-sm hover:brightness-110 active:scale-95 transition flex items-center gap-1">
+                                    <i class="fa-solid fa-cart-plus text-[11px]"></i>
+                                    <span>+</span>
                                 </button>
                             </div>
                         </div>
@@ -1042,30 +835,38 @@
         }
 
 
-        /* ==========================================================================
-           5. GESTIÓN DEL CARRITO PERSISTENTE & WHATSAPP
-           ========================================================================== */
+        /* ==================== 5. CARRITO & CHECKOUT WHATSAPP ==================== */
+        function loadCart() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                cart = stored ? JSON.parse(stored) : [];
+            } catch (e) {
+                cart = [];
+            }
+            updateCartUI();
+        }
 
-        function addToCart(productId, qty = 1) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
+        function saveCart() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+            } catch (e) {}
+            updateCartUI();
+        }
 
-            const existingIndex = cart.findIndex(item => item.id === productId);
-            if (existingIndex > -1) {
-                cart[existingIndex].quantity += qty;
+        function addToCart(productId) {
+            const prod = products.find(p => p.id === productId);
+            if (!prod) return;
+
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.quantity += 1;
             } else {
-                cart.push({
-                    id: product.id,
-                    nombre: product.nombre,
-                    precio: product.precio,
-                    imagen: product.imagen,
-                    categoria: product.categoria,
-                    quantity: qty
-                });
+                cart.push({ id: prod.id, quantity: 1 });
             }
 
             saveCart();
-            showToast("Artefacto Añadido", `${qty}x ${product.nombre} agregado al carrito.`);
+            const name = prod.nombre[currentLang] || prod.nombre.es;
+            showToast(`${name} ${i18n[currentLang].toastAdded}`);
         }
 
         function updateCartItemQty(productId, delta) {
@@ -1082,16 +883,14 @@
         function removeCartItem(productId) {
             cart = cart.filter(item => item.id !== productId);
             saveCart();
-            showToast("Producto Removido", "El artefacto fue eliminado del carrito.");
+            showToast(i18n[currentLang].toastRemoved);
         }
 
         function clearCart() {
             if (cart.length === 0) return;
-            if (confirm("¿Deseas vaciar todos los productos de tu carrito?")) {
-                cart = [];
-                saveCart();
-                showToast("Carrito Vacío", "Se eliminaron todos los artículos.");
-            }
+            cart = [];
+            saveCart();
+            showToast(i18n[currentLang].toastCleared);
         }
 
         function toggleCart(open = null) {
@@ -1120,26 +919,18 @@
             const footerView = document.getElementById("cart-footer");
             const badgeCount = document.getElementById("cart-count");
             const totalBadge = document.getElementById("cart-items-total-badge");
-            const subtotalEl = document.getElementById("cart-subtotal");
             const totalEl = document.getElementById("cart-total-price");
 
             const totalItems = cart.reduce((sum, i) => sum + i.quantity, 0);
-            const subtotal = cart.reduce((sum, i) => sum + (i.precio * i.quantity), 0);
-
             badgeCount.textContent = totalItems;
-            totalBadge.textContent = totalItems;
-            subtotalEl.textContent = formatMoney(subtotal);
-            totalEl.textContent = formatMoney(subtotal);
-
-            // Animate badge
-            badgeCount.classList.add("scale-125");
-            setTimeout(() => badgeCount.classList.remove("scale-125"), 200);
+            totalBadge.textContent = `(${totalItems})`;
 
             if (cart.length === 0) {
                 container.innerHTML = "";
                 container.classList.add("hidden");
                 emptyView.classList.remove("hidden");
                 footerView.classList.add("opacity-50", "pointer-events-none");
+                totalEl.textContent = formatMoney(0);
                 return;
             }
 
@@ -1147,25 +938,32 @@
             emptyView.classList.add("hidden");
             footerView.classList.remove("opacity-50", "pointer-events-none");
 
+            let subtotal = 0;
+
             container.innerHTML = cart.map(item => {
-                const itemSubtotal = item.precio * item.quantity;
+                const prod = products.find(p => p.id === item.id);
+                if (!prod) return "";
+                
+                const itemSubtotal = prod.precio * item.quantity;
+                subtotal += itemSubtotal;
+                const name = prod.nombre[currentLang] || prod.nombre.es;
+
                 return `
-                    <div class="py-3.5 flex gap-3.5 items-center">
-                        <img src="${item.imagen}" alt="${item.nombre}" class="w-16 h-16 rounded-xl object-cover border border-brand-gold/20 flex-shrink-0 bg-black">
+                    <div class="py-2.5 flex gap-3 items-center">
+                        <img src="${prod.imagen}" alt="${name}" class="w-12 h-12 rounded-lg object-cover border border-brand-gold/20 flex-shrink-0 bg-black">
                         
-                        <div class="flex-grow min-w-0 space-y-1">
-                            <h4 class="font-cinzel text-xs font-bold text-white truncate">${item.nombre}</h4>
-                            <p class="text-[11px] text-gray-400 font-mono">${formatMoney(item.precio)} c/u</p>
+                        <div class="flex-grow min-w-0">
+                            <h4 class="font-cinzel text-xs font-bold text-white truncate">${name}</h4>
+                            <p class="text-[10px] text-gray-400 font-mono">${formatMoney(prod.precio)}</p>
                             
-                            <!-- Quantity Controls -->
-                            <div class="flex items-center gap-2 pt-1">
-                                <div class="flex items-center border border-brand-gold/30 rounded-lg overflow-hidden bg-brand-surface">
-                                    <button onclick="updateCartItemQty('${item.id}', -1)" class="px-2 py-0.5 text-xs text-gray-300 hover:bg-brand-gold/20 hover:text-brand-gold transition">-</button>
-                                    <span class="px-2.5 py-0.5 text-xs font-mono font-bold text-brand-goldLight">${item.quantity}</span>
-                                    <button onclick="updateCartItemQty('${item.id}', 1)" class="px-2 py-0.5 text-xs text-gray-300 hover:bg-brand-gold/20 hover:text-brand-gold transition">+</button>
+                            <div class="flex items-center gap-2 mt-1">
+                                <div class="flex items-center border border-brand-gold/30 rounded overflow-hidden bg-brand-surface text-xs">
+                                    <button onclick="updateCartItemQty('${prod.id}', -1)" class="px-1.5 py-0.5 text-gray-300 hover:text-brand-gold">-</button>
+                                    <span class="px-2 font-mono font-bold text-brand-goldLight">${item.quantity}</span>
+                                    <button onclick="updateCartItemQty('${prod.id}', 1)" class="px-1.5 py-0.5 text-gray-300 hover:text-brand-gold">+</button>
                                 </div>
 
-                                <button onclick="removeCartItem('${item.id}')" class="text-[11px] text-red-400/80 hover:text-red-400 ml-2" title="Eliminar ítem">
+                                <button onclick="removeCartItem('${prod.id}')" class="text-[10px] text-red-400/80 hover:text-red-400">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             </div>
@@ -1177,92 +975,82 @@
                     </div>
                 `;
             }).join("");
+
+            totalEl.textContent = formatMoney(subtotal);
         }
 
-        // REDIRECCIÓN A WHATSAPP CON DETALLE COMPLETO
+        // WhatsApp Checkout Multi-idioma
         function checkoutWhatsApp() {
-            if (cart.length === 0) {
-                showToast("Carrito Vacío", "Por favor agrega productos antes de finalizar.");
-                return;
-            }
+            if (cart.length === 0) return;
 
+            const t = i18n[currentLang];
             const phoneNumber = "5492617094195";
             const note = document.getElementById("cart-note").value.trim();
             const now = new Date();
-            const fechaStr = now.toLocaleDateString("es-AR", { 
-                year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' 
+            const localeCode = currentLang === 'en' ? 'en-US' : (currentLang === 'pt' ? 'pt-BR' : 'es-AR');
+            const fechaStr = now.toLocaleDateString(localeCode, { 
+                year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' 
             });
 
-            const total = cart.reduce((sum, i) => sum + (i.precio * i.quantity), 0);
-
-            // Armado del mensaje desglosado
-            let message = `✨ *NUEVO PEDIDO - MYSTERIX STORE* ✨\n`;
-            message += `🗓️ *Fecha:* ${fechaStr}\n`;
+            let total = 0;
+            let message = `${t.waHeader}\n`;
+            message += `${t.waDate} ${fechaStr}\n`;
             if (note) {
-                message += `👤 *Cliente / Notas:* ${note}\n`;
+                message += `${t.waClient} ${note}\n`;
             }
             message += `━━━━━━━━━━━━━━━━━━━━━\n`;
-            message += `🛍️ *DETALLE DE PRODUCTOS:*\n\n`;
+            message += `${t.waDetail}\n\n`;
 
-            cart.forEach((item, index) => {
-                const sub = item.precio * item.quantity;
-                message += `${index + 1}. *${item.nombre}*\n`;
-                message += `   • Cantidad: ${item.quantity}\n`;
-                message += `   • Precio Unitario: $${item.precio.toLocaleString('es-AR')}\n`;
-                message += `   • Subtotal: $${sub.toLocaleString('es-AR')}\n\n`;
+            cart.forEach((item, idx) => {
+                const prod = products.find(p => p.id === item.id);
+                if (prod) {
+                    const sub = prod.precio * item.quantity;
+                    total += sub;
+                    const name = prod.nombre[currentLang] || prod.nombre.es;
+                    message += `${idx + 1}. *${name}*\n`;
+                    message += `   • Cant/Qty: ${item.quantity} | Subtotal: $${sub.toLocaleString('es-AR')}\n\n`;
+                }
             });
 
             message += `━━━━━━━━━━━━━━━━━━━━━\n`;
-            message += `💰 *TOTAL FINAL:* $${total.toLocaleString('es-AR')}\n`;
+            message += `${t.waTotal} $${total.toLocaleString('es-AR')}\n`;
             message += `━━━━━━━━━━━━━━━━━━━━━\n`;
-            message += `🔮 _Deseo coordinar el método de pago y despacho de este pedido. ¡Muchas gracias!_`;
+            message += `${t.waFooter}`;
 
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-
-            // Abrir WhatsApp en nueva pestaña
-            window.open(whatsappUrl, '_blank');
+            const encoded = encodeURIComponent(message);
+            window.open(`https://wa.me/${phoneNumber}?text=${encoded}`, '_blank');
         }
 
 
-        /* ==========================================================================
-           6. FEED DE NOTICIAS & MODALES
-           ========================================================================== */
-
+        /* ==================== 6. CRÓNICAS & MODALES ==================== */
         function renderNews() {
             const grid = document.getElementById("news-grid");
+            const t = i18n[currentLang];
+
             grid.innerHTML = news.map(item => {
+                const title = item.titulo[currentLang] || item.titulo.es;
+                const extract = item.extracto[currentLang] || item.extracto.es;
+                const tag = item.tag[currentLang] || item.tag.es;
+
                 return `
-                    <article class="bg-brand-card rounded-2xl border border-brand-gold/20 overflow-hidden flex flex-col justify-between group hover:border-brand-gold/60 hover:shadow-gold-sm transition-all duration-300">
-                        <div class="relative h-48 overflow-hidden bg-black cursor-pointer" onclick="openNewsModal('${item.id}')">
-                            <img src="${item.imagen}" alt="${item.titulo}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-85 group-hover:opacity-100">
-                            <div class="absolute inset-0 bg-gradient-to-t from-brand-card via-transparent to-transparent"></div>
-                            <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-brand-surface/90 text-brand-goldLight border border-brand-gold/30 text-[10px] font-bold uppercase tracking-wider font-cinzel">
-                                ${item.tag}
-                            </span>
-                        </div>
-
-                        <div class="p-6 flex flex-col flex-grow justify-between space-y-4">
-                            <div class="space-y-2">
-                                <div class="flex items-center gap-2 text-[11px] text-gray-400">
-                                    <i class="fa-solid fa-calendar-days text-brand-gold"></i>
-                                    <span>${item.fecha}</span>
-                                    <span>•</span>
-                                    <span>${item.autor}</span>
-                                </div>
-                                <h3 class="font-cinzel text-lg font-bold text-white group-hover:text-brand-goldLight transition line-clamp-2 cursor-pointer" onclick="openNewsModal('${item.id}')">
-                                    ${item.titulo}
-                                </h3>
-                                <p class="text-xs text-gray-400 line-clamp-3 leading-relaxed">
-                                    ${item.extracto}
-                                </p>
+                    <article class="bg-brand-card rounded-2xl border border-brand-gold/20 p-5 flex flex-col justify-between space-y-3 hover:border-brand-gold/50 transition">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between text-[10px] text-gray-400">
+                                <span class="px-2 py-0.5 rounded bg-brand-surface text-brand-gold border border-brand-gold/20 font-bold uppercase">${tag}</span>
+                                <span>${item.fecha}</span>
                             </div>
-
-                            <button onclick="openNewsModal('${item.id}')" class="pt-2 text-xs font-semibold text-brand-gold hover:text-brand-goldLight inline-flex items-center gap-1.5 group-hover:translate-x-1 transition-transform">
-                                <span>Leer artículo completo</span>
-                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                            </button>
+                            <h3 class="font-cinzel text-sm font-bold text-white cursor-pointer hover:text-brand-goldLight" onclick="openNewsModal('${item.id}')">
+                                ${title}
+                            </h3>
+                            <p class="text-xs text-gray-400 line-clamp-2">
+                                ${extract}
+                            </p>
                         </div>
+
+                        <button onclick="openNewsModal('${item.id}')" class="text-xs font-semibold text-brand-gold hover:text-brand-goldLight text-left flex items-center gap-1">
+                            <span>${t.readMore}</span>
+                            <i class="fa-solid fa-arrow-right text-[9px]"></i>
+                        </button>
                     </article>
                 `;
             }).join("");
@@ -1272,53 +1060,42 @@
             const item = news.find(n => n.id === newsId);
             if (!item) return;
 
-            document.getElementById("modal-news-img").src = item.imagen;
-            document.getElementById("modal-news-tag").textContent = item.tag;
-            document.getElementById("modal-news-title").textContent = item.titulo;
-            document.getElementById("modal-news-date").textContent = `${item.fecha} • Por ${item.autor}`;
-            document.getElementById("modal-news-content").innerHTML = item.contenido;
+            document.getElementById("modal-news-tag").textContent = item.tag[currentLang] || item.tag.es;
+            document.getElementById("modal-news-title").textContent = item.titulo[currentLang] || item.titulo.es;
+            document.getElementById("modal-news-date").textContent = item.fecha;
+            document.getElementById("modal-news-content").innerHTML = item.contenido[currentLang] || item.contenido.es;
 
-            const modal = document.getElementById("news-modal");
-            modal.classList.remove("hidden");
+            document.getElementById("news-modal").classList.remove("hidden");
             document.body.style.overflow = "hidden";
         }
 
         function closeNewsModal() {
-            const modal = document.getElementById("news-modal");
-            modal.classList.add("hidden");
+            document.getElementById("news-modal").classList.add("hidden");
             document.body.style.overflow = "";
         }
 
-        // QUICK VIEW PRODUCT MODAL
         function openProductModal(productId) {
             const prod = products.find(p => p.id === productId);
             if (!prod) return;
 
             modalQuickViewProduct = prod;
-            modalQty = 1;
+            const t = i18n[currentLang];
 
             document.getElementById("modal-product-img").src = prod.imagen;
-            document.getElementById("modal-product-badge").textContent = prod.badge || "Sagrado";
-            document.getElementById("modal-product-category").textContent = prod.categoria;
-            document.getElementById("modal-product-name").textContent = prod.nombre;
+            document.getElementById("modal-product-category").textContent = t.cats[prod.categoryKey] || prod.categoryKey;
+            document.getElementById("modal-product-name").textContent = prod.nombre[currentLang] || prod.nombre.es;
             document.getElementById("modal-product-price").textContent = formatMoney(prod.precio);
-            document.getElementById("modal-product-desc").textContent = prod.descripcion;
-            document.getElementById("modal-product-qty").textContent = "1";
+            document.getElementById("modal-product-desc").textContent = prod.descripcion[currentLang] || prod.descripcion.es;
 
             const btn = document.getElementById("modal-add-cart-btn");
             btn.onclick = () => {
-                addToCart(prod.id, modalQty);
+                addToCart(prod.id);
                 closeProductModal();
                 toggleCart(true);
             };
 
             document.getElementById("product-modal").classList.remove("hidden");
             document.body.style.overflow = "hidden";
-        }
-
-        function changeModalQty(delta) {
-            modalQty = Math.max(1, modalQty + delta);
-            document.getElementById("modal-product-qty").textContent = modalQty;
         }
 
         function closeProductModal() {
@@ -1328,14 +1105,10 @@
         }
 
 
-        /* ==========================================================================
-           7. TOAST NOTIFICATIONS & LISTENERS
-           ========================================================================== */
-
+        /* ==================== 7. TOAST & LISTENERS ==================== */
         let toastTimer = null;
-        function showToast(title, message) {
+        function showToast(message) {
             const toast = document.getElementById("toast");
-            document.getElementById("toast-title").textContent = title;
             document.getElementById("toast-msg").textContent = message;
 
             toast.classList.remove("translate-y-24", "opacity-0", "pointer-events-none");
@@ -1345,14 +1118,12 @@
             toastTimer = setTimeout(() => {
                 toast.classList.remove("translate-y-0", "opacity-100");
                 toast.classList.add("translate-y-24", "opacity-0", "pointer-events-none");
-            }, 3000);
+            }, 2500);
         }
 
         function setupEventListeners() {
-            // Cart Button
             document.getElementById("cart-toggle-btn").addEventListener("click", () => toggleCart(true));
 
-            // Search input
             const searchInput = document.getElementById("search-input");
             const clearBtn = document.getElementById("clear-search-btn");
 
@@ -1373,17 +1144,9 @@
                 renderProducts();
             });
 
-            // Sort Select
-            document.getElementById("sort-select").addEventListener("change", (e) => {
-                currentSort = e.target.value;
-                renderProducts();
-            });
-
-            // Modal outside clicks
             document.getElementById("news-modal").addEventListener("click", closeNewsModal);
             document.getElementById("product-modal").addEventListener("click", closeProductModal);
 
-            // Keydown Escape
             window.addEventListener("keydown", (e) => {
                 if (e.key === "Escape") {
                     toggleCart(false);
@@ -1394,122 +1157,46 @@
         }
 
 
-        /* ==========================================================================
-           8. PWA COMPLETO: MANIFEST DINÁMICO & SERVICE WORKER AUTOCONTENIDO
-           ========================================================================== */
-
+        /* ==================== 8. PWA SERVICE WORKER & MANIFEST ==================== */
         function initPWA() {
-            // 1. Inyectar Web App Manifest dinámicamente
             const manifestObject = {
-                name: "Mysterix • Bazar Místico & E-Commerce",
+                name: "Mysterix • Bazar Místico",
                 short_name: "Mysterix",
-                description: "Bazar esotérico, talismanes, gemas y alquimia.",
                 start_url: "./index.html",
                 display: "standalone",
-                orientation: "portrait-primary",
                 background_color: "#050505",
                 theme_color: "#050505",
                 icons: [
-                    {
-                        src: "logomysterik.png",
-                        sizes: "192x192",
-                        type: "image/png",
-                        purpose: "any maskable"
-                    },
-                    {
-                        src: "logomysterik.png",
-                        sizes: "512x512",
-                        type: "image/png",
-                        purpose: "any maskable"
-                    }
+                    { src: "logomysterik.png", sizes: "192x192", type: "image/png" },
+                    { src: "logomysterik.png", sizes: "512x512", type: "image/png" }
                 ]
             };
 
             const manifestBlob = new Blob([JSON.stringify(manifestObject)], { type: 'application/manifest+json' });
             const manifestURL = URL.createObjectURL(manifestBlob);
-            
             const manifestLink = document.createElement('link');
             manifestLink.rel = 'manifest';
             manifestLink.href = manifestURL;
             document.head.appendChild(manifestLink);
 
-            // 2. Registrar Service Worker Autocontenido (CacheFirst con fallback)
             if ('serviceWorker' in navigator) {
                 const swCode = `
-                    const CACHE_NAME = 'mysterix-cache-v1';
-                    const ASSETS_TO_CACHE = [
-                        './',
-                        './index.html',
-                        './logomysterik.png'
-                    ];
-
-                    self.addEventListener('install', (event) => {
-                        event.waitUntil(
-                            caches.open(CACHE_NAME).then((cache) => {
-                                return cache.addAll(ASSETS_TO_CACHE).catch(err => {
-                                    console.warn('Cache addAll warning:', err);
-                                });
-                            })
-                        );
-                        self.skipWaiting();
-                    });
-
-                    self.addEventListener('activate', (event) => {
-                        event.waitUntil(
-                            caches.keys().then((keys) => {
-                                return Promise.all(
-                                    keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
-                                );
-                            })
-                        );
-                        self.clients.claim();
-                    });
-
-                    self.addEventListener('fetch', (event) => {
-                        // Estrategia Stale-While-Revalidate / Cache First para assets
-                        if (event.request.method !== 'GET') return;
-                        
-                        event.respondWith(
-                            caches.match(event.request).then((cachedResponse) => {
-                                if (cachedResponse) {
-                                    fetch(event.request).then((networkResponse) => {
-                                        if (networkResponse && networkResponse.status === 200) {
-                                            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, networkResponse));
-                                        }
-                                    }).catch(() => {});
-                                    return cachedResponse;
-                                }
-                                return fetch(event.request).then((networkResponse) => {
-                                    if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-                                        return networkResponse;
-                                    }
-                                    const responseToCache = networkResponse.clone();
-                                    caches.open(CACHE_NAME).then((cache) => {
-                                        cache.put(event.request, responseToCache);
-                                    });
-                                    return networkResponse;
-                                }).catch(() => {
-                                    if (event.request.headers.get('accept').includes('text/html')) {
-                                        return caches.match('./index.html');
-                                    }
-                                });
-                            })
+                    const CACHE_NAME = 'mysterix-v2';
+                    self.addEventListener('install', (e) => self.skipWaiting());
+                    self.addEventListener('activate', (e) => self.clients.claim());
+                    self.addEventListener('fetch', (e) => {
+                        if (e.request.method !== 'GET') return;
+                        e.respondWith(
+                            caches.match(e.request).then((cached) => cached || fetch(e.request).catch(() => caches.match('./index.html')))
                         );
                     });
                 `;
-
                 try {
                     const swBlob = new Blob([swCode], { type: 'application/javascript' });
-                    const swUrl = URL.createObjectURL(swBlob);
-                    navigator.serviceWorker.register(swUrl)
-                        .then(reg => console.log('Mysterix Service Worker registrado con éxito:', reg.scope))
-                        .catch(err => console.log('Registro de SW omitido o en entorno local restringido:', err));
-                } catch (e) {
-                    console.warn("PWA Service worker init warning:", e);
-                }
+                    navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
+                } catch(e) {}
             }
 
-            // 3. Manejo del Prompt de Instalación PWA (beforeinstallprompt)
             let deferredPrompt;
             const installBtn = document.getElementById('pwa-install-btn');
 
@@ -1523,23 +1210,22 @@
             installBtn.addEventListener('click', async () => {
                 if (deferredPrompt) {
                     deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    if (outcome === 'accepted') {
-                        installBtn.classList.add('hidden');
-                        showToast("¡Aplicación Instalada!", "Gracias por instalar Mysterix en tu dispositivo.");
-                    }
                     deferredPrompt = null;
+                    installBtn.classList.add('hidden');
                 }
-            });
-
-            window.addEventListener('appinstalled', () => {
-                installBtn.classList.add('hidden');
-                console.log('Mysterix PWA instalada exitosamente.');
             });
         }
 
-        // Ejecutar al cargar el DOM
-        document.addEventListener("DOMContentLoaded", initApp);
+        document.addEventListener("DOMContentLoaded", () => {
+            loadCart();
+            updateLanguageUI();
+            renderCategoryFilters();
+            renderProducts();
+            renderNews();
+            setupEventListeners();
+            initPWA();
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        });
     </script>
 
 </body>
