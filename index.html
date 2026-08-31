@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mysterix • Bazar Místico</title>
+    <title>Mysterix • Bazar Místico & Crónicas</title>
     
     <!-- Meta SEO & Open Graph -->
-    <meta name="description" content="Mysterix: Bazar exclusivo de talismanes, cristales sagrados y elementos ceremoniales.">
+    <meta name="description" content="Mysterix: Bazar exclusivo de talismanes, cristales sagrados, alquimia y foro ceremonial.">
     <meta name="theme-color" content="#050505">
 
     <!-- PWA & Apple Meta Tags -->
@@ -34,10 +34,10 @@
                     colors: {
                         brand: {
                             black: '#050505',
-                            dark: '#0d0d0d',
-                            card: '#141414',
-                            surface: '#1a1a1a',
-                            border: '#2a2415',
+                            dark: '#0c0c0c',
+                            card: '#131313',
+                            surface: '#181818',
+                            border: '#282214',
                             gold: '#D4AF37',
                             goldLight: '#FFF3B0',
                             goldDark: '#AA771C'
@@ -50,12 +50,11 @@
                     },
                     backgroundImage: {
                         'gold-gradient': 'linear-gradient(135deg, #FFF3B0 0%, #D4AF37 50%, #AA771C 100%)',
-                        'gold-gradient-hover': 'linear-gradient(135deg, #FFFFFF 0%, #FFF3B0 40%, #D4AF37 100%)',
-                        'card-radial': 'radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08) 0%, rgba(14, 14, 14, 0.95) 75%)'
+                        'gold-gradient-hover': 'linear-gradient(135deg, #FFFFFF 0%, #FFF3B0 40%, #D4AF37 100%)'
                     },
                     boxShadow: {
-                        'gold-sm': '0 0 15px rgba(212, 175, 55, 0.2)',
-                        'gold-md': '0 0 25px rgba(212, 175, 55, 0.3)'
+                        'gold-sm': '0 0 15px rgba(212, 175, 55, 0.25)',
+                        'gold-md': '0 0 25px rgba(212, 175, 55, 0.35)'
                     }
                 }
             }
@@ -75,7 +74,7 @@
         }
 
         .glass-panel {
-            background: rgba(10, 10, 10, 0.88);
+            background: rgba(10, 10, 10, 0.92);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
         }
@@ -85,10 +84,6 @@
         }
         #cart-drawer.open { transform: translateX(0); }
         #cart-drawer.closed { transform: translateX(100%); }
-
-        .logo-frame {
-            background: radial-gradient(circle, #ffffff 0%, #f4ebd0 60%, #D4AF37 100%);
-        }
     </style>
 </head>
 
@@ -105,24 +100,25 @@
     <header class="sticky top-0 z-40 glass-panel border-b border-brand-gold/20">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-4">
             
-            <!-- BRANDING / LOGO -->
-            <a href="#" class="flex items-center gap-3 group focus:outline-none">
-                <div class="relative w-12 h-12 rounded-full logo-frame border-2 border-brand-gold p-0.5 overflow-hidden shadow-gold-sm group-hover:scale-105 transition-transform">
-                    <img src="logomysterik.png" alt="Mysterix Logo" class="w-full h-full object-contain filter contrast-125">
+            <!-- BRANDING / LOGO (CORREGIDO: FONDO OSCURO LIMPIO CON BORDE DORADO) -->
+            <a href="#" class="flex items-center gap-3 group focus:outline-none" aria-label="Mysterix">
+                <div class="relative w-12 h-12 rounded-full bg-brand-dark border border-brand-gold/60 p-1 flex items-center justify-center shadow-gold-sm group-hover:border-brand-gold group-hover:scale-105 transition-all">
+                    <img src="logomysterik.png" alt="Mysterix Logo" class="w-full h-full object-contain filter drop-shadow" 
+                         onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'46\' fill=\'%230c0c0c\' stroke=\'%23D4AF37\' stroke-width=\'3\'/><path d=\'M38 35 L50 20 L62 35 Z M42 35 L42 22 L58 22 L58 35 Z\' fill=\'%23D4AF37\'/><circle cx=\'50\' cy=\'58\' r=\'24\' fill=\'none\' stroke=\'%23FFF3B0\' stroke-width=\'2\'/><polygon points=\'50,45 60,65 50,62 40,65\' fill=\'%23D4AF37\'/></svg>'">
                 </div>
                 <div>
                     <span class="font-cinzel text-2xl font-bold tracking-widest gold-text-gradient block leading-none">MYSTERIX</span>
-                    <span class="text-[9px] tracking-[0.25em] text-gray-400 uppercase block font-sans mt-0.5">Bazar Místico</span>
+                    <span class="text-[9px] tracking-[0.25em] text-gray-400 uppercase block font-sans mt-0.5">Bazar & Foro Místico</span>
                 </div>
             </a>
 
-            <!-- NAVIGATION (SIMPLIFICADA) -->
+            <!-- NAVIGATION -->
             <nav class="hidden sm:flex items-center gap-6 text-xs font-medium">
                 <a href="#catalogo" class="text-gray-300 hover:text-brand-gold transition flex items-center gap-1.5" id="nav-catalog">
                     <i class="fa-solid fa-gem text-brand-gold text-[11px]"></i> <span>Catálogo</span>
                 </a>
-                <a href="#noticias" class="text-gray-300 hover:text-brand-gold transition flex items-center gap-1.5" id="nav-news">
-                    <i class="fa-solid fa-scroll text-brand-gold text-[11px]"></i> <span>Crónicas</span>
+                <a href="#foro" class="text-gray-300 hover:text-brand-gold transition flex items-center gap-1.5" id="nav-forum">
+                    <i class="fa-solid fa-comments text-brand-gold text-[11px]"></i> <span>Foro & Crónicas</span>
                 </a>
             </nav>
 
@@ -151,14 +147,14 @@
         </div>
     </header>
 
-    <!-- HERO SECTION (STREAMLINED) -->
+    <!-- HERO SECTION -->
     <section class="relative overflow-hidden bg-brand-black py-12 sm:py-16 border-b border-brand-gold/15">
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(212,175,55,0.1),transparent_60%)] pointer-events-none"></div>
 
         <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-5 relative z-10">
             <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/30 text-brand-goldLight text-xs tracking-wider uppercase font-semibold">
                 <i class="fa-solid fa-sparkles text-brand-gold text-xs"></i>
-                <span id="hero-badge">Artefactos de Alta Vibración</span>
+                <span id="hero-badge">Artefactos de Alta Vibración & Círculo Arcano</span>
             </div>
 
             <h1 class="font-cinzel text-3xl sm:text-5xl font-bold leading-tight text-white">
@@ -166,15 +162,15 @@
             </h1>
 
             <p class="text-gray-300 text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed" id="hero-subtitle">
-                Talismanes consagrados, gemas auténticas y elementos ceremoniales para elevar tu energía diaria.
+                Talismanes consagrados, gemas auténticas y un espacio de intercambio arcano para elevar tu energía.
             </p>
 
             <div class="pt-2 flex flex-wrap gap-3 justify-center">
                 <a href="#catalogo" class="px-6 py-2.5 rounded-xl bg-gold-gradient text-black font-cinzel font-bold text-xs tracking-wider shadow-sm hover:brightness-110 transition flex items-center gap-2" id="hero-btn-shop">
                     <i class="fa-solid fa-compass"></i> <span>Ver Catálogo</span>
                 </a>
-                <a href="https://wa.me/5492617094195" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-xl bg-brand-card hover:bg-brand-surface text-brand-goldLight border border-brand-gold/40 text-xs font-semibold tracking-wider transition flex items-center gap-2" id="hero-btn-wa">
-                    <i class="fa-brands fa-whatsapp text-green-400"></i> <span>Contacto Directo</span>
+                <a href="#foro" class="px-5 py-2.5 rounded-xl bg-brand-card hover:bg-brand-surface text-brand-goldLight border border-brand-gold/40 text-xs font-semibold tracking-wider transition flex items-center gap-2" id="hero-btn-forum">
+                    <i class="fa-solid fa-comments text-brand-gold"></i> <span>Entrar al Foro</span>
                 </a>
             </div>
         </div>
@@ -183,7 +179,7 @@
     <!-- MAIN CONTENT -->
     <main class="max-w-6xl mx-auto px-4 sm:px-6 py-10 flex-grow space-y-16 w-full">
 
-        <!-- ==================== CATÁLOGO BAZAR ==================== -->
+        <!-- ==================== SECCIÓN 1: CATÁLOGO BAZAR ==================== -->
         <section id="catalogo" class="scroll-mt-24 space-y-6">
             
             <div class="text-center space-y-2 max-w-lg mx-auto">
@@ -193,12 +189,11 @@
                 <div class="w-16 h-0.5 bg-gold-gradient mx-auto rounded-full"></div>
             </div>
 
-            <!-- CONTROLES SIMPLIFICADOS (3-4 CATEGORÍAS CLAVE + BUSCADOR) -->
+            <!-- CONTROLES DEL CATÁLOGO -->
             <div class="flex flex-col sm:flex-row gap-3 items-center justify-between bg-brand-card/90 border border-brand-gold/25 rounded-2xl p-3.5">
-                
                 <!-- Category Pills -->
                 <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0" id="category-filters-container">
-                    <!-- Populated dynamically via JS -->
+                    <!-- Dynamic -->
                 </div>
 
                 <!-- Search Input -->
@@ -209,7 +204,6 @@
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
-
             </div>
 
             <!-- Product Grid -->
@@ -229,17 +223,29 @@
         </section>
 
 
-        <!-- ==================== CRÓNICAS / FORO ==================== -->
-        <section id="noticias" class="scroll-mt-24 space-y-6 pt-4 border-t border-brand-gold/15">
+        <!-- ==================== SECCIÓN 2: FORO MÍSTICO & CRÓNICAS SECCIONADAS ==================== -->
+        <section id="foro" class="scroll-mt-24 space-y-6 pt-6 border-t border-brand-gold/15">
             
-            <div class="text-center space-y-2">
-                <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-white" id="news-title">
-                    Crónicas Arcanas
-                </h2>
-                <div class="w-16 h-0.5 bg-gold-gradient mx-auto rounded-full"></div>
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div>
+                    <span class="text-brand-gold text-[11px] font-semibold tracking-widest uppercase" id="forum-badge">Comunidad & Conocimiento</span>
+                    <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-white mt-0.5" id="forum-title">
+                        Foro Arcano & Crónicas
+                    </h2>
+                </div>
+                <button onclick="openAskModal()" class="px-4 py-2 rounded-xl bg-brand-surface hover:bg-brand-card text-brand-gold border border-brand-gold/40 text-xs font-semibold flex items-center gap-2 self-start sm:self-auto transition">
+                    <i class="fa-solid fa-feather-pointed"></i>
+                    <span id="forum-btn-ask">Hacer una Consulta Mística</span>
+                </button>
             </div>
 
-            <div id="news-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- TABS DE SECCIONES DEL FORO -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 border-b border-brand-gold/20" id="forum-sections-tabs">
+                <!-- Injected dynamically via JS -->
+            </div>
+
+            <!-- FORUM FEED GRID -->
+            <div id="forum-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Injected via JS -->
             </div>
 
@@ -252,7 +258,7 @@
     <footer class="bg-brand-dark border-t border-brand-gold/20 py-8 text-gray-400 text-xs">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full logo-frame border border-brand-gold p-0.5 overflow-hidden">
+                <div class="w-8 h-8 rounded-full bg-brand-card border border-brand-gold/60 p-0.5 overflow-hidden flex items-center justify-center">
                     <img src="logomysterik.png" alt="Mysterix" class="w-full h-full object-contain">
                 </div>
                 <span class="font-cinzel text-sm font-bold gold-text-gradient">MYSTERIX STORE</span>
@@ -273,8 +279,6 @@
     <div id="cart-overlay" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300" onclick="toggleCart(false)"></div>
 
     <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[380px] max-w-full bg-brand-dark border-l border-brand-gold/30 z-50 closed shadow-2xl flex flex-col justify-between" aria-label="Carrito">
-        
-        <!-- Header -->
         <div class="p-4 border-b border-brand-gold/20 flex items-center justify-between bg-black/60">
             <div class="flex items-center gap-2">
                 <i class="fa-solid fa-bag-shopping text-brand-gold"></i>
@@ -286,18 +290,13 @@
             </button>
         </div>
 
-        <!-- Items Container -->
-        <div id="cart-items-container" class="flex-grow overflow-y-auto p-4 space-y-3 divide-y divide-brand-border/40">
-            <!-- Items -->
-        </div>
+        <div id="cart-items-container" class="flex-grow overflow-y-auto p-4 space-y-3 divide-y divide-brand-border/40"></div>
 
-        <!-- Empty State -->
         <div id="cart-empty-view" class="flex flex-col items-center justify-center p-6 text-center space-y-3 my-auto">
             <i class="fa-solid fa-bag-shopping text-3xl text-brand-gold/40"></i>
             <p class="text-xs text-gray-400" id="cart-empty-msg">Tu carrito está vacío.</p>
         </div>
 
-        <!-- Footer -->
         <div id="cart-footer" class="p-4 border-t border-brand-gold/20 bg-black/80 space-y-3">
             <div>
                 <label for="cart-note" class="text-[11px] text-gray-400 block mb-1" id="cart-note-label">Nombre / Notas:</label>
@@ -309,7 +308,6 @@
                 <span id="cart-total-price" class="gold-text-gradient font-mono text-base">$0</span>
             </div>
 
-            <!-- WhatsApp CTA Button -->
             <button id="checkout-whatsapp-btn" onclick="checkoutWhatsApp()" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:brightness-110 text-white font-cinzel font-bold text-xs tracking-wider flex items-center justify-center gap-2 shadow-lg transition active:scale-[0.99]">
                 <i class="fa-brands fa-whatsapp text-base"></i>
                 <span id="cart-btn-checkout">Finalizar Pedido</span>
@@ -319,11 +317,10 @@
                 Vaciar Carrito
             </button>
         </div>
-
     </aside>
 
 
-    <!-- ==================== MODAL: LECTURA DE NOTICIA ==================== -->
+    <!-- ==================== MODAL: LECTURA DE NOTICIA / FORO ==================== -->
     <div id="news-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
         <div class="bg-brand-dark border border-brand-gold/40 rounded-2xl max-w-xl w-full max-h-[85vh] overflow-y-auto shadow-2xl relative p-6 space-y-4" onclick="event.stopPropagation()">
             <button onclick="closeNewsModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/70 text-white hover:text-brand-gold flex items-center justify-center" aria-label="Cerrar">
@@ -334,7 +331,45 @@
             <h3 id="modal-news-title" class="font-cinzel text-xl font-bold text-white"></h3>
             <p id="modal-news-date" class="text-xs text-brand-goldLight"></p>
 
-            <div id="modal-news-content" class="text-gray-300 text-xs sm:text-sm leading-relaxed space-y-2 pt-2 border-t border-brand-gold/20"></div>
+            <div id="modal-news-content" class="text-gray-300 text-xs sm:text-sm leading-relaxed space-y-2 pt-2 border-t border-brand-gold/20 font-serif"></div>
+        </div>
+    </div>
+
+
+    <!-- ==================== MODAL: FORMULARIO DE CONSULTA MÍSTICA (FORO) ==================== -->
+    <div id="ask-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-brand-dark border border-brand-gold/40 rounded-2xl max-w-md w-full shadow-2xl relative p-6 space-y-4" onclick="event.stopPropagation()">
+            <button onclick="closeAskModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/70 text-white hover:text-brand-gold flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="space-y-1">
+                <h3 class="font-cinzel text-lg font-bold text-white" id="ask-modal-title">Consulta al Círculo Arcano</h3>
+                <p class="text-xs text-gray-400" id="ask-modal-desc">Envía tu duda o aporte ceremonial para ser respondido por los guardianes de Mysterix.</p>
+            </div>
+
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="text-gray-400 block mb-1" id="ask-lbl-name">Tu Nombre / Apodo:</label>
+                    <input type="text" id="ask-name" class="w-full bg-brand-surface text-gray-200 px-3 py-2 rounded-xl border border-brand-gold/20 focus:border-brand-gold focus:outline-none">
+                </div>
+                <div>
+                    <label class="text-gray-400 block mb-1" id="ask-lbl-section">Sección del Foro:</label>
+                    <select id="ask-section" class="w-full bg-brand-surface text-gray-200 px-3 py-2 rounded-xl border border-brand-gold/20 focus:border-brand-gold focus:outline-none cursor-pointer">
+                        <option value="rituals">Rituales & Ceremonias</option>
+                        <option value="gems">Gemas & Minerales</option>
+                        <option value="alchemy">Alquimia & Astrología</option>
+                        <option value="community">Comunidad Mística</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-gray-400 block mb-1" id="ask-lbl-text">Tu Consulta o Reflexión:</label>
+                    <textarea id="ask-text" rows="3" class="w-full bg-brand-surface text-gray-200 px-3 py-2 rounded-xl border border-brand-gold/20 focus:border-brand-gold focus:outline-none"></textarea>
+                </div>
+                <button onclick="submitForumQuestion()" class="w-full py-2.5 rounded-xl bg-gold-gradient text-black font-cinzel font-bold text-xs tracking-wider transition">
+                    <i class="fa-brands fa-whatsapp mr-1"></i> <span id="ask-btn-submit">Enviar Consulta por WhatsApp</span>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -342,7 +377,7 @@
     <!-- ==================== MODAL: VISTA RÁPIDA PRODUCTO ==================== -->
     <div id="product-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
         <div class="bg-brand-dark border border-brand-gold/40 rounded-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto shadow-2xl relative p-6 space-y-4" onclick="event.stopPropagation()">
-            <button onclick="closeProductModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/70 text-white hover:text-brand-gold flex items-center justify-center" aria-label="Cerrar">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/70 text-white hover:text-brand-gold flex items-center justify-center">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
@@ -371,27 +406,30 @@
     </div>
 
 
-    <!-- ==================== JAVASCRIPT & MULTILINGUAL LOGIC ==================== -->
+    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
     <script>
-        /* ==================== 1. SISTEMA MULTI-IDIOMA (ES, EN, PT) ==================== */
+        /* ==================== 1. MULTI-IDIOMA (ES, EN, PT) ==================== */
         let currentLang = localStorage.getItem("mysterix_lang") || "es";
+        let selectedForumSection = "all";
 
         const i18n = {
             es: {
                 announcement: "Envíos a todo el país • Atención Personalizada por WhatsApp",
                 navCatalog: "Catálogo",
-                navNews: "Crónicas",
+                navForum: "Foro & Crónicas",
                 install: "Instalar",
-                heroBadge: "Artefactos de Alta Vibración",
+                heroBadge: "Artefactos de Alta Vibración & Círculo Arcano",
                 heroTitle: "Conecta con lo Místico",
-                heroSubtitle: "Talismanes consagrados, gemas auténticas y elementos ceremoniales para elevar tu energía diaria.",
+                heroSubtitle: "Talismanes consagrados, gemas auténticas y un espacio de intercambio arcano para elevar tu energía.",
                 heroBtnShop: "Ver Catálogo",
-                heroBtnWa: "Contacto Directo",
+                heroBtnForum: "Entrar al Foro",
                 catTitle: "Catálogo de Bazar",
                 searchPlaceholder: "Buscar artefacto...",
                 emptyTitle: "Sin resultados para tu búsqueda",
                 emptyBtn: "Restablecer Filtros",
-                newsTitle: "Crónicas Arcanas",
+                forumBadge: "Comunidad & Conocimiento",
+                forumTitle: "Foro Arcano & Crónicas",
+                forumBtnAsk: "Hacer una Consulta",
                 readMore: "Leer artículo",
                 cartTitle: "Tu Canasta",
                 cartEmpty: "Tu carrito está vacío.",
@@ -409,28 +447,43 @@
                 waDetail: "🛍️ *DETALLE DE PRODUCTOS:*",
                 waTotal: "💰 *TOTAL FINAL:*",
                 waFooter: "🔮 _Deseo coordinar el pago y envío de este pedido._",
+                askTitle: "Consulta al Círculo Arcano",
+                askDesc: "Envía tu duda o aporte ceremonial para ser respondido por los guardianes de Mysterix.",
+                askLblName: "Tu Nombre / Apodo:",
+                askLblSection: "Sección del Foro:",
+                askLblText: "Tu Consulta o Reflexión:",
+                askBtnSubmit: "Enviar Consulta por WhatsApp",
                 cats: {
                     all: "Todos",
                     talismans: "Talismanes",
                     crystals: "Cristales",
                     rituals: "Rituales"
+                },
+                forumSections: {
+                    all: "Todas las Secciones",
+                    rituals: "Rituales & Fases",
+                    gems: "Gemas & Minerales",
+                    alchemy: "Alquimia & Velas",
+                    community: "Comunidad & FAQ"
                 }
             },
             en: {
                 announcement: "Worldwide Shipping • Personalized WhatsApp Support",
                 navCatalog: "Catalog",
-                navNews: "Chronicles",
+                navForum: "Forum & Chronicles",
                 install: "Install",
-                heroBadge: "High Frequency Sacred Artifacts",
+                heroBadge: "High Frequency Artifacts & Arcane Circle",
                 heroTitle: "Connect with the Arcane",
-                heroSubtitle: "Consecrated talismans, authentic crystals, and ceremonial items to elevate your daily energy.",
+                heroSubtitle: "Consecrated talismans, authentic crystals, and an arcane community to elevate your energy.",
                 heroBtnShop: "Explore Catalog",
-                heroBtnWa: "Direct WhatsApp",
+                heroBtnForum: "Enter Forum",
                 catTitle: "Bazaar Catalog",
                 searchPlaceholder: "Search artifact...",
                 emptyTitle: "No artifacts found",
                 emptyBtn: "Reset Filters",
-                newsTitle: "Arcane Chronicles",
+                forumBadge: "Community & Wisdom",
+                forumTitle: "Arcane Forum & Chronicles",
+                forumBtnAsk: "Ask a Question",
                 readMore: "Read article",
                 cartTitle: "Your Basket",
                 cartEmpty: "Your basket is currently empty.",
@@ -448,28 +501,43 @@
                 waDetail: "🛍️ *ORDER BREAKDOWN:*",
                 waTotal: "💰 *FINAL TOTAL:*",
                 waFooter: "🔮 _I would like to arrange payment and delivery for this order._",
+                askTitle: "Ask the Arcane Circle",
+                askDesc: "Send your ceremonial question or thought to receive guidance from Mysterix guardians.",
+                askLblName: "Your Name / Nickname:",
+                askLblSection: "Forum Section:",
+                askLblText: "Your Question or Thought:",
+                askBtnSubmit: "Send Question via WhatsApp",
                 cats: {
                     all: "All",
                     talismans: "Talismans",
                     crystals: "Crystals",
                     rituals: "Rituals"
+                },
+                forumSections: {
+                    all: "All Sections",
+                    rituals: "Rituals & Moon",
+                    gems: "Gems & Minerals",
+                    alchemy: "Alchemy & Candles",
+                    community: "Community & FAQ"
                 }
             },
             pt: {
                 announcement: "Envios para todo o país • Atendimento Personalizado por WhatsApp",
                 navCatalog: "Catálogo",
-                navNews: "Crônicas",
+                navForum: "Fórum & Crônicas",
                 install: "Instalar",
-                heroBadge: "Artefatos de Alta Vibração",
+                heroBadge: "Artefatos de Alta Vibração & Círculo Arcano",
                 heroTitle: "Conecte-se com o Oculto",
-                heroSubtitle: "Talismãs consagrados, cristais autênticos e elementos cerimoniais para elevar sua energia diária.",
+                heroSubtitle: "Talismãs consagrados, cristais autênticos e um espaço de troca para elevar sua energia.",
                 heroBtnShop: "Ver Catálogo",
-                heroBtnWa: "Contato Direto",
+                heroBtnForum: "Entrar no Fórum",
                 catTitle: "Catálogo do Bazar",
                 searchPlaceholder: "Buscar artefato...",
                 emptyTitle: "Nenhum resultado encontrado",
                 emptyBtn: "Redefinir Filtros",
-                newsTitle: "Crônicas Arcanas",
+                forumBadge: "Comunidade & Conhecimento",
+                forumTitle: "Fórum Arcano & Crônicas",
+                forumBtnAsk: "Fazer uma Consulta",
                 readMore: "Ler artigo",
                 cartTitle: "Sua Cesta",
                 cartEmpty: "Sua cesta está vazia.",
@@ -487,17 +555,30 @@
                 waDetail: "🛍️ *DETALHE DOS PRODUTOS:*",
                 waTotal: "💰 *TOTAL FINAL:*",
                 waFooter: "🔮 _Desejo coordenar o pagamento e envio deste pedido._",
+                askTitle: "Consulta ao Círculo Arcano",
+                askDesc: "Envie sua dúvida cerimonial para ser respondida pelos guardiões da Mysterix.",
+                askLblName: "Seu Nome / Apelido:",
+                askLblSection: "Seção do Fórum:",
+                askLblText: "Sua Pergunta ou Reflexão:",
+                askBtnSubmit: "Enviar Pergunta por WhatsApp",
                 cats: {
                     all: "Todos",
                     talismans: "Talismãs",
                     crystals: "Cristais",
                     rituals: "Rituais"
+                },
+                forumSections: {
+                    all: "Todas as Seções",
+                    rituals: "Rituais & Fases",
+                    gems: "Gemas & Minerais",
+                    alchemy: "Alquimia & Velas",
+                    community: "Comunidade & FAQ"
                 }
             }
         };
 
 
-        /* ==================== 2. CATÁLOGO REDUCIDO & MULTI-IDIOMA ==================== */
+        /* ==================== 2. DATOS DE PRODUCTOS Y FORO SECCIONADO ==================== */
         const products = [
             {
                 id: "prod-1",
@@ -603,76 +684,104 @@
             }
         ];
 
-        const news = [
+        // FORO SECCIONADO: RITUALES, GEMAS, ALQUIMIA, COMUNIDAD
+        const forumPosts = [
             {
-                id: "news-1",
-                tag: { es: "Rituales", en: "Rituals", pt: "Rituais" },
+                id: "post-1",
+                sectionKey: "rituals",
                 fecha: "24 Ago 2026",
+                autor: "Maestra Evelyn",
+                respuestas: 14,
                 titulo: {
-                    es: "Consagración de Cristales en Luna Llena",
-                    en: "Consecration of Crystals on Full Moon",
-                    pt: "Consagração de Cristais na Lua Cheia"
+                    es: "Consagración y Carga de Cuarzos en Luna Llena",
+                    en: "Consecration & Charging of Quartz on Full Moon",
+                    pt: "Consagração e Carga de Quartzos na Lua Cheia"
                 },
                 extracto: {
-                    es: "Aprende los pasos esenciales para purificar y recargar la vibración de tus gemas.",
-                    en: "Learn the essential steps to cleanse and recharge the vibration of your stones.",
-                    pt: "Aprenda os passos essenciais para purificar e recarregar a vibração das suas pedras."
+                    es: "Pasos fundamentales para purificar y magnetizar tus herramientas rituales con luz cenital.",
+                    en: "Essential steps to purify and magnetize your ritual tools with zenith moonlight.",
+                    pt: "Passos essenciais para purificar e magnetizar suas ferramentas rituais com o luar."
                 },
                 contenido: {
-                    es: "<p>Durante el plenilunio, la fuerza magnética permite neutralizar energías residuales. Deja tus cristales reposar bajo la luz lunar y séllalos con una intención clara.</p>",
-                    en: "<p>During the full moon, magnetic fields maximize crystal recharging. Let your stones rest under direct moonlight and seal them with clear intentions.</p>",
-                    pt: "<p>Durante a lua cheia, a força magnética permite neutralizar energias residuais. Deixe seus cristais sob o luar e sele-os com sua intenção.</p>"
+                    es: "<p>Durante el plenilunio, la vibración planetaria permite una recarga profunda. Coloca tus cristales sobre lino negro y vocaliza tu propósito en gratitud.</p>",
+                    en: "<p>During full moon peaks, planetary vibration allows deep recharging. Place your crystals on black linen and voice your clear intent.</p>",
+                    pt: "<p>Durante o plenilúnio, a vibração permite recarga profunda. Coloque seus cristais sobre linho escuro e vocalize seu propósito.</p>"
                 }
             },
             {
-                id: "news-2",
-                tag: { es: "Gemas", en: "Gems", pt: "Gemas" },
+                id: "post-2",
+                sectionKey: "gems",
                 fecha: "18 Ago 2026",
+                autor: "David M.",
+                respuestas: 9,
                 titulo: {
-                    es: "El Poder Protector de la Obsidiana",
-                    en: "The Protective Power of Obsidian",
-                    pt: "O Poder Protetor da Obsidiana"
+                    es: "El Misterio de la Obsidiana y el Escudo Áurico",
+                    en: "The Mystery of Obsidian & the Auric Shield",
+                    pt: "O Mistério da Obsidiana e o Escudo Áurico"
                 },
                 extracto: {
-                    es: "Por qué este vidrio volcánico es considerado el escudo definitivo contra la densidad.",
-                    en: "Why this natural volcanic glass is regarded as the ultimate energy shield.",
-                    pt: "Por que este vidro vulcânico é considerado o escudo definitivo contra a negatividade."
+                    es: "Cómo actúa este vidrio volcánico para disolver bloqueos y repeler negatividad ambiental.",
+                    en: "How this natural volcanic glass dissolves energetic density and repels negativity.",
+                    pt: "Como este vidro vulcânico dissolve bloqueios e repele energias densas."
                 },
                 contenido: {
-                    es: "<p>La obsidiana actúa como un espejo implacable que disuelve bloqueos y protege el campo áurico de interferencias externas.</p>",
-                    en: "<p>Obsidian functions as an uncompromising mirror that dissolves blockages and shields your auric field.</p>",
-                    pt: "<p>A obsidiana atua como um espelho que dissolve bloqueios e protege o campo áurico de interferências externas.</p>"
+                    es: "<p>La obsidiana es el cortafuegos mineral por excelencia. Úsala en meditaciones de sombra y descárgala en tierra fértil.</p>",
+                    en: "<p>Obsidian is the primary psychic firewall. Use it during grounding meditation and discharge it on natural soil.</p>",
+                    pt: "<p>A obsidiana é o escudo psíquico supremo. Use-a em meditações e descarregue-a diretamente na terra.</p>"
                 }
             },
             {
-                id: "news-3",
-                tag: { es: "Alquimia", en: "Alchemy", pt: "Alquimia" },
+                id: "post-3",
+                sectionKey: "alchemy",
                 fecha: "10 Ago 2026",
+                autor: "Orden Mysterix",
+                respuestas: 21,
                 titulo: {
-                    es: "Interpretación del Fuego en tus Velas",
-                    en: "Interpreting Fire & Candle Wax",
-                    pt: "Interpretação do Fogo nas Velas"
+                    es: "Ceromancia: Qué Revela la Llama y la Cera",
+                    en: "Ceromancy: Signs in the Flame & Candle Wax",
+                    pt: "Ceromancia: Sinais na Chama e na Cera"
                 },
                 extracto: {
-                    es: "Claves simples para comprender los movimientos de la llama durante tus peticiones.",
-                    en: "Simple keys to understand flame behavior and wax formations during ceremonies.",
-                    pt: "Dicas simples para compreender os movimentos da chama durante suas orações."
+                    es: "Aprende a decodificar las respuestas del fuego elemental en tus intenciones.",
+                    en: "Learn to decode the subtle messages of elemental fire during ceremonies.",
+                    pt: "Aprenda a decifrar os sinais do fogo sagrado durante suas orações."
                 },
                 contenido: {
-                    es: "<p>Una llama alta y serena indica un flujo energético limpio; los crujidos señalan la disolución de bloqueos astrales.</p>",
-                    en: "<p>A steady and bright flame indicates clear energy flow; crackles reveal the active dissolution of astral resistance.</p>",
-                    pt: "<p>Uma chama alta e serena indica um fluxo de energia limpo; estalos indicam a dissolução de bloqueios.</p>"
+                    es: "<p>Una llama alta y brillante confirma caminos abiertos; un chisporroteo revela limpieza activa de obstáculos.</p>",
+                    en: "<p>A bright high flame signals an open path; crackling indicates active clearing of subtle blockages.</p>",
+                    pt: "<p>Uma chama alta e brilhante confirma caminhos abertos; estalos indicam limpeza de energias densas.</p>"
+                }
+            },
+            {
+                id: "post-4",
+                sectionKey: "community",
+                fecha: "04 Ago 2026",
+                autor: "Adeptos Mysterix",
+                respuestas: 32,
+                titulo: {
+                    es: "¿Cómo armonizar un espacio antes de una sesión de Tarot?",
+                    en: "How to harmonize a sacred space before a Tarot reading?",
+                    pt: "Como harmonizar um espaço antes de uma leitura de Tarô?"
+                },
+                extracto: {
+                    es: "Recomendaciones de sahúmos de Copal, campanas tibetanas y sal negra para abrir círculo.",
+                    en: "Recommended copal resins, singing bells, and black salt to open a clean reading circle.",
+                    pt: "Dicas de defumação com copal, sinos tibetanos e sal negro para abrir o círculo."
+                },
+                contenido: {
+                    es: "<p>Recomendamos encender incienso de copal en el cuadrante este y trazar un círculo mental de luz dorada antes de mezclar los arcanos.</p>",
+                    en: "<p>We recommend lighting copal resin in the eastern quadrant and visualizing a golden circle of light before shuffling cards.</p>",
+                    pt: "<p>Recomendamos acender incenso de copal no quadrante leste e traçar um círculo de luz dourada antes de ler as cartas.</p>"
                 }
             }
         ];
 
 
-        /* ==================== 3. ESTADO GLOBAL & PERSISTENCIA ==================== */
+        /* ==================== 3. ESTADO & IDIOMA ==================== */
         const STORAGE_KEY = "mysterix_cart_data_v1";
         let cart = [];
         let selectedCategoryKey = "all";
         let searchQuery = "";
-        let modalQuickViewProduct = null;
 
         const formatMoney = (amount) => {
             return new Intl.NumberFormat('es-AR', {
@@ -689,40 +798,39 @@
             updateLanguageUI();
             renderCategoryFilters();
             renderProducts();
-            renderNews();
+            renderForumSectionTabs();
+            renderForumGrid();
             updateCartUI();
         }
 
         function updateLanguageUI() {
             const t = i18n[currentLang];
 
-            // Botones selector
             ['es', 'en', 'pt'].forEach(l => {
                 const btn = document.getElementById(`btn-lang-${l}`);
                 if (btn) {
-                    if (l === currentLang) {
-                        btn.className = "px-2 py-1 rounded-lg bg-brand-gold text-black font-bold shadow-sm";
-                    } else {
-                        btn.className = "px-2 py-1 rounded-lg text-gray-400 hover:text-white transition";
-                    }
+                    btn.className = (l === currentLang)
+                        ? "px-2 py-1 rounded-lg bg-brand-gold text-black font-bold shadow-sm"
+                        : "px-2 py-1 rounded-lg text-gray-400 hover:text-white transition";
                 }
             });
 
-            // Textos estáticos
             document.getElementById("txt-announcement").textContent = t.announcement;
             document.getElementById("nav-catalog").querySelector("span").textContent = t.navCatalog;
-            document.getElementById("nav-news").querySelector("span").textContent = t.navNews;
+            document.getElementById("nav-forum").querySelector("span").textContent = t.navForum;
             document.getElementById("txt-install").textContent = t.install;
             document.getElementById("hero-badge").textContent = t.heroBadge;
             document.getElementById("hero-title").textContent = t.heroTitle;
             document.getElementById("hero-subtitle").textContent = t.heroSubtitle;
             document.getElementById("hero-btn-shop").querySelector("span").textContent = t.heroBtnShop;
-            document.getElementById("hero-btn-wa").querySelector("span").textContent = t.heroBtnWa;
+            document.getElementById("hero-btn-forum").querySelector("span").textContent = t.heroBtnForum;
             document.getElementById("cat-title").textContent = t.catTitle;
             document.getElementById("search-input").placeholder = t.searchPlaceholder;
             document.getElementById("empty-title").textContent = t.emptyTitle;
             document.getElementById("empty-btn").textContent = t.emptyBtn;
-            document.getElementById("news-title").textContent = t.newsTitle;
+            document.getElementById("forum-badge").textContent = t.forumBadge;
+            document.getElementById("forum-title").textContent = t.forumTitle;
+            document.getElementById("forum-btn-ask").textContent = t.forumBtnAsk;
             document.getElementById("cart-title").textContent = t.cartTitle;
             document.getElementById("cart-empty-msg").textContent = t.cartEmpty;
             document.getElementById("cart-note-label").textContent = t.cartNoteLabel;
@@ -730,10 +838,18 @@
             document.getElementById("cart-btn-checkout").textContent = t.cartBtnCheckout;
             document.getElementById("cart-btn-clear").textContent = t.cartBtnClear;
             document.getElementById("modal-btn-add").textContent = t.modalBtnAdd;
+
+            // Modal Ask texts
+            document.getElementById("ask-modal-title").textContent = t.askTitle;
+            document.getElementById("ask-modal-desc").textContent = t.askDesc;
+            document.getElementById("ask-lbl-name").textContent = t.askLblName;
+            document.getElementById("ask-lbl-section").textContent = t.askLblSection;
+            document.getElementById("ask-lbl-text").textContent = t.askLblText;
+            document.getElementById("ask-btn-submit").textContent = t.askBtnSubmit;
         }
 
 
-        /* ==================== 4. FILTROS & RENDERIZADO ==================== */
+        /* ==================== 4. CATÁLOGO & FILTROS ==================== */
         function renderCategoryFilters() {
             const container = document.getElementById("category-filters-container");
             const t = i18n[currentLang];
@@ -780,8 +896,7 @@
                 const query = searchQuery.toLowerCase().trim();
                 const nameStr = (item.nombre[currentLang] || item.nombre.es).toLowerCase();
                 const descStr = (item.descripcion[currentLang] || item.descripcion.es).toLowerCase();
-                const matchesSearch = !query || nameStr.includes(query) || descStr.includes(query);
-                return matchesCategory && matchesSearch;
+                return matchesCategory && (!query || nameStr.includes(query) || descStr.includes(query));
             });
 
             if (filtered.length === 0) {
@@ -800,10 +915,8 @@
 
                 return `
                     <div class="bg-brand-card rounded-2xl border border-brand-gold/25 overflow-hidden flex flex-col justify-between group hover:border-brand-gold/60 transition duration-300">
-                        
                         <div class="relative aspect-square overflow-hidden bg-black cursor-pointer" onclick="openProductModal('${prod.id}')">
                             <img src="${prod.imagen}" alt="${name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-90 group-hover:opacity-100">
-                            
                             <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-brand-gold text-black text-[10px] font-bold uppercase font-cinzel shadow">
                                 ${badge}
                             </span>
@@ -828,14 +941,140 @@
                                 </button>
                             </div>
                         </div>
-
                     </div>
                 `;
             }).join("");
         }
 
 
-        /* ==================== 5. CARRITO & CHECKOUT WHATSAPP ==================== */
+        /* ==================== 5. SECCIONADO DEL FORO MÍSTICO ==================== */
+        function renderForumSectionTabs() {
+            const container = document.getElementById("forum-sections-tabs");
+            const t = i18n[currentLang];
+            const sections = ["all", "rituals", "gems", "alchemy", "community"];
+
+            container.innerHTML = sections.map(secKey => {
+                const isActive = secKey === selectedForumSection;
+                const label = t.forumSections[secKey] || secKey;
+                const count = secKey === "all" 
+                    ? forumPosts.length 
+                    : forumPosts.filter(p => p.sectionKey === secKey).length;
+
+                return `
+                    <button onclick="setForumSection('${secKey}')" 
+                        class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
+                            isActive 
+                            ? 'bg-brand-gold/20 text-brand-goldLight border border-brand-gold font-bold' 
+                            : 'bg-brand-surface text-gray-400 hover:text-white border border-transparent'
+                        }">
+                        <span>${label}</span>
+                        <span class="text-[10px] px-1.5 py-0.2 rounded-full ${isActive ? 'bg-brand-gold text-black' : 'bg-black/50 text-gray-400'}">${count}</span>
+                    </button>
+                `;
+            }).join("");
+        }
+
+        function setForumSection(secKey) {
+            selectedForumSection = secKey;
+            renderForumSectionTabs();
+            renderForumGrid();
+        }
+
+        function renderForumGrid() {
+            const grid = document.getElementById("forum-grid");
+            const t = i18n[currentLang];
+
+            const filtered = forumPosts.filter(item => {
+                return (selectedForumSection === "all") || (item.sectionKey === selectedForumSection);
+            });
+
+            grid.innerHTML = filtered.map(post => {
+                const title = post.titulo[currentLang] || post.titulo.es;
+                const extract = post.extracto[currentLang] || post.extracto.es;
+                const sectionLabel = t.forumSections[post.sectionKey] || post.sectionKey;
+
+                return `
+                    <article class="bg-brand-card rounded-2xl border border-brand-gold/20 p-5 flex flex-col justify-between space-y-3 hover:border-brand-gold/50 transition">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between text-[10px] text-gray-400">
+                                <span class="px-2 py-0.5 rounded bg-brand-surface text-brand-gold border border-brand-gold/20 font-bold uppercase">${sectionLabel}</span>
+                                <span>${post.fecha}</span>
+                            </div>
+                            <h3 class="font-cinzel text-sm font-bold text-white cursor-pointer hover:text-brand-goldLight" onclick="openNewsModal('${post.id}')">
+                                ${title}
+                            </h3>
+                            <p class="text-xs text-gray-400 line-clamp-2">
+                                ${extract}
+                            </p>
+                        </div>
+
+                        <div class="pt-2 border-t border-brand-gold/10 flex items-center justify-between text-xs">
+                            <button onclick="openNewsModal('${post.id}')" class="font-semibold text-brand-gold hover:text-brand-goldLight flex items-center gap-1">
+                                <span>${t.readMore}</span>
+                                <i class="fa-solid fa-arrow-right text-[9px]"></i>
+                            </button>
+                            <span class="text-[10px] text-gray-500 flex items-center gap-1">
+                                <i class="fa-regular fa-comment text-brand-gold/70"></i> ${post.respuestas}
+                            </span>
+                        </div>
+                    </article>
+                `;
+            }).join("");
+        }
+
+        function openNewsModal(postId) {
+            const post = forumPosts.find(n => n.id === postId);
+            if (!post) return;
+
+            const t = i18n[currentLang];
+            document.getElementById("modal-news-tag").textContent = t.forumSections[post.sectionKey] || post.sectionKey;
+            document.getElementById("modal-news-title").textContent = post.titulo[currentLang] || post.titulo.es;
+            document.getElementById("modal-news-date").textContent = `${post.fecha} • Por ${post.autor}`;
+            document.getElementById("modal-news-content").innerHTML = post.contenido[currentLang] || post.contenido.es;
+
+            document.getElementById("news-modal").classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeNewsModal() {
+            document.getElementById("news-modal").classList.add("hidden");
+            document.body.style.overflow = "";
+        }
+
+        function openAskModal() {
+            document.getElementById("ask-modal").classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeAskModal() {
+            document.getElementById("ask-modal").classList.add("hidden");
+            document.body.style.overflow = "";
+        }
+
+        function submitForumQuestion() {
+            const name = document.getElementById("ask-name").value.trim() || "Buscador Arcano";
+            const sectionVal = document.getElementById("ask-section").value;
+            const text = document.getElementById("ask-text").value.trim();
+
+            if (!text) {
+                alert("Por favor escribe tu consulta.");
+                return;
+            }
+
+            const t = i18n[currentLang];
+            const sectionLabel = t.forumSections[sectionVal] || sectionVal;
+            
+            let message = `📜 *CONSULTA PARA EL FORO MYSTERIX* 📜\n`;
+            message += `👤 *De:* ${name}\n`;
+            message += `🔮 *Sección:* ${sectionLabel}\n`;
+            message += `❓ *Pregunta/Aporte:* ${text}\n`;
+
+            window.open(`https://wa.me/5492617094195?text=${encodeURIComponent(message)}`, '_blank');
+            closeAskModal();
+        }
+
+
+        /* ==================== 6. CARRITO & WHATSAPP ==================== */
         function loadCart() {
             try {
                 const stored = localStorage.getItem(STORAGE_KEY);
@@ -979,7 +1218,6 @@
             totalEl.textContent = formatMoney(subtotal);
         }
 
-        // WhatsApp Checkout Multi-idioma
         function checkoutWhatsApp() {
             if (cart.length === 0) return;
 
@@ -995,9 +1233,7 @@
             let total = 0;
             let message = `${t.waHeader}\n`;
             message += `${t.waDate} ${fechaStr}\n`;
-            if (note) {
-                message += `${t.waClient} ${note}\n`;
-            }
+            if (note) message += `${t.waClient} ${note}\n`;
             message += `━━━━━━━━━━━━━━━━━━━━━\n`;
             message += `${t.waDetail}\n\n`;
 
@@ -1017,70 +1253,16 @@
             message += `━━━━━━━━━━━━━━━━━━━━━\n`;
             message += `${t.waFooter}`;
 
-            const encoded = encodeURIComponent(message);
-            window.open(`https://wa.me/${phoneNumber}?text=${encoded}`, '_blank');
+            window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
 
-        /* ==================== 6. CRÓNICAS & MODALES ==================== */
-        function renderNews() {
-            const grid = document.getElementById("news-grid");
-            const t = i18n[currentLang];
-
-            grid.innerHTML = news.map(item => {
-                const title = item.titulo[currentLang] || item.titulo.es;
-                const extract = item.extracto[currentLang] || item.extracto.es;
-                const tag = item.tag[currentLang] || item.tag.es;
-
-                return `
-                    <article class="bg-brand-card rounded-2xl border border-brand-gold/20 p-5 flex flex-col justify-between space-y-3 hover:border-brand-gold/50 transition">
-                        <div class="space-y-2">
-                            <div class="flex items-center justify-between text-[10px] text-gray-400">
-                                <span class="px-2 py-0.5 rounded bg-brand-surface text-brand-gold border border-brand-gold/20 font-bold uppercase">${tag}</span>
-                                <span>${item.fecha}</span>
-                            </div>
-                            <h3 class="font-cinzel text-sm font-bold text-white cursor-pointer hover:text-brand-goldLight" onclick="openNewsModal('${item.id}')">
-                                ${title}
-                            </h3>
-                            <p class="text-xs text-gray-400 line-clamp-2">
-                                ${extract}
-                            </p>
-                        </div>
-
-                        <button onclick="openNewsModal('${item.id}')" class="text-xs font-semibold text-brand-gold hover:text-brand-goldLight text-left flex items-center gap-1">
-                            <span>${t.readMore}</span>
-                            <i class="fa-solid fa-arrow-right text-[9px]"></i>
-                        </button>
-                    </article>
-                `;
-            }).join("");
-        }
-
-        function openNewsModal(newsId) {
-            const item = news.find(n => n.id === newsId);
-            if (!item) return;
-
-            document.getElementById("modal-news-tag").textContent = item.tag[currentLang] || item.tag.es;
-            document.getElementById("modal-news-title").textContent = item.titulo[currentLang] || item.titulo.es;
-            document.getElementById("modal-news-date").textContent = item.fecha;
-            document.getElementById("modal-news-content").innerHTML = item.contenido[currentLang] || item.contenido.es;
-
-            document.getElementById("news-modal").classList.remove("hidden");
-            document.body.style.overflow = "hidden";
-        }
-
-        function closeNewsModal() {
-            document.getElementById("news-modal").classList.add("hidden");
-            document.body.style.overflow = "";
-        }
-
+        /* ==================== 7. VISTA RÁPIDA PRODUCTO ==================== */
         function openProductModal(productId) {
             const prod = products.find(p => p.id === productId);
             if (!prod) return;
 
-            modalQuickViewProduct = prod;
             const t = i18n[currentLang];
-
             document.getElementById("modal-product-img").src = prod.imagen;
             document.getElementById("modal-product-category").textContent = t.cats[prod.categoryKey] || prod.categoryKey;
             document.getElementById("modal-product-name").textContent = prod.nombre[currentLang] || prod.nombre.es;
@@ -1101,11 +1283,10 @@
         function closeProductModal() {
             document.getElementById("product-modal").classList.add("hidden");
             document.body.style.overflow = "";
-            modalQuickViewProduct = null;
         }
 
 
-        /* ==================== 7. TOAST & LISTENERS ==================== */
+        /* ==================== 8. TOAST & LISTENERS ==================== */
         let toastTimer = null;
         function showToast(message) {
             const toast = document.getElementById("toast");
@@ -1129,11 +1310,7 @@
 
             searchInput.addEventListener("input", (e) => {
                 searchQuery = e.target.value;
-                if (searchQuery) {
-                    clearBtn.classList.remove("hidden");
-                } else {
-                    clearBtn.classList.add("hidden");
-                }
+                clearBtn.classList.toggle("hidden", !searchQuery);
                 renderProducts();
             });
 
@@ -1145,22 +1322,24 @@
             });
 
             document.getElementById("news-modal").addEventListener("click", closeNewsModal);
+            document.getElementById("ask-modal").addEventListener("click", closeAskModal);
             document.getElementById("product-modal").addEventListener("click", closeProductModal);
 
             window.addEventListener("keydown", (e) => {
                 if (e.key === "Escape") {
                     toggleCart(false);
                     closeNewsModal();
+                    closeAskModal();
                     closeProductModal();
                 }
             });
         }
 
 
-        /* ==================== 8. PWA SERVICE WORKER & MANIFEST ==================== */
+        /* ==================== 9. PWA SERVICE WORKER ==================== */
         function initPWA() {
             const manifestObject = {
-                name: "Mysterix • Bazar Místico",
+                name: "Mysterix • Bazar & Foro Místico",
                 short_name: "Mysterix",
                 start_url: "./index.html",
                 display: "standalone",
@@ -1173,22 +1352,19 @@
             };
 
             const manifestBlob = new Blob([JSON.stringify(manifestObject)], { type: 'application/manifest+json' });
-            const manifestURL = URL.createObjectURL(manifestBlob);
             const manifestLink = document.createElement('link');
             manifestLink.rel = 'manifest';
-            manifestLink.href = manifestURL;
+            manifestLink.href = URL.createObjectURL(manifestBlob);
             document.head.appendChild(manifestLink);
 
             if ('serviceWorker' in navigator) {
                 const swCode = `
-                    const CACHE_NAME = 'mysterix-v2';
+                    const CACHE_NAME = 'mysterix-v3';
                     self.addEventListener('install', (e) => self.skipWaiting());
                     self.addEventListener('activate', (e) => self.clients.claim());
                     self.addEventListener('fetch', (e) => {
                         if (e.request.method !== 'GET') return;
-                        e.respondWith(
-                            caches.match(e.request).then((cached) => cached || fetch(e.request).catch(() => caches.match('./index.html')))
-                        );
+                        e.respondWith(caches.match(e.request).then(cached => cached || fetch(e.request).catch(() => caches.match('./index.html'))));
                     });
                 `;
                 try {
@@ -1221,7 +1397,8 @@
             updateLanguageUI();
             renderCategoryFilters();
             renderProducts();
-            renderNews();
+            renderForumSectionTabs();
+            renderForumGrid();
             setupEventListeners();
             initPWA();
             document.getElementById('current-year').textContent = new Date().getFullYear();
