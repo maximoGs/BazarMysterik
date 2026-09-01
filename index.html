@@ -6,7 +6,7 @@
     <title>Mysterik Net • Mendoza Experience Map</title>
     
     <!-- Meta SEO & Social Graph -->
-    <meta name="description" content="Guía selecta y mapa interactivo de Mendoza: bares speakeasy, bodegas exclusivas, restós gourmet y clubes nocturnos con reserva directa por WhatsApp de parte de Mysterik Net.">
+    <meta name="description" content="Mapa interactivo y guía de experiencias en Mendoza: bares speakeasy, bodegas, restós y boliches con ubicación exacta en Google Maps y contacto por WhatsApp de parte de Mysterik Net.">
     <meta name="theme-color" content="#070707">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -22,6 +22,9 @@
 
     <!-- FontAwesome 6 CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -51,12 +54,15 @@
                     boxShadow: {
                         'gold-glow': '0 0 25px rgba(212, 175, 55, 0.25)',
                         'gold-lg': '0 10px 35px -10px rgba(212, 175, 55, 0.35)',
-                        'node-active': '0 0 20px #D4AF37, 0 0 40px rgba(212, 175, 55, 0.6)'
+                        'pin-glow': '0 0 15px rgba(212, 175, 55, 0.8), 0 4px 12px rgba(0,0,0,0.6)'
                     }
                 }
             }
         }
     </script>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <style>
         /* Custom Scrollbar */
@@ -75,53 +81,97 @@
         }
 
         .glass-header {
-            background: rgba(8, 8, 8, 0.90);
+            background: rgba(8, 8, 8, 0.92);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
         }
 
         .glass-card {
-            background: rgba(18, 18, 18, 0.85);
+            background: rgba(18, 18, 18, 0.88);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
 
-        /* Interactive Vector Map Styles */
-        .map-grid-bg {
-            background-color: #080808;
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 60%),
-                linear-gradient(rgba(212, 175, 55, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(212, 175, 55, 0.05) 1px, transparent 1px);
-            background-size: 100% 100%, 40px 40px, 40px 40px;
+        /* Map Container Settings: Always Full Height & 100% Reliable */
+        #map-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 280px;
         }
 
-        @keyframes pulseNode {
-            0% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.18); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.9; }
+        #mendoza-map {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: #e5e3df;
+            z-index: 1;
         }
 
-        .map-node {
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        .leaflet-container {
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+        }
+
+        /* Custom Leaflet Controls */
+        .leaflet-bar {
+            border: 1px solid rgba(212, 175, 55, 0.4) !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
+            border-radius: 12px !important;
+            overflow: hidden;
+        }
+        .leaflet-bar a {
+            background-color: #161616 !important;
+            color: #D4AF37 !important;
+            border-bottom: 1px solid #2a2415 !important;
+            transition: all 0.2s ease;
+        }
+        .leaflet-bar a:hover {
+            background-color: #262215 !important;
+            color: #FFF3B0 !important;
+        }
+
+        /* Animated Pulsing Map Pin */
+        @keyframes pinBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .custom-mendoza-pin {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
             cursor: pointer;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: pinBounce 3s infinite ease-in-out;
         }
-        .map-node:hover {
-            transform: scale(1.3) translateY(-4px);
-            z-index: 50;
-        }
-        .map-node.active-node {
-            animation: pulseNode 2s infinite ease-in-out;
-            transform: scale(1.25);
-            z-index: 40;
+        .custom-mendoza-pin:hover {
+            transform: scale(1.25) translateY(-8px) !important;
+            z-index: 999 !important;
         }
 
-        .zone-area {
-            transition: all 0.4s ease;
+        /* Custom Leaflet Popup */
+        .leaflet-popup-content-wrapper {
+            background: #111111 !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(212, 175, 55, 0.4) !important;
+            border-radius: 16px !important;
+            padding: 0 !important;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.2) !important;
         }
-        .zone-area:hover {
-            fill-opacity: 0.25;
-            stroke-width: 2.5;
+        .leaflet-popup-content {
+            margin: 0 !important;
+            line-height: 1.4 !important;
+        }
+        .leaflet-popup-tip {
+            background: #111111 !important;
+            border: 1px solid rgba(212, 175, 55, 0.4) !important;
+        }
+        .leaflet-container a.leaflet-popup-close-button {
+            color: #D4AF37 !important;
+            padding: 8px 12px !important;
+            font-size: 18px !important;
         }
 
         .nav-tab-active {
@@ -139,16 +189,16 @@
     <aside class="bg-gradient-to-r from-[#050505] via-[#1a1506] to-[#050505] border-b border-brand-gold/25 py-1.5 px-3 text-center text-[11px] tracking-wider text-brand-goldLight flex items-center justify-between z-50">
         <div class="hidden sm:flex items-center gap-2 text-brand-gold/80 pl-2">
             <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-            <span class="text-[10px] font-semibold tracking-widest uppercase">Mendoza • Red Mysterik Net</span>
+            <span class="text-[10px] font-semibold tracking-widest uppercase">Mendoza • Red de Lugares Mysterik Net</span>
         </div>
         <div class="flex items-center justify-center gap-2 mx-auto font-medium">
             <i class="fa-solid fa-gem text-brand-gold text-[10px]"></i>
-            <span>Experiencias selectas en Mendoza • Contacta directamente por WhatsApp de parte de <strong class="text-white font-cinzel">Mysterik Net</strong></span>
+            <span>Experiencias en Mendoza • Contacta directamente por WhatsApp de parte de <strong class="text-white font-cinzel">Mysterik Net</strong></span>
             <i class="fa-solid fa-sparkles text-brand-gold text-[10px]"></i>
         </div>
         <div class="hidden md:flex items-center gap-3 pr-2">
             <button onclick="openJoinModal()" class="text-[10px] uppercase font-bold text-brand-gold hover:text-white transition-colors underline decoration-brand-gold/50">
-                Sumar Comercio
+                Sumar Lugar
             </button>
         </div>
     </aside>
@@ -158,7 +208,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-3">
             
             <!-- BRAND LOGO -->
-            <div class="flex items-center gap-3 cursor-pointer group" onclick="resetFilters()">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="resetFiltersAndCenter()">
                 <div class="relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-brand-gold/30 to-brand-goldDark/10 p-[1.5px] shadow-gold-glow flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
                     <img src="logomysterik.png" alt="Mysterik Net Logo" class="w-full h-full object-contain rounded-[10px] bg-black/70 p-1" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=100&q=80';">
                 </div>
@@ -167,7 +217,7 @@
                         <span class="font-cinzel text-lg sm:text-2xl font-bold tracking-widest text-white group-hover:text-brand-gold transition-colors">MYSTERIK</span>
                         <span class="text-xs font-bold px-1.5 py-0.5 rounded bg-brand-gold/20 text-brand-goldLight font-mono border border-brand-gold/30">NET</span>
                     </div>
-                    <p class="text-[10px] sm:text-xs text-brand-gold/75 tracking-wider uppercase font-medium">Mendoza Experience Map & Concierge</p>
+                    <p class="text-[10px] sm:text-xs text-brand-gold/75 tracking-wider uppercase font-medium">Mendoza Experience Map</p>
                 </div>
             </div>
 
@@ -178,7 +228,7 @@
                     <input 
                         type="text" 
                         id="search-input" 
-                        placeholder="Buscar bares, bodegas, restós, Arístides, Chacras..." 
+                        placeholder="Buscar bares, bodegas, restós, Arístides, Chacras, Maipú..." 
                         oninput="handleSearch(this.value)"
                         class="w-full bg-[#121212]/90 border border-brand-gold/25 rounded-full pl-9 pr-8 py-2 text-xs text-white placeholder-gray-400 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-all"
                     >
@@ -196,15 +246,23 @@
                     <button 
                         id="view-split-btn" 
                         onclick="setViewMode('split')" 
-                        title="Vista Dividida"
+                        title="Vista Mapa + Lista"
                         class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium transition-all nav-tab-active flex items-center gap-1">
                         <i class="fa-solid fa-map-location-dot"></i>
                         <span class="hidden sm:inline text-[11px]">Explorar</span>
                     </button>
                     <button 
+                        id="view-map-btn" 
+                        onclick="setViewMode('map')" 
+                        title="Solo Mapa"
+                        class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1">
+                        <i class="fa-solid fa-map"></i>
+                        <span class="hidden sm:inline text-[11px]">Mapa</span>
+                    </button>
+                    <button 
                         id="view-cards-btn" 
                         onclick="setViewMode('cards')" 
-                        title="Solo Lista"
+                        title="Solo Tarjetas"
                         class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1">
                         <i class="fa-solid fa-grip"></i>
                         <span class="hidden sm:inline text-[11px]">Lugares</span>
@@ -231,7 +289,7 @@
                 <input 
                     type="text" 
                     id="search-input-mobile" 
-                    placeholder="Buscar spots en Mendoza..." 
+                    placeholder="Buscar en Mendoza..." 
                     oninput="handleSearch(this.value)"
                     class="w-full bg-[#121212] border border-brand-gold/25 rounded-full pl-9 pr-8 py-2 text-xs text-white placeholder-gray-400 focus:outline-none focus:border-brand-gold"
                 >
@@ -266,7 +324,8 @@
                     <option value="aristides">🏙️ Arístides & Centro</option>
                     <option value="chacras">🌿 Chacras de Coria</option>
                     <option value="lujan">🍇 Luján de Cuyo</option>
-                    <option value="guaymallen">🍷 Guaymallén & Bodegas</option>
+                    <option value="maipu">🍷 Maipú Viñedos</option>
+                    <option value="guaymallen">🥩 Guaymallén</option>
                     <option value="palmares">🍸 Godoy Cruz / Palmares</option>
                 </select>
             </div>
@@ -278,138 +337,46 @@
 
         <div id="main-container" class="flex-1 w-full h-full flex flex-col lg:flex-row relative">
 
-            <!-- LOCAL VECTOR MAP OF MENDOZA (Reliable, fast, zero external tile dependency) -->
-            <section id="map-panel" class="w-full lg:w-1/2 xl:w-7/12 h-1/2 lg:h-full relative map-grid-bg border-b lg:border-b-0 lg:border-r border-brand-gold/20 flex flex-col justify-between p-3 sm:p-5 overflow-hidden">
+            <!-- LEAFLET MAP OF MENDOZA (Detailed geography: Las Heras, Ciudad, Godoy Cruz, Maipú, Chacras, Luján, Río Mendoza) -->
+            <section id="map-panel" class="w-full lg:w-1/2 xl:w-7/12 h-1/2 lg:h-full relative bg-[#0a0a0a] border-b lg:border-b-0 lg:border-r border-brand-gold/20 order-1 lg:order-1">
                 
-                <!-- Map Top Bar Indicator -->
-                <div class="flex items-center justify-between z-10">
-                    <div class="bg-black/80 backdrop-blur border border-brand-gold/30 px-3 py-1.5 rounded-xl text-xs flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-brand-gold animate-ping"></span>
-                        <span class="font-cinzel text-brand-gold font-bold">Mapa Regional de Mendoza</span>
-                        <span class="text-[10px] text-gray-400 hidden sm:inline">• Haz clic en un punto para expandir</span>
-                    </div>
+                <div id="map-wrapper">
+                    <div id="mendoza-map"></div>
+                </div>
 
-                    <button onclick="resetMapView()" class="bg-[#151515]/90 hover:bg-[#202020] border border-brand-gold/30 text-brand-goldLight px-2.5 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition-all">
-                        <i class="fa-solid fa-arrows-rotate text-[10px]"></i>
-                        <span class="text-[11px]">Ver Todo</span>
+                <!-- Map Floating Overlays -->
+                <!-- Recenter Button -->
+                <button onclick="recenterMap()" title="Centrar Mendoza" class="absolute top-4 right-4 z-[400] bg-[#121212]/95 hover:bg-[#202020] border border-brand-gold/40 text-brand-goldLight p-2.5 px-3 rounded-xl shadow-2xl hover:scale-105 transition-all text-xs flex items-center gap-1.5 backdrop-blur font-semibold">
+                    <i class="fa-solid fa-crosshairs text-brand-gold"></i>
+                    <span>Centrar Mendoza</span>
+                </button>
+
+                <!-- Map Style Toggle (Urbano / Oscuro) -->
+                <div class="absolute top-4 left-4 z-[400] bg-[#121212]/95 border border-brand-gold/30 rounded-xl p-1 flex items-center shadow-xl backdrop-blur">
+                    <button id="tile-voyager-btn" onclick="setTileStyle('voyager')" class="px-2.5 py-1 text-[11px] rounded-lg font-bold transition-all bg-brand-gold/20 text-brand-goldLight border border-brand-gold/40">
+                        🗺️ Urbano
+                    </button>
+                    <button id="tile-dark-btn" onclick="setTileStyle('dark')" class="px-2.5 py-1 text-[11px] rounded-lg font-medium text-gray-400 hover:text-white transition-all">
+                        🌙 Oscuro
                     </button>
                 </div>
 
-                <!-- SVG Interactive Vector Map Canvas -->
-                <div class="flex-1 w-full h-full relative flex items-center justify-center my-2 select-none">
-                    
-                    <svg viewBox="0 0 800 650" class="w-full h-full max-h-[580px] drop-shadow-2xl" id="mendoza-svg-map">
-                        <defs>
-                            <!-- Glow Filter -->
-                            <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
-                                <feGaussianBlur stdDeviation="6" result="blur" />
-                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                            </filter>
-                            <!-- Radial Gradients for Zones -->
-                            <radialGradient id="zoneGradCentro" cx="50%" cy="50%" r="50%">
-                                <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.18" />
-                                <stop offset="100%" stop-color="#D4AF37" stop-opacity="0.02" />
-                            </radialGradient>
-                            <radialGradient id="zoneGradChacras" cx="50%" cy="50%" r="50%">
-                                <stop offset="0%" stop-color="#10B981" stop-opacity="0.15" />
-                                <stop offset="100%" stop-color="#10B981" stop-opacity="0.01" />
-                            </radialGradient>
-                            <radialGradient id="zoneGradLujan" cx="50%" cy="50%" r="50%">
-                                <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.15" />
-                                <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.01" />
-                            </radialGradient>
-                        </defs>
-
-                        <!-- Mendoza Andes Mountain Silhouette on the West (Left) -->
-                        <path d="M 30,620 L 60,480 L 90,520 L 130,340 L 160,390 L 190,200 L 220,260 L 250,110 L 280,180 L 300,50 L 30,50 Z" 
-                              fill="rgba(212, 175, 55, 0.03)" stroke="rgba(212, 175, 55, 0.15)" stroke-width="1.5" stroke-dasharray="4,4" />
-                        <text x="70" y="280" fill="rgba(212, 175, 55, 0.4)" font-family="Cinzel" font-size="14" letter-spacing="4" transform="rotate(-90 70,280)">
-                            CORDILLERA DE LOS ANDES
-                        </text>
-
-                        <!-- ZONE REGIONS (Stylized Geometrical Sectors) -->
-                        <!-- Zone 1: Ciudad de Mendoza & Arístides -->
-                        <g id="zone-shape-aristides" class="zone-group" onclick="setZone('aristides')">
-                            <polygon points="360,160 520,130 550,260 380,280" 
-                                     fill="url(#zoneGradCentro)" stroke="#D4AF37" stroke-width="1.2" stroke-opacity="0.4" class="zone-area" />
-                            <text x="440" y="175" fill="#FFF3B0" font-family="Cinzel" font-size="11" font-weight="bold" text-anchor="middle" letter-spacing="1.5">
-                                CIUDAD • ARÍSTIDES
-                            </text>
-                        </g>
-
-                        <!-- Zone 2: Guaymallén & Bodegas Urbanas -->
-                        <g id="zone-shape-guaymallen" class="zone-group" onclick="setZone('guaymallen')">
-                            <polygon points="530,140 700,160 680,290 560,270" 
-                                     fill="rgba(212, 175, 55, 0.05)" stroke="#AA771C" stroke-width="1.2" stroke-opacity="0.3" class="zone-area" />
-                            <text x="620" y="210" fill="#D4AF37" font-family="Cinzel" font-size="10" font-weight="bold" text-anchor="middle" opacity="0.8">
-                                GUAYMALLÉN
-                            </text>
-                        </g>
-
-                        <!-- Zone 3: Godoy Cruz & Palmares -->
-                        <g id="zone-shape-palmares" class="zone-group" onclick="setZone('palmares')">
-                            <polygon points="370,295 560,280 540,390 350,390" 
-                                     fill="rgba(234, 179, 8, 0.05)" stroke="#D4AF37" stroke-width="1.2" stroke-opacity="0.3" class="zone-area" />
-                            <text x="450" y="340" fill="#D4AF37" font-family="Cinzel" font-size="10" font-weight="bold" text-anchor="middle" opacity="0.8">
-                                GODOY CRUZ • PALMARES
-                            </text>
-                        </g>
-
-                        <!-- Zone 4: Chacras de Coria -->
-                        <g id="zone-shape-chacras" class="zone-group" onclick="setZone('chacras')">
-                            <polygon points="340,405 530,405 510,510 320,490" 
-                                     fill="url(#zoneGradChacras)" stroke="#10B981" stroke-width="1.2" stroke-opacity="0.4" class="zone-area" />
-                            <text x="420" y="455" fill="#6EE7B7" font-family="Cinzel" font-size="11" font-weight="bold" text-anchor="middle" letter-spacing="1">
-                                CHACRAS DE CORIA
-                            </text>
-                        </g>
-
-                        <!-- Zone 5: Vistalba & Luján de Cuyo Viñedos -->
-                        <g id="zone-shape-lujan" class="zone-group" onclick="setZone('lujan')">
-                            <polygon points="310,505 520,520 490,620 270,610" 
-                                     fill="url(#zoneGradLujan)" stroke="#A78BFA" stroke-width="1.2" stroke-opacity="0.4" class="zone-area" />
-                            <text x="390" y="570" fill="#C4B5FD" font-family="Cinzel" font-size="11" font-weight="bold" text-anchor="middle" letter-spacing="1">
-                                VISTALBA • LUJÁN DE CUYO
-                            </text>
-                        </g>
-
-                        <!-- Connecting Regional Corridors / Routes -->
-                        <path d="M 450,140 L 445,270 L 440,395 L 420,495 L 390,600" 
-                              fill="none" stroke="rgba(212, 175, 55, 0.2)" stroke-width="2" stroke-dasharray="3,3" />
-                        <text x="460" y="380" fill="rgba(255,255,255,0.25)" font-size="8" font-family="monospace">
-                            Ruta Panamericana / Acceso Sur
-                        </text>
-
-                        <!-- DYNAMIC INTERACTIVE SPOTS NODES CONTAINER -->
-                        <g id="svg-nodes-container">
-                            <!-- Injected by renderSvgMapNodes() -->
-                        </g>
-                    </svg>
-
-                </div>
-
-                <!-- Map Bottom Legend -->
-                <div class="bg-[#111111]/90 backdrop-blur border border-brand-gold/20 rounded-2xl p-2.5 px-4 flex flex-wrap items-center justify-between gap-2 text-[11px] z-10">
-                    <div class="flex items-center gap-3 text-gray-300 flex-wrap">
-                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-brand-gold inline-block"></span> Cocktail / Speakeasy</span>
-                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-purple-400 inline-block"></span> Bodega & Vistas</span>
-                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span> Restó Gourmet</span>
-                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-400 inline-block"></span> Nightlife</span>
-                    </div>
-                    <div class="text-brand-goldLight text-[10px] font-mono">
-                        Mysterik Interactive Radar
-                    </div>
+                <!-- Bottom Status Pill -->
+                <div class="absolute bottom-4 left-4 z-[400] bg-[#111111]/95 border border-brand-gold/30 rounded-2xl p-2 px-3.5 shadow-2xl backdrop-blur hidden sm:flex items-center gap-2.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span class="text-xs font-bold text-white">Mendoza, Argentina</span>
+                    <span class="text-[11px] text-brand-goldLight/80">• Puntos interactivos con ubicación exacta</span>
                 </div>
 
             </section>
 
             <!-- SPOTS LIST / CARDS FEED (Right on desktop, Bottom on mobile) -->
-            <section id="feed-panel" class="w-full lg:w-1/2 xl:w-5/12 h-1/2 lg:h-full flex flex-col bg-[#0c0c0c] z-20">
+            <section id="feed-panel" class="w-full lg:w-1/2 xl:w-5/12 h-1/2 lg:h-full flex flex-col bg-[#0c0c0c] z-20 order-2 lg:order-2">
                 
                 <!-- Feed Header -->
                 <div class="px-4 py-3 bg-[#121212] border-b border-brand-gold/15 flex items-center justify-between text-xs">
                     <div class="flex items-center gap-2">
-                        <span id="results-count" class="font-bold text-brand-gold font-mono">10</span>
+                        <span id="results-count" class="font-bold text-brand-gold font-mono">11</span>
                         <span class="text-gray-400">lugares destacados en Mendoza</span>
                     </div>
                     <div class="flex items-center gap-1 text-[11px] text-gray-400">
@@ -429,7 +396,7 @@
 
                 <!-- Direct WhatsApp Link Footer -->
                 <div class="p-3 bg-[#080808] border-t border-brand-gold/15 text-center text-xs flex items-center justify-between px-4">
-                    <span class="text-gray-400 text-[11px]">¿Tienes dudas o buscas una mesa especial?</span>
+                    <span class="text-gray-400 text-[11px]">¿Buscas una mesa o coordinar tu salida?</span>
                     <button onclick="openGeneralConcierge()" class="text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1.5 transition-colors text-xs">
                         <i class="fa-brands fa-whatsapp text-sm"></i>
                         <span>Asistente Mysterik</span>
@@ -505,7 +472,7 @@
     <script>
         /**
          * MYSTERIK NET • MENDOZA EXPERIENCE MAP
-         * Curated list of spots in Mendoza with SVG Map Coordinates & Google Maps Navigation
+         * Real Curated Spots in Gran Mendoza with Real GPS Coordinates & Google Maps Navigation
          */
         const SPOTS_DATA = [
             {
@@ -514,12 +481,12 @@
                 category: 'cocktail',
                 categoryLabel: 'Cocktail & Speakeasy',
                 icon: '🍸',
-                nodeColor: '#D4AF37',
+                pinColor: '#D4AF37',
                 zone: 'aristides',
                 zoneLabel: 'Arístides Villanueva, Mendoza',
                 address: 'Arístides Villanueva 241, Ciudad de Mendoza',
-                svgX: 430,
-                svgY: 210,
+                lat: -32.8942,
+                lng: -68.8558,
                 mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Gingell+Co+Aristides+Villanueva+241+Mendoza',
                 phone: '5492615551001',
                 rating: 4.9,
@@ -543,12 +510,12 @@
                 category: 'cocktail',
                 categoryLabel: 'Vinos de Autor & Craft Beer',
                 icon: '🍺',
-                nodeColor: '#D4AF37',
+                pinColor: '#D4AF37',
                 zone: 'aristides',
                 zoneLabel: 'Arístides Villanueva, Mendoza',
                 address: 'Arístides Villanueva 383, Ciudad de Mendoza',
-                svgX: 475,
-                svgY: 235,
+                lat: -32.8948,
+                lng: -68.8582,
                 mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Chachingo+Craft+Beer+Aristides+Villanueva+383+Mendoza',
                 phone: '5492615555005',
                 rating: 4.8,
@@ -571,12 +538,12 @@
                 category: 'gourmet',
                 categoryLabel: 'Cocina Mediterránea & Jardín',
                 icon: '🌿',
-                nodeColor: '#F59E0B',
+                pinColor: '#F59E0B',
                 zone: 'aristides',
                 zoneLabel: 'Quinta Sección, Ciudad de Mendoza',
                 address: 'Av. Juan B. Justo 161, Ciudad de Mendoza',
-                svgX: 395,
-                svgY: 185,
+                lat: -32.8902,
+                lng: -68.8540,
                 mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Anna+Bistro+Juan+B+Justo+161+Mendoza',
                 phone: '5492615556006',
                 rating: 4.8,
@@ -599,12 +566,12 @@
                 category: 'cafe',
                 categoryLabel: 'Café de Especialidad & Pastelería',
                 icon: '☕',
-                nodeColor: '#D97706',
+                pinColor: '#D97706',
                 zone: 'aristides',
                 zoneLabel: 'Av. Belgrano, Ciudad de Mendoza',
                 address: 'Av. Belgrano 1184, Ciudad de Mendoza',
-                svgX: 450,
-                svgY: 195,
+                lat: -32.8925,
+                lng: -68.8505,
                 mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Shelter+Coffee+Belgrano+1184+Mendoza',
                 phone: '5492615551010',
                 rating: 4.9,
@@ -626,12 +593,12 @@
                 category: 'gourmet',
                 categoryLabel: 'Restó Gourmet & Carnes Maduradas',
                 icon: '🥩',
-                nodeColor: '#F59E0B',
+                pinColor: '#F59E0B',
                 zone: 'guaymallen',
                 zoneLabel: 'Guaymallén, Mendoza',
                 address: 'Av. Acceso Este 1360, Guaymallén',
-                svgX: 615,
-                svgY: 220,
+                lat: -32.9015,
+                lng: -68.8152,
                 mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Restaurante+Abrasado+Bodega+Los+Toneles+Mendoza',
                 phone: '5492615553003',
                 rating: 4.9,
@@ -654,12 +621,12 @@
                 category: 'nightlife',
                 categoryLabel: 'Club, Shows & Pop',
                 icon: '👑',
-                nodeColor: '#10B981',
+                pinColor: '#10B981',
                 zone: 'guaymallen',
                 zoneLabel: 'Dorrego, Guaymallén',
                 address: '25 de Mayo 318, Dorrego, Guaymallén',
-                svgX: 630,
-                svgY: 260,
+                lat: -32.8988,
+                lng: -68.8350,
                 mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Queen+Disco+25+de+Mayo+318+Guaymallen+Mendoza',
                 phone: '5492615559009',
                 rating: 4.8,
@@ -681,12 +648,12 @@
                 category: 'cocktail',
                 categoryLabel: 'Coctelería Clásica & High-End',
                 icon: '🍸',
-                nodeColor: '#D4AF37',
+                pinColor: '#D4AF37',
                 zone: 'palmares',
                 zoneLabel: 'Palmares Open Mall / Godoy Cruz',
                 address: 'Av. San Martín Sur 2875, Godoy Cruz',
-                svgX: 460,
-                svgY: 335,
+                lat: -32.9515,
+                lng: -68.8610,
                 mapsUrl: 'https://www.google.com/maps/search/?api=1&query=The+Garnish+Bar+Palmares+Open+Mall+Mendoza',
                 phone: '5492615551011',
                 rating: 4.9,
@@ -708,12 +675,12 @@
                 category: 'gourmet',
                 categoryLabel: 'Asador & Pastas en Casona',
                 icon: '🍽️',
-                nodeColor: '#F59E0B',
+                pinColor: '#F59E0B',
                 zone: 'chacras',
                 zoneLabel: 'Chacras de Coria, Luján de Cuyo',
                 address: 'Italia 5829, Chacras de Coria',
-                svgX: 420,
-                svgY: 440,
+                lat: -32.9980,
+                lng: -68.8805,
                 mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Dantesco+Restaurante+Italia+5829+Chacras+de+Coria+Mendoza',
                 phone: '5492615551012',
                 rating: 4.8,
@@ -735,12 +702,12 @@
                 category: 'nightlife',
                 categoryLabel: 'Club Nocturno & Open Air',
                 icon: '🪩',
-                nodeColor: '#10B981',
+                pinColor: '#10B981',
                 zone: 'chacras',
                 zoneLabel: 'Ruta Panamericana, Chacras de Coria',
                 address: 'Ruta Panamericana 7010, Chacras de Coria',
-                svgX: 370,
-                svgY: 470,
+                lat: -33.0012,
+                lng: -68.8950,
                 mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Grita+Silencio+Panamericana+7010+Chacras+de+Coria+Mendoza',
                 phone: '5492615554004',
                 rating: 4.8,
@@ -763,12 +730,12 @@
                 category: 'bodega',
                 categoryLabel: 'Bodega & Vista a la Cordillera',
                 icon: '🍷',
-                nodeColor: '#8B5CF6',
+                pinColor: '#8B5CF6',
                 zone: 'lujan',
                 zoneLabel: 'Vistalba, Luján de Cuyo',
                 address: 'Roque Sáenz Peña 3531, Vistalba, Luján de Cuyo',
-                svgX: 380,
-                svgY: 570,
+                lat: -33.0118,
+                lng: -68.8895,
                 mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Bodega+Vistalba+Roque+Saenz+Pena+3531+Lujan+de+Cuyo+Mendoza',
                 phone: '5492615552002',
                 rating: 5.0,
@@ -784,6 +751,33 @@
                 ],
                 vibes: ['Vista a la Cordillera', 'Fogones al Atardecer', 'Vinos de Alta Gama', 'Música en Vivo'],
                 specialties: ['Corte Vistalba Ícono', 'Tablas de quesos y charcuterie', 'Fuegos al Malbec']
+            },
+            {
+                id: 'santa-julia-maipu',
+                name: 'Bodega Santa Julia • Casa del Visitante',
+                category: 'bodega',
+                categoryLabel: 'Bodega, Viñedos & Almazara',
+                icon: '🍇',
+                pinColor: '#8B5CF6',
+                zone: 'maipu',
+                zoneLabel: 'Ruta del Vino, Maipú, Mendoza',
+                address: 'Ruta Provincial 33 Km 7.5, Fray Luis Beltrán, Maipú',
+                lat: -32.9800,
+                lng: -68.7500,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Bodega+Santa+Julia+Casa+del+Visitante+Maipu+Mendoza',
+                phone: '5492615552015',
+                rating: 4.9,
+                reviewsCount: 610,
+                priceRange: '$$$$',
+                hours: 'Todos los días: 11:00 a 18:00 hs',
+                experienceHighlight: 'Almuerzos criollos maridados con vinos ícono de Familia Zuccardi y visitas entre viñedos y olivos.',
+                description: 'El corazón de la tradición vitivinícola en Maipú. Asados a la llama en hornos de barro, degustación de aceites de oliva virgen extra y jardines cuidados.',
+                image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['Viñedos & Olivos', 'Cocina Criolla a los Fuegos', 'Historia & Tradición'],
+                specialties: ['Menú tradicional de 5 pasos', 'Empanadas mendocinas al horno de barro', 'Vinos Santa Julia Reserva']
             }
         ];
 
@@ -798,6 +792,10 @@
 
         let favorites = JSON.parse(localStorage.getItem('mysterik_favorites') || '[]');
         let currentSelectedSpot = null;
+        let map = null;
+        let markersLayer = null;
+        let activeTileLayer = null;
+        let currentTileTheme = 'voyager';
 
         // Custom Reservation State
         let bookingState = {
@@ -807,34 +805,149 @@
         };
 
         /**
-         * Render Nodes on the Local SVG Map
+         * Initialize Leaflet Map with Real Mendoza Geography
          */
-        function renderSvgMapNodes() {
-            const container = document.getElementById('svg-nodes-container');
-            if (!container) return;
+        function initLeafletMap() {
+            // Mendoza Center (covers Las Heras, Ciudad, Godoy Cruz, Maipú, Chacras, Luján)
+            map = L.map('mendoza-map', {
+                center: [-32.9400, -68.8350],
+                zoom: 12,
+                zoomControl: true,
+                attributionControl: false
+            });
+
+            // Map Tile Layers
+            setTileStyle('voyager');
+
+            markersLayer = L.layerGroup().addTo(map);
+
+            // Render pins
+            renderMapPins();
+
+            // Invalidate size on load to guarantee 100% full render without grey bars
+            setTimeout(() => {
+                if (map) map.invalidateSize();
+            }, 300);
+
+            window.addEventListener('resize', () => {
+                if (map) map.invalidateSize();
+            });
+        }
+
+        /**
+         * Switch Map Styles (Urbano / Oscuro)
+         */
+        function setTileStyle(theme) {
+            currentTileTheme = theme;
+            if (activeTileLayer) {
+                map.removeLayer(activeTileLayer);
+            }
+
+            const btnVoyager = document.getElementById('tile-voyager-btn');
+            const btnDark = document.getElementById('tile-dark-btn');
+
+            if (theme === 'voyager') {
+                // CartoDB Voyager / OpenStreetMap (clean Google Maps-like palette)
+                activeTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                    maxZoom: 19,
+                    subdomains: 'abcd'
+                }).addTo(map);
+
+                if (btnVoyager && btnDark) {
+                    btnVoyager.className = 'px-2.5 py-1 text-[11px] rounded-lg font-bold transition-all bg-brand-gold/20 text-brand-goldLight border border-brand-gold/40';
+                    btnDark.className = 'px-2.5 py-1 text-[11px] rounded-lg font-medium text-gray-400 hover:text-white transition-all';
+                }
+            } else {
+                // CartoDB Dark Matter
+                activeTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png', {
+                    maxZoom: 19,
+                    subdomains: 'abcd'
+                }).addTo(map);
+
+                if (btnVoyager && btnDark) {
+                    btnDark.className = 'px-2.5 py-1 text-[11px] rounded-lg font-bold transition-all bg-brand-gold/20 text-brand-goldLight border border-brand-gold/40';
+                    btnVoyager.className = 'px-2.5 py-1 text-[11px] rounded-lg font-medium text-gray-400 hover:text-white transition-all';
+                }
+            }
+        }
+
+        /**
+         * Create Pin Icon
+         */
+        function createPinIcon(spot, isSelected = false) {
+            const size = isSelected ? 44 : 36;
+            const bgClass = isSelected
+                ? 'bg-gradient-to-br from-brand-gold via-amber-300 to-brand-goldDark text-black scale-110 shadow-pin-glow'
+                : 'bg-[#111111] text-white border-2 border-brand-gold shadow-lg';
+
+            const html = `
+                <div class="custom-mendoza-pin ${bgClass}" style="width: ${size}px; height: ${size}px; font-size: ${size * 0.44}px; border-radius: 50%;">
+                    <span>${spot.icon}</span>
+                </div>
+            `;
+
+            return L.divIcon({
+                html: html,
+                className: 'custom-leaflet-pin',
+                iconSize: [size, size],
+                iconAnchor: [size / 2, size / 2],
+                popupAnchor: [0, -size / 2]
+            });
+        }
+
+        /**
+         * Render Map Pins on Leaflet
+         */
+        function renderMapPins() {
+            if (!map || !markersLayer) return;
+            markersLayer.clearLayers();
 
             const filtered = getFilteredSpots();
 
-            container.innerHTML = filtered.map(spot => {
-                const isSelected = currentSelectedSpot && currentSelectedSpot.id === spot.id;
-                const nodeClass = isSelected ? 'map-node active-node' : 'map-node';
-                
-                return `
-                    <g class="${nodeClass}" id="svg-node-${spot.id}" onclick="onSpotNodeClick('${spot.id}')" transform="translate(${spot.svgX}, ${spot.svgY})">
-                        <!-- Outer Pulse Circle -->
-                        <circle r="22" fill="${spot.nodeColor}" fill-opacity="0.2" class="animate-ping" style="animation-duration: 3s;"></circle>
-                        <!-- Main Node Circle -->
-                        <circle r="16" fill="#111111" stroke="${spot.nodeColor}" stroke-width="2.5" filter="url(#goldGlow)"></circle>
-                        <!-- Icon Emoji -->
-                        <text text-anchor="middle" dy="5" font-size="14">${spot.icon}</text>
-                        <!-- Label Tag -->
-                        <rect x="-60" y="20" width="120" height="18" rx="6" fill="#0c0c0c" fill-opacity="0.9" stroke="${spot.nodeColor}" stroke-width="0.8" stroke-opacity="0.6"></rect>
-                        <text x="0" y="32" text-anchor="middle" fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="8.5" font-weight="700">
-                            ${spot.name.split('•')[0].substring(0, 18)}
-                        </text>
-                    </g>
+            filtered.forEach(spot => {
+                const marker = L.marker([spot.lat, spot.lng], {
+                    icon: createPinIcon(spot)
+                });
+
+                // Custom Popup
+                const popupHtml = `
+                    <div class="p-3 w-64 bg-[#111111] text-gray-100 rounded-2xl overflow-hidden font-sans">
+                        <div class="relative h-28 -mx-3 -mt-3 mb-2.5 overflow-hidden rounded-t-xl">
+                            <img src="${spot.image}" class="w-full h-full object-cover" alt="${spot.name}">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                            <span class="absolute bottom-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded bg-black/80 text-brand-gold border border-brand-gold/40">
+                                ${spot.icon} ${spot.categoryLabel}
+                            </span>
+                        </div>
+                        <h4 class="font-cinzel font-bold text-sm text-white leading-tight mb-1">${spot.name}</h4>
+                        <p class="text-[11px] text-brand-goldLight/90 mb-2 flex items-center gap-1">
+                            <i class="fa-solid fa-location-dot text-[10px] text-brand-gold"></i> ${spot.zoneLabel}
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-1.5 pt-1">
+                            <button onclick="openDetailModal('${spot.id}')" class="py-1.5 px-2 bg-gradient-to-r from-brand-gold to-brand-goldDark text-black text-xs font-bold rounded-lg hover:brightness-110 transition-all flex items-center justify-center gap-1">
+                                <i class="fa-brands fa-whatsapp text-emerald-950 text-xs"></i>
+                                <span>Ver Ficha</span>
+                            </button>
+                            <a href="${spot.mapsUrl}" target="_blank" rel="noopener noreferrer" class="py-1.5 px-2 bg-[#1f1f1f] text-gray-200 text-xs font-semibold rounded-lg hover:text-white border border-gray-700 flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-location-arrow text-brand-gold text-[10px]"></i>
+                                <span>Maps</span>
+                            </a>
+                        </div>
+                    </div>
                 `;
-            }).join('');
+
+                marker.bindPopup(popupHtml, {
+                    maxWidth: 280,
+                    className: 'mysterik-leaflet-popup'
+                });
+
+                marker.on('click', () => {
+                    highlightSpotCard(spot.id);
+                });
+
+                markersLayer.addLayer(marker);
+            });
         }
 
         /**
@@ -893,7 +1006,7 @@
                         </div>
                         <h4 class="font-cinzel text-lg text-white font-bold mb-1">Sin lugares encontrados</h4>
                         <p class="text-xs text-gray-400 mb-4">Prueba seleccionando otra zona o categoría de Mendoza.</p>
-                        <button onclick="resetFilters()" class="px-4 py-2 rounded-full bg-brand-gold/20 border border-brand-gold text-brand-goldLight text-xs font-bold hover:bg-brand-gold hover:text-black transition-all">
+                        <button onclick="resetFiltersAndCenter()" class="px-4 py-2 rounded-full bg-brand-gold/20 border border-brand-gold text-brand-goldLight text-xs font-bold hover:bg-brand-gold hover:text-black transition-all">
                             Restablecer Filtros
                         </button>
                     </div>
@@ -956,7 +1069,7 @@
                                         onclick="event.stopPropagation(); openDetailModal('${spot.id}')" 
                                         class="flex-1 py-1.5 px-2.5 rounded-lg bg-brand-gold/15 hover:bg-brand-gold hover:text-black text-brand-goldLight text-[11px] font-bold border border-brand-gold/40 transition-all flex items-center justify-center gap-1.5">
                                         <i class="fa-brands fa-whatsapp text-emerald-400 text-xs"></i>
-                                        <span>Ver & Contactar</span>
+                                        <span>Ver Ficha & Reservar</span>
                                     </button>
 
                                     <a 
@@ -979,16 +1092,21 @@
         }
 
         /**
-         * Handle Spot Click from Node or Card
+         * Handle Spot Click from Pin or Card
          */
-        function onSpotNodeClick(spotId) {
-            highlightSpotCard(spotId);
-            openDetailModal(spotId);
-        }
-
         function onSpotCardClick(spotId) {
-            currentSelectedSpot = SPOTS_DATA.find(s => s.id === spotId);
-            renderSvgMapNodes();
+            const spot = SPOTS_DATA.find(s => s.id === spotId);
+            if (!spot) return;
+
+            currentSelectedSpot = spot;
+
+            if (map) {
+                map.flyTo([spot.lat, spot.lng], 15, {
+                    duration: 1.0,
+                    animate: true
+                });
+            }
+
             openDetailModal(spotId);
         }
 
@@ -1284,7 +1402,6 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
             setTimeout(() => {
                 modal.classList.add('hidden');
                 currentSelectedSpot = null;
-                renderSvgMapNodes();
             }, 300);
         }
 
@@ -1301,7 +1418,7 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
                 }
             });
             renderSpotsList();
-            renderSvgMapNodes();
+            renderMapPins();
         }
 
         function setZone(zone) {
@@ -1309,7 +1426,22 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
             const zoneSelect = document.getElementById('zone-select');
             if (zoneSelect) zoneSelect.value = zone;
             renderSpotsList();
-            renderSvgMapNodes();
+            renderMapPins();
+
+            // Pan map to zone
+            if (map) {
+                const zoneCoordinates = {
+                    'all': [-32.9400, -68.8350, 12],
+                    'aristides': [-32.8942, -68.8558, 15],
+                    'chacras': [-32.9980, -68.8870, 14],
+                    'lujan': [-33.0118, -68.8895, 14],
+                    'maipu': [-32.9800, -68.7500, 13],
+                    'guaymallen': [-32.9015, -68.8250, 14],
+                    'palmares': [-32.9515, -68.8610, 15]
+                };
+                const target = zoneCoordinates[zone] || zoneCoordinates['all'];
+                map.flyTo([target[0], target[1]], target[2], { duration: 1.0 });
+            }
         }
 
         function handleSearch(val) {
@@ -1320,7 +1452,7 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
                 else clearBtn.classList.add('hidden');
             }
             renderSpotsList();
-            renderSvgMapNodes();
+            renderMapPins();
         }
 
         function clearSearch() {
@@ -1345,7 +1477,7 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
                 btn.classList.remove('bg-rose-950/40', 'border-rose-500', 'text-rose-400');
             }
             renderSpotsList();
-            renderSvgMapNodes();
+            renderMapPins();
         }
 
         function toggleFavorite(spotId) {
@@ -1364,7 +1496,7 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
             if (badge) badge.textContent = favorites.length;
         }
 
-        function resetFilters() {
+        function resetFiltersAndCenter() {
             currentFilter = {
                 category: 'all',
                 zone: 'all',
@@ -1376,31 +1508,46 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
             if (zoneSelect) zoneSelect.value = 'all';
             clearSearch();
             setCategory('all');
+            recenterMap();
         }
 
-        function resetMapView() {
-            resetFilters();
+        function recenterMap() {
+            if (map) {
+                map.flyTo([-32.9400, -68.8350], 12, { duration: 1.0 });
+                setTimeout(() => map.invalidateSize(), 300);
+            }
         }
 
         function setViewMode(mode) {
             const mapPanel = document.getElementById('map-panel');
             const feedPanel = document.getElementById('feed-panel');
             const btnSplit = document.getElementById('view-split-btn');
+            const btnMap = document.getElementById('view-map-btn');
             const btnCards = document.getElementById('view-cards-btn');
+
+            [btnSplit, btnMap, btnCards].forEach(b => {
+                b.className = 'p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1';
+            });
 
             if (mode === 'split') {
                 mapPanel.classList.remove('hidden');
                 feedPanel.classList.remove('hidden', 'w-full');
                 feedPanel.classList.add('w-full', 'lg:w-1/2', 'xl:w-5/12');
                 btnSplit.className = 'p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium transition-all nav-tab-active flex items-center gap-1';
-                btnCards.className = 'p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1';
+            } else if (mode === 'map') {
+                feedPanel.classList.add('hidden');
+                mapPanel.classList.remove('hidden');
+                btnMap.className = 'p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium transition-all nav-tab-active flex items-center gap-1';
             } else if (mode === 'cards') {
                 mapPanel.classList.add('hidden');
                 feedPanel.classList.remove('hidden', 'lg:w-1/2', 'xl:w-5/12');
                 feedPanel.classList.add('w-full');
                 btnCards.className = 'p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium transition-all nav-tab-active flex items-center gap-1';
-                btnSplit.className = 'p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1';
             }
+
+            setTimeout(() => {
+                if (map) map.invalidateSize();
+            }, 300);
         }
 
         /**
@@ -1442,7 +1589,7 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            renderSvgMapNodes();
+            initLeafletMap();
             renderSpotsList();
             updateFavCount();
         });
