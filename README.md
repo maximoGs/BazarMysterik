@@ -1,42 +1,37 @@
-# ✨ Mysterik Net • Mendoza Experience Map & VIP Pass
+# ✨ Mysterik Net • Mendoza Experience Map
 
-Centralizador interactivo, adictivo y refinado para descubrir los mejores comercios gastronómicos, bodegas, speakeasies y boliches de **Mendoza, Argentina**, con beneficios exclusivos de la red Mysterik Net y reservas directas por WhatsApp.
-
----
-
-## 🌟 Características Principales
-
-- **🗺️ Mapa Interactivo de Mendoza (Leaflet.js + CartoDB Dark Matter):**
-  - Marcadores animados con efecto neón dorado (`#D4AF37`) según la categoría del comercio.
-  - Coordenadas reales de Ciudad de Mendoza (Arístides Villanueva, Centro), Chacras de Coria, Luján de Cuyo, Maipú y Godoy Cruz / Palmares.
-  - Sincronización fluida y bidireccional entre el mapa y el feed de tarjetas.
-
-- **💎 Fichas de Comercios Expandibles:**
-  - Galería fotográfica en alta calidad.
-  - Horarios, rango de precio, etiquetas de vibra (*Live DJ*, *Fuegos al atardecer*, *Speakeasy*, *Pet Friendly*).
-  - Destacado del **Beneficio Exclusivo Mysterik Net** (ej: cóctel de cortesía, mesa VIP sin fila, 20% OFF, degustación secreta).
-
-- **📲 Generador de Reservas & Experiencias por WhatsApp:**
-  - Selector táctil de cantidad de personas (`- / +`).
-  - Selector de momento (Hoy, Mañana, Fin de semana, etc.) y tipo de plan (Cena, Sunset, Mesa VIP boliche).
-  - Generación automática del mensaje con formato oficial de Mysterik Net para activar el beneficio con el local.
-
-- **🔮 Oráculo Mysterik (Ruleta de Gamificación):**
-  - Experiencia gamificada "¿Qué pinta hoy?" para indecisos con sorteo animado y beneficios sorpresa.
-
-- **🔍 Búsqueda & Filtros Dinámicos:**
-  - Por categorías: *Cocktails & Speakeasy*, *Bodegas & Sunsets*, *Restó Gourmet*, *Clubs & Boliches*, *Café & Brunch*.
-  - Por zonas de Mendoza: *Arístides*, *Chacras*, *Bodegas Maipú/Luján*, *Palmares*, etc.
-  - Sistema de favoritos persistente en `LocalStorage`.
-  - Botón de geolocalización (*Cerca de mí*).
-
-- **📱 Modos de Vista Responsive:**
-  - **Split View:** Mapa interactivo + Feed lateral.
-  - **Solo Mapa:** Vista radar inmersiva.
-  - **Solo Tarjetas:** Catálogo en cuadrícula.
+Plataforma interactiva para descubrir los mejores bares speakeasy, bodegas, restaurantes gourmet y clubes de **Mendoza, Argentina**, con mapa regional interactivo local, botón directo a Google Maps y asistente de contacto para experiencias especiales por WhatsApp de parte de **Mysterik Net**.
 
 ---
 
-## 🚀 Despliegue
+## 🌟 Características
 
-La aplicación está construida en una arquitectura ligera y autónoma, lista para desplegar en **GitHub Pages**, **Cloudflare Pages** o **Vercel** simplemente sirviendo la raíz del repositorio.
+- **🗺️ Mapa Regional de Mendoza Integrado Localmente:**
+  - Mapa vectorial interactivo (100% autónomo, sin dependencias de tiles externas o fallos de red).
+  - Puntos interactivos con aura dorada (`#D4AF37`) y delimitación de zonas: *Ciudad / Arístides Villanueva*, *Chacras de Coria*, *Vistalba & Luján de Cuyo*, *Godoy Cruz / Palmares* y *Guaymallén*.
+  - Sincronización instantánea con el feed de lugares.
+
+- **📍 Botón Directo a Google Maps:**
+  - Cada lugar expandible incluye un botón directo a su ubicación exacta en Google Maps para una navegación rápida y sin fricción.
+
+- **📲 Asistente de Contacto por WhatsApp:**
+  - Selector ágil de número de personas (`- / +`).
+  - Selección de momento estimado y tipo de plan (*Cena / Tragos*, *Sunset / Vinos*, *Mesa / Fiesta*).
+  - Generación automática del mensaje estructurado de parte de **Mysterik Net** para coordinar la experiencia especial.
+
+- **💎 Lugares Curados de Ejemplo:**
+  - *Gingell Co. Speakeasy* (Arístides)
+  - *Bodega Vistalba Sunset Lounge* (Luján de Cuyo)
+  - *Abrasado Bodega Los Toneles* (Guaymallén)
+  - *Anna Bistró Secret Garden* (Quinta Sección)
+  - *The Garnish Bar Lounge* (Palmares / Godoy Cruz)
+  - *Chachingo Craft Beer & Wine* (Arístides)
+  - *Dantesco Casona & Fuegos* (Chacras de Coria)
+  - *Grita Silencio Club* (Chacras)
+  - *Queen Disco* (Guaymallén)
+  - *Shelter Coffee Roasters* (Belgrano)
+
+- **🔍 Filtros & Vistas:**
+  - Filtros por categoría y por zona de Mendoza.
+  - Modos de visualización: **Explorar (Mapa + Tarjetas)** y **Solo Lugares**.
+  - Buscador predictivo en tiempo real y favoritos guardados en `LocalStorage`.

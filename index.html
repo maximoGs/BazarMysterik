@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mysterik Net • Mendoza Experience Map & VIP Pass</title>
+    <title>Mysterik Net • Mendoza Experience Map</title>
     
     <!-- Meta SEO & Social Graph -->
-    <meta name="description" content="Descubre los comercios adheridos a Mysterik Net en Mendoza: bares speakeasy, bodegas exclusivas, sunsets, restós de alta gama y boliches con beneficios y reserva por WhatsApp.">
+    <meta name="description" content="Guía selecta y mapa interactivo de Mendoza: bares speakeasy, bodegas exclusivas, restós gourmet y clubes nocturnos con reserva directa por WhatsApp de parte de Mysterik Net.">
     <meta name="theme-color" content="#070707">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -23,9 +23,6 @@
     <!-- FontAwesome 6 CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -38,13 +35,12 @@
                             black: '#070707',
                             dark: '#0e0e0e',
                             card: '#141414',
-                            surface: '#1c1c1c',
+                            surface: '#1b1b1b',
                             border: '#2a2415',
                             borderHover: '#d4af37',
                             gold: '#D4AF37',
                             goldLight: '#FFF3B0',
-                            goldDark: '#AA771C',
-                            neon: '#e5b83b'
+                            goldDark: '#AA771C'
                         }
                     },
                     fontFamily: {
@@ -53,17 +49,14 @@
                         serif: ['"Playfair Display"', 'serif']
                     },
                     boxShadow: {
-                        'gold-glow': '0 0 25px rgba(212, 175, 55, 0.28)',
-                        'gold-lg': '0 10px 40px -10px rgba(212, 175, 55, 0.35)',
-                        'neon-pin': '0 0 15px #D4AF37, 0 0 30px rgba(212, 175, 55, 0.5)'
+                        'gold-glow': '0 0 25px rgba(212, 175, 55, 0.25)',
+                        'gold-lg': '0 10px 35px -10px rgba(212, 175, 55, 0.35)',
+                        'node-active': '0 0 20px #D4AF37, 0 0 40px rgba(212, 175, 55, 0.6)'
                     }
                 }
             }
         }
     </script>
-
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <style>
         /* Custom Scrollbar */
@@ -72,116 +65,65 @@
         ::-webkit-scrollbar-thumb { background: #2f2714; border-radius: 9999px; }
         ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
 
-        .gold-gradient-text {
-            background: linear-gradient(135deg, #FFFFFF 0%, #FFF3B0 30%, #D4AF37 70%, #AA771C 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
         .gold-border-glow {
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.25);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .gold-border-glow:hover {
             border-color: #D4AF37;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.22);
         }
 
         .glass-header {
-            background: rgba(8, 8, 8, 0.88);
+            background: rgba(8, 8, 8, 0.90);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
         }
 
         .glass-card {
-            background: rgba(18, 18, 18, 0.82);
+            background: rgba(18, 18, 18, 0.85);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
 
-        /* Leaflet Custom Tile and Map Settings */
-        #mendoza-map {
-            width: 100%;
-            height: 100%;
-            background: #090909;
-        }
-        .leaflet-container {
-            background-color: #070707 !important;
-            font-family: 'Plus Jakarta Sans', sans-serif !important;
-        }
-        .leaflet-bar {
-            border: 1px solid rgba(212, 175, 55, 0.3) !important;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8) !important;
-            border-radius: 10px !important;
-            overflow: hidden;
-        }
-        .leaflet-bar a {
-            background-color: #141414 !important;
-            color: #D4AF37 !important;
-            border-bottom: 1px solid #2a2415 !important;
-            transition: all 0.2s ease;
-        }
-        .leaflet-bar a:hover {
-            background-color: #242014 !important;
-            color: #FFF3B0 !important;
+        /* Interactive Vector Map Styles */
+        .map-grid-bg {
+            background-color: #080808;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 60%),
+                linear-gradient(rgba(212, 175, 55, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212, 175, 55, 0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
         }
 
-        /* Pulse animation for markers */
-        @keyframes pinPulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(212, 175, 55, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        @keyframes pulseNode {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.18); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.9; }
         }
 
-        .custom-map-marker {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 9999px;
+        .map-node {
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             cursor: pointer;
-            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .custom-map-marker:hover {
-            transform: scale(1.22) translateY(-4px);
-            z-index: 999 !important;
+        .map-node:hover {
+            transform: scale(1.3) translateY(-4px);
+            z-index: 50;
         }
-        .marker-pulse-active {
-            animation: pinPulse 2s infinite;
-        }
-
-        /* Custom Leaflet Popup */
-        .leaflet-popup-content-wrapper {
-            background: #111111 !important;
-            color: #fff !important;
-            border: 1px solid rgba(212, 175, 55, 0.4) !important;
-            border-radius: 16px !important;
-            padding: 0 !important;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.2) !important;
-        }
-        .leaflet-popup-content {
-            margin: 0 !important;
-            line-height: 1.4 !important;
-        }
-        .leaflet-popup-tip {
-            background: #111111 !important;
-            border: 1px solid rgba(212, 175, 55, 0.4) !important;
-        }
-        .leaflet-container a.leaflet-popup-close-button {
-            color: #D4AF37 !important;
-            padding: 8px 12px !important;
-            font-size: 18px !important;
+        .map-node.active-node {
+            animation: pulseNode 2s infinite ease-in-out;
+            transform: scale(1.25);
+            z-index: 40;
         }
 
-        /* Roulette Glow Spin */
-        @keyframes rouletteGlow {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .zone-area {
+            transition: all 0.4s ease;
         }
-        .roulette-spinning {
-            animation: rouletteGlow 0.4s linear infinite;
+        .zone-area:hover {
+            fill-opacity: 0.25;
+            stroke-width: 2.5;
         }
 
-        /* Floating Nav Active indicator */
         .nav-tab-active {
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(170, 119, 28, 0.3) 100%);
             border-color: #D4AF37;
@@ -193,20 +135,20 @@
 
 <body class="bg-brand-black text-gray-100 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-gold selection:text-black overflow-x-hidden">
 
-    <!-- TOP TICKER BAR -->
+    <!-- TOP ANNOUNCEMENT BAR -->
     <aside class="bg-gradient-to-r from-[#050505] via-[#1a1506] to-[#050505] border-b border-brand-gold/25 py-1.5 px-3 text-center text-[11px] tracking-wider text-brand-goldLight flex items-center justify-between z-50">
         <div class="hidden sm:flex items-center gap-2 text-brand-gold/80 pl-2">
             <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-            <span class="text-[10px] font-semibold tracking-widest uppercase">Mendoza Live Vibe Network</span>
+            <span class="text-[10px] font-semibold tracking-widest uppercase">Mendoza • Red Mysterik Net</span>
         </div>
         <div class="flex items-center justify-center gap-2 mx-auto font-medium">
-            <i class="fa-solid fa-gem text-brand-gold text-[10px] animate-bounce"></i>
-            <span>Pase Especial <strong class="text-white font-cinzel">Mysterik Net</strong>: Desbloquea beneficios VIP al contactar por WhatsApp</span>
+            <i class="fa-solid fa-gem text-brand-gold text-[10px]"></i>
+            <span>Experiencias selectas en Mendoza • Contacta directamente por WhatsApp de parte de <strong class="text-white font-cinzel">Mysterik Net</strong></span>
             <i class="fa-solid fa-sparkles text-brand-gold text-[10px]"></i>
         </div>
         <div class="hidden md:flex items-center gap-3 pr-2">
             <button onclick="openJoinModal()" class="text-[10px] uppercase font-bold text-brand-gold hover:text-white transition-colors underline decoration-brand-gold/50">
-                Sumar mi Comercio
+                Sumar Comercio
             </button>
         </div>
     </aside>
@@ -215,8 +157,8 @@
     <header class="sticky top-0 z-40 glass-header border-b border-brand-gold/20 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-3">
             
-            <!-- LOGO & BRAND -->
-            <div class="flex items-center gap-3 cursor-pointer group" onclick="resetFiltersAndCenter()">
+            <!-- BRAND LOGO -->
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="resetFilters()">
                 <div class="relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-brand-gold/30 to-brand-goldDark/10 p-[1.5px] shadow-gold-glow flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
                     <img src="logomysterik.png" alt="Mysterik Net Logo" class="w-full h-full object-contain rounded-[10px] bg-black/70 p-1" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=100&q=80';">
                 </div>
@@ -225,18 +167,18 @@
                         <span class="font-cinzel text-lg sm:text-2xl font-bold tracking-widest text-white group-hover:text-brand-gold transition-colors">MYSTERIK</span>
                         <span class="text-xs font-bold px-1.5 py-0.5 rounded bg-brand-gold/20 text-brand-goldLight font-mono border border-brand-gold/30">NET</span>
                     </div>
-                    <p class="text-[10px] sm:text-xs text-brand-gold/75 tracking-wider uppercase font-medium">Mendoza Curated Experience Map</p>
+                    <p class="text-[10px] sm:text-xs text-brand-gold/75 tracking-wider uppercase font-medium">Mendoza Experience Map & Concierge</p>
                 </div>
             </div>
 
-            <!-- SEARCH BAR (Center Desktop) -->
+            <!-- SEARCH BAR (Desktop) -->
             <div class="hidden md:flex flex-1 max-w-md mx-4 relative">
                 <div class="relative w-full">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-gold/60 text-xs"></i>
                     <input 
                         type="text" 
                         id="search-input" 
-                        placeholder="Buscar por bar, bodega, Arístides, Chacras, vino..." 
+                        placeholder="Buscar bares, bodegas, restós, Arístides, Chacras..." 
                         oninput="handleSearch(this.value)"
                         class="w-full bg-[#121212]/90 border border-brand-gold/25 rounded-full pl-9 pr-8 py-2 text-xs text-white placeholder-gray-400 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-all"
                     >
@@ -249,56 +191,27 @@
             <!-- RIGHT ACTIONS -->
             <div class="flex items-center gap-2 sm:gap-3">
                 
-                <!-- ORACULO / ROULETTE GAMIFIED BUTTON -->
-                <button 
-                    onclick="openRouletteModal()" 
-                    title="¿Qué pinta hoy? Gira el Oráculo de Mendoza"
-                    class="relative group px-3 sm:px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/20 via-brand-gold/30 to-amber-700/20 border border-brand-gold/60 text-brand-goldLight text-xs font-bold tracking-wide flex items-center gap-1.5 shadow-gold-glow hover:shadow-gold-lg hover:border-brand-gold hover:scale-105 transition-all duration-300">
-                    <span class="text-sm animate-pulse">🔮</span>
-                    <span class="hidden sm:inline">Oráculo Mysterik</span>
-                    <span class="sm:hidden">Sortear</span>
-                    <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-brand-gold rounded-full animate-ping"></span>
-                </button>
-
-                <!-- GEOLOCATION NEAR ME BUTTON -->
-                <button 
-                    onclick="locateUser()" 
-                    id="btn-geolocate"
-                    title="Cerca de mí en Mendoza"
-                    class="p-2 sm:px-3 sm:py-2 rounded-full bg-[#161616] border border-brand-gold/30 text-gray-300 hover:text-brand-goldLight hover:border-brand-gold text-xs flex items-center gap-1.5 transition-all">
-                    <i class="fa-solid fa-location-crosshairs text-brand-gold text-sm"></i>
-                    <span class="hidden lg:inline">Cerca de mí</span>
-                </button>
-
-                <!-- VIEW MODE TOGGLE (Desktop / Mobile) -->
+                <!-- VIEW MODE TOGGLE -->
                 <div class="flex items-center bg-[#141414] p-1 rounded-xl border border-brand-gold/25">
                     <button 
                         id="view-split-btn" 
                         onclick="setViewMode('split')" 
-                        title="Vista Dividida (Mapa + Lista)"
+                        title="Vista Dividida"
                         class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium transition-all nav-tab-active flex items-center gap-1">
-                        <i class="fa-solid fa-columns"></i>
-                        <span class="hidden xl:inline text-[11px]">Explorar</span>
-                    </button>
-                    <button 
-                        id="view-map-btn" 
-                        onclick="setViewMode('map')" 
-                        title="Solo Mapa"
-                        class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1">
                         <i class="fa-solid fa-map-location-dot"></i>
-                        <span class="hidden xl:inline text-[11px]">Mapa</span>
+                        <span class="hidden sm:inline text-[11px]">Explorar</span>
                     </button>
                     <button 
                         id="view-cards-btn" 
                         onclick="setViewMode('cards')" 
-                        title="Solo Tarjetas"
+                        title="Solo Lista"
                         class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1">
                         <i class="fa-solid fa-grip"></i>
-                        <span class="hidden xl:inline text-[11px]">Cards</span>
+                        <span class="hidden sm:inline text-[11px]">Lugares</span>
                     </button>
                 </div>
 
-                <!-- FAVORITES BUTTON -->
+                <!-- FAVORITES COUNTER -->
                 <button 
                     onclick="toggleFavoritesFilter()" 
                     id="btn-favorites-filter"
@@ -311,197 +224,240 @@
             </div>
         </div>
 
-        <!-- MOBILE SEARCH & FILTERS BAR -->
+        <!-- MOBILE SEARCH & FILTERS -->
         <div class="px-4 pb-3 flex flex-col gap-2.5 max-w-7xl mx-auto">
-            <!-- Mobile Search Input -->
             <div class="md:hidden relative w-full">
                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-gold/60 text-xs"></i>
                 <input 
                     type="text" 
                     id="search-input-mobile" 
-                    placeholder="Buscar bares, bodegas, boliches, Arístides..." 
+                    placeholder="Buscar spots en Mendoza..." 
                     oninput="handleSearch(this.value)"
                     class="w-full bg-[#121212] border border-brand-gold/25 rounded-full pl-9 pr-8 py-2 text-xs text-white placeholder-gray-400 focus:outline-none focus:border-brand-gold"
                 >
             </div>
 
-            <!-- FILTER CHIPS: CATEGORIES & ZONES -->
+            <!-- FILTER CHIPS -->
             <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
-                
-                <!-- Categorías -->
-                <button onclick="setCategory('all')" class="category-chip px-3 py-1.5 rounded-full border border-brand-gold/30 bg-brand-gold/15 text-brand-goldLight font-semibold whitespace-nowrap flex items-center gap-1.5 active-chip" data-cat="all">
+                <button onclick="setCategory('all')" class="category-chip px-3 py-1.5 rounded-full border border-brand-gold/40 bg-brand-gold/20 text-brand-goldLight font-bold whitespace-nowrap flex items-center gap-1.5 active-chip shadow-gold-sm" data-cat="all">
                     <span>✨ Todos</span>
                 </button>
                 <button onclick="setCategory('cocktail')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5" data-cat="cocktail">
                     <span>🍸 Cocktails & Speakeasy</span>
                 </button>
                 <button onclick="setCategory('bodega')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5" data-cat="bodega">
-                    <span>🍷 Bodegas & Sunsets</span>
+                    <span>🍷 Bodegas & Vistas</span>
                 </button>
                 <button onclick="setCategory('gourmet')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5" data-cat="gourmet">
                     <span>🍽️ Restó Gourmet</span>
                 </button>
                 <button onclick="setCategory('nightlife')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5" data-cat="nightlife">
-                    <span>🪩 Clubs & Boliches</span>
+                    <span>🪩 Nightlife & Club</span>
                 </button>
                 <button onclick="setCategory('cafe')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5" data-cat="cafe">
                     <span>☕ Café & Brunch</span>
                 </button>
 
-                <!-- Separador -->
                 <div class="h-4 w-[1px] bg-brand-gold/30 mx-1 flex-shrink-0"></div>
 
                 <!-- Selector de Zona Mendoza -->
-                <div class="flex items-center gap-1.5 flex-shrink-0">
-                    <select id="zone-select" onchange="setZone(this.value)" class="bg-[#141414] border border-brand-gold/30 text-brand-goldLight text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-brand-gold font-medium cursor-pointer">
-                        <option value="all">📍 Toda Mendoza</option>
-                        <option value="aristides">🏙️ Arístides & Centro</option>
-                        <option value="chacras">🌿 Chacras & Luján</option>
-                        <option value="bodegas">🍇 Ruta del Vino & Maipú</option>
-                        <option value="palmares">🍸 Godoy Cruz / Palmares</option>
-                        <option value="uco">🏔️ Valle de Uco</option>
-                    </select>
-                </div>
-
+                <select id="zone-select" onchange="setZone(this.value)" class="bg-[#141414] border border-brand-gold/30 text-brand-goldLight text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-brand-gold font-medium cursor-pointer flex-shrink-0">
+                    <option value="all">📍 Toda Mendoza</option>
+                    <option value="aristides">🏙️ Arístides & Centro</option>
+                    <option value="chacras">🌿 Chacras de Coria</option>
+                    <option value="lujan">🍇 Luján de Cuyo</option>
+                    <option value="guaymallen">🍷 Guaymallén & Bodegas</option>
+                    <option value="palmares">🍸 Godoy Cruz / Palmares</option>
+                </select>
             </div>
         </div>
     </header>
 
-    <!-- MAIN INTERFACE LAYOUT -->
+    <!-- MAIN CONTENT LAYOUT -->
     <main class="flex-1 flex flex-col relative overflow-hidden" style="height: calc(100vh - 128px);">
 
-        <!-- SPLIT CONTAINER -->
         <div id="main-container" class="flex-1 w-full h-full flex flex-col lg:flex-row relative">
 
-            <!-- LEFT/BOTTOM FEED PANEL (Cards Feed) -->
-            <section id="feed-panel" class="w-full lg:w-[480px] xl:w-[540px] h-1/2 lg:h-full flex flex-col bg-[#0b0b0b] border-t lg:border-t-0 lg:border-r border-brand-gold/20 z-20 transition-all duration-300 order-2 lg:order-1">
+            <!-- LOCAL VECTOR MAP OF MENDOZA (Reliable, fast, zero external tile dependency) -->
+            <section id="map-panel" class="w-full lg:w-1/2 xl:w-7/12 h-1/2 lg:h-full relative map-grid-bg border-b lg:border-b-0 lg:border-r border-brand-gold/20 flex flex-col justify-between p-3 sm:p-5 overflow-hidden">
                 
-                <!-- Feed Header with Count & Sort -->
-                <div class="px-4 py-3 bg-[#111111]/90 backdrop-blur border-b border-brand-gold/15 flex items-center justify-between text-xs">
+                <!-- Map Top Bar Indicator -->
+                <div class="flex items-center justify-between z-10">
+                    <div class="bg-black/80 backdrop-blur border border-brand-gold/30 px-3 py-1.5 rounded-xl text-xs flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-brand-gold animate-ping"></span>
+                        <span class="font-cinzel text-brand-gold font-bold">Mapa Regional de Mendoza</span>
+                        <span class="text-[10px] text-gray-400 hidden sm:inline">• Haz clic en un punto para expandir</span>
+                    </div>
+
+                    <button onclick="resetMapView()" class="bg-[#151515]/90 hover:bg-[#202020] border border-brand-gold/30 text-brand-goldLight px-2.5 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition-all">
+                        <i class="fa-solid fa-arrows-rotate text-[10px]"></i>
+                        <span class="text-[11px]">Ver Todo</span>
+                    </button>
+                </div>
+
+                <!-- SVG Interactive Vector Map Canvas -->
+                <div class="flex-1 w-full h-full relative flex items-center justify-center my-2 select-none">
+                    
+                    <svg viewBox="0 0 800 650" class="w-full h-full max-h-[580px] drop-shadow-2xl" id="mendoza-svg-map">
+                        <defs>
+                            <!-- Glow Filter -->
+                            <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="6" result="blur" />
+                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                            </filter>
+                            <!-- Radial Gradients for Zones -->
+                            <radialGradient id="zoneGradCentro" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.18" />
+                                <stop offset="100%" stop-color="#D4AF37" stop-opacity="0.02" />
+                            </radialGradient>
+                            <radialGradient id="zoneGradChacras" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#10B981" stop-opacity="0.15" />
+                                <stop offset="100%" stop-color="#10B981" stop-opacity="0.01" />
+                            </radialGradient>
+                            <radialGradient id="zoneGradLujan" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.15" />
+                                <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.01" />
+                            </radialGradient>
+                        </defs>
+
+                        <!-- Mendoza Andes Mountain Silhouette on the West (Left) -->
+                        <path d="M 30,620 L 60,480 L 90,520 L 130,340 L 160,390 L 190,200 L 220,260 L 250,110 L 280,180 L 300,50 L 30,50 Z" 
+                              fill="rgba(212, 175, 55, 0.03)" stroke="rgba(212, 175, 55, 0.15)" stroke-width="1.5" stroke-dasharray="4,4" />
+                        <text x="70" y="280" fill="rgba(212, 175, 55, 0.4)" font-family="Cinzel" font-size="14" letter-spacing="4" transform="rotate(-90 70,280)">
+                            CORDILLERA DE LOS ANDES
+                        </text>
+
+                        <!-- ZONE REGIONS (Stylized Geometrical Sectors) -->
+                        <!-- Zone 1: Ciudad de Mendoza & Arístides -->
+                        <g id="zone-shape-aristides" class="zone-group" onclick="setZone('aristides')">
+                            <polygon points="360,160 520,130 550,260 380,280" 
+                                     fill="url(#zoneGradCentro)" stroke="#D4AF37" stroke-width="1.2" stroke-opacity="0.4" class="zone-area" />
+                            <text x="440" y="175" fill="#FFF3B0" font-family="Cinzel" font-size="11" font-weight="bold" text-anchor="middle" letter-spacing="1.5">
+                                CIUDAD • ARÍSTIDES
+                            </text>
+                        </g>
+
+                        <!-- Zone 2: Guaymallén & Bodegas Urbanas -->
+                        <g id="zone-shape-guaymallen" class="zone-group" onclick="setZone('guaymallen')">
+                            <polygon points="530,140 700,160 680,290 560,270" 
+                                     fill="rgba(212, 175, 55, 0.05)" stroke="#AA771C" stroke-width="1.2" stroke-opacity="0.3" class="zone-area" />
+                            <text x="620" y="210" fill="#D4AF37" font-family="Cinzel" font-size="10" font-weight="bold" text-anchor="middle" opacity="0.8">
+                                GUAYMALLÉN
+                            </text>
+                        </g>
+
+                        <!-- Zone 3: Godoy Cruz & Palmares -->
+                        <g id="zone-shape-palmares" class="zone-group" onclick="setZone('palmares')">
+                            <polygon points="370,295 560,280 540,390 350,390" 
+                                     fill="rgba(234, 179, 8, 0.05)" stroke="#D4AF37" stroke-width="1.2" stroke-opacity="0.3" class="zone-area" />
+                            <text x="450" y="340" fill="#D4AF37" font-family="Cinzel" font-size="10" font-weight="bold" text-anchor="middle" opacity="0.8">
+                                GODOY CRUZ • PALMARES
+                            </text>
+                        </g>
+
+                        <!-- Zone 4: Chacras de Coria -->
+                        <g id="zone-shape-chacras" class="zone-group" onclick="setZone('chacras')">
+                            <polygon points="340,405 530,405 510,510 320,490" 
+                                     fill="url(#zoneGradChacras)" stroke="#10B981" stroke-width="1.2" stroke-opacity="0.4" class="zone-area" />
+                            <text x="420" y="455" fill="#6EE7B7" font-family="Cinzel" font-size="11" font-weight="bold" text-anchor="middle" letter-spacing="1">
+                                CHACRAS DE CORIA
+                            </text>
+                        </g>
+
+                        <!-- Zone 5: Vistalba & Luján de Cuyo Viñedos -->
+                        <g id="zone-shape-lujan" class="zone-group" onclick="setZone('lujan')">
+                            <polygon points="310,505 520,520 490,620 270,610" 
+                                     fill="url(#zoneGradLujan)" stroke="#A78BFA" stroke-width="1.2" stroke-opacity="0.4" class="zone-area" />
+                            <text x="390" y="570" fill="#C4B5FD" font-family="Cinzel" font-size="11" font-weight="bold" text-anchor="middle" letter-spacing="1">
+                                VISTALBA • LUJÁN DE CUYO
+                            </text>
+                        </g>
+
+                        <!-- Connecting Regional Corridors / Routes -->
+                        <path d="M 450,140 L 445,270 L 440,395 L 420,495 L 390,600" 
+                              fill="none" stroke="rgba(212, 175, 55, 0.2)" stroke-width="2" stroke-dasharray="3,3" />
+                        <text x="460" y="380" fill="rgba(255,255,255,0.25)" font-size="8" font-family="monospace">
+                            Ruta Panamericana / Acceso Sur
+                        </text>
+
+                        <!-- DYNAMIC INTERACTIVE SPOTS NODES CONTAINER -->
+                        <g id="svg-nodes-container">
+                            <!-- Injected by renderSvgMapNodes() -->
+                        </g>
+                    </svg>
+
+                </div>
+
+                <!-- Map Bottom Legend -->
+                <div class="bg-[#111111]/90 backdrop-blur border border-brand-gold/20 rounded-2xl p-2.5 px-4 flex flex-wrap items-center justify-between gap-2 text-[11px] z-10">
+                    <div class="flex items-center gap-3 text-gray-300 flex-wrap">
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-brand-gold inline-block"></span> Cocktail / Speakeasy</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-purple-400 inline-block"></span> Bodega & Vistas</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span> Restó Gourmet</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-400 inline-block"></span> Nightlife</span>
+                    </div>
+                    <div class="text-brand-goldLight text-[10px] font-mono">
+                        Mysterik Interactive Radar
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- SPOTS LIST / CARDS FEED (Right on desktop, Bottom on mobile) -->
+            <section id="feed-panel" class="w-full lg:w-1/2 xl:w-5/12 h-1/2 lg:h-full flex flex-col bg-[#0c0c0c] z-20">
+                
+                <!-- Feed Header -->
+                <div class="px-4 py-3 bg-[#121212] border-b border-brand-gold/15 flex items-center justify-between text-xs">
                     <div class="flex items-center gap-2">
-                        <span id="results-count" class="font-bold text-brand-gold font-mono">14</span>
-                        <span class="text-gray-400">spots exclusivos adheridos</span>
+                        <span id="results-count" class="font-bold text-brand-gold font-mono">10</span>
+                        <span class="text-gray-400">lugares destacados en Mendoza</span>
                     </div>
                     <div class="flex items-center gap-1 text-[11px] text-gray-400">
                         <span>Ordenar:</span>
                         <select id="sort-select" onchange="handleSort(this.value)" class="bg-transparent text-brand-gold font-medium focus:outline-none cursor-pointer">
-                            <option value="recommended" class="bg-black text-white">⭐ Recomendados VIP</option>
-                            <option value="rating" class="bg-black text-white">🔥 Mayor Rating</option>
+                            <option value="recommended" class="bg-black text-white">⭐ Recomendados</option>
+                            <option value="rating" class="bg-black text-white">🔥 Mayor Calificación</option>
                             <option value="name" class="bg-black text-white">🔤 Nombre A-Z</option>
                         </select>
                     </div>
                 </div>
 
-                <!-- Spot Cards Scrollable Container -->
-                <div id="spots-list" class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3.5 divide-y divide-transparent">
-                    <!-- Dynamic cards injected via JS -->
+                <!-- Scrollable Cards Container -->
+                <div id="spots-list" class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3.5">
+                    <!-- Cards injected via JS -->
                 </div>
 
-                <!-- Footer info in Feed -->
-                <div class="p-3 bg-[#080808] border-t border-brand-gold/10 text-center text-[11px] text-gray-500 flex items-center justify-around">
-                    <span class="flex items-center gap-1"><i class="fa-solid fa-shield-halved text-brand-gold/70"></i> Comercios Verificados</span>
-                    <span class="flex items-center gap-1"><i class="fa-brands fa-whatsapp text-emerald-400"></i> WhatsApp Directo</span>
-                    <span class="flex items-center gap-1"><i class="fa-solid fa-star text-amber-400"></i> Beneficio Mysterik</span>
-                </div>
-            </section>
-
-            <!-- RIGHT/TOP MAP CONTAINER -->
-            <section id="map-panel" class="w-full lg:flex-1 h-1/2 lg:h-full relative bg-[#070707] order-1 lg:order-2">
-                <!-- Mendoza Leaflet Map -->
-                <div id="mendoza-map"></div>
-
-                <!-- MAP FLOATING OVERLAYS -->
-                <!-- Recenter Map Button -->
-                <button onclick="recenterMap()" title="Centrar Mendoza" class="absolute top-4 right-4 z-[400] bg-[#141414]/90 hover:bg-[#202020] border border-brand-gold/40 text-brand-goldLight p-2.5 rounded-xl shadow-lg hover:scale-105 transition-all text-xs flex items-center gap-1.5 backdrop-blur">
-                    <i class="fa-solid fa-crosshairs text-brand-gold"></i>
-                    <span class="hidden sm:inline font-semibold">Centrar Mapa</span>
-                </button>
-
-                <!-- Floating Live Alert Tag -->
-                <div class="absolute bottom-4 left-4 z-[400] bg-[#111111]/90 border border-brand-gold/30 rounded-2xl p-2.5 px-3.5 shadow-2xl backdrop-blur max-w-xs hidden sm:flex items-center gap-3">
-                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></div>
-                    <div>
-                        <p class="text-[11px] font-bold text-white leading-tight">Red Mysterik Net Activa</p>
-                        <p class="text-[10px] text-brand-gold/80 leading-tight">Mendoza, Argentina • Beneficios listos para canjear</p>
-                    </div>
+                <!-- Direct WhatsApp Link Footer -->
+                <div class="p-3 bg-[#080808] border-t border-brand-gold/15 text-center text-xs flex items-center justify-between px-4">
+                    <span class="text-gray-400 text-[11px]">¿Tienes dudas o buscas una mesa especial?</span>
+                    <button onclick="openGeneralConcierge()" class="text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1.5 transition-colors text-xs">
+                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                        <span>Asistente Mysterik</span>
+                    </button>
                 </div>
             </section>
 
         </div>
     </main>
 
-    <!-- EXPANDABLE SPOT DETAIL MODAL / BOTTOM SHEET -->
-    <div id="detail-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+    <!-- EXPANDABLE SPOT DETAIL MODAL (With Google Maps Button & WhatsApp Concierge) -->
+    <div id="detail-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
         <div id="detail-modal-card" class="bg-[#121212] border border-brand-gold/40 rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300 relative my-auto">
             
-            <!-- Close button -->
+            <!-- Close Button -->
             <button onclick="closeDetailModal()" class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-black/70 hover:bg-black text-brand-gold border border-brand-gold/30 flex items-center justify-center text-sm transition-all hover:scale-110">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
-            <!-- Scrollable Modal Body -->
-            <div class="overflow-y-auto flex-1 p-0 custom-modal-scroll" id="modal-content-container">
-                <!-- Dynamic Content injected by openDetailModal(spotId) -->
+            <!-- Scrollable Modal Content -->
+            <div class="overflow-y-auto flex-1 p-0" id="modal-content-container">
+                <!-- Injected via openDetailModal(spotId) -->
             </div>
 
         </div>
     </div>
 
-    <!-- ROULETTE / ORACULO MYSTERIK MODAL -->
-    <div id="roulette-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-lg hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
-        <div class="bg-[#131313] border border-brand-gold rounded-3xl max-w-md w-full p-6 sm:p-8 text-center shadow-gold-lg relative overflow-hidden">
-            
-            <!-- Background Aura -->
-            <div class="absolute -top-24 -left-24 w-48 h-48 bg-brand-gold/15 rounded-full blur-3xl"></div>
-            <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-amber-600/15 rounded-full blur-3xl"></div>
-
-            <button onclick="closeRouletteModal()" class="absolute top-4 right-4 text-gray-400 hover:text-brand-gold text-lg transition-colors">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-gold/30 to-black border border-brand-gold/60 text-2xl mb-4 shadow-gold-glow">
-                🔮
-            </div>
-
-            <h3 class="font-cinzel text-xl sm:text-2xl font-bold text-white mb-1">Oráculo Mysterik</h3>
-            <p class="text-xs text-brand-goldLight/80 mb-6">¿Indeciso para salir? Deja que la noche de Mendoza elija tu destino y te otorgue un beneficio exclusivo.</p>
-
-            <!-- Roulette Animated Stage -->
-            <div id="roulette-stage" class="bg-[#0a0a0a] border border-brand-gold/30 rounded-2xl p-5 mb-6 min-h-[140px] flex flex-col items-center justify-center relative shadow-inner">
-                <div id="roulette-spinner-icon" class="text-4xl mb-2 text-brand-gold transition-all duration-300">
-                    🎲
-                </div>
-                <div id="roulette-result-title" class="font-cinzel text-lg font-bold text-white">
-                    Toca "Girar Oráculo"
-                </div>
-                <div id="roulette-result-subtitle" class="text-xs text-gray-400 mt-1">
-                    Seleccionando entre los mejores spots de Mendoza...
-                </div>
-                <div id="roulette-result-benefit" class="hidden mt-3 px-3 py-1 rounded-full bg-brand-gold/20 border border-brand-gold/50 text-[11px] text-brand-goldLight font-bold">
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex flex-col gap-2.5">
-                <button 
-                    id="btn-spin-roulette" 
-                    onclick="spinRoulette()" 
-                    class="w-full py-3.5 rounded-xl bg-gradient-to-r from-brand-gold via-amber-400 to-brand-goldDark text-black font-extrabold text-sm tracking-wider uppercase shadow-gold-glow hover:brightness-110 active:scale-95 transition-all">
-                    ✨ Girar Oráculo Ahora ✨
-                </button>
-                <button 
-                    id="btn-view-roulette-spot" 
-                    onclick="viewRouletteWinner()" 
-                    class="hidden w-full py-2.5 rounded-xl bg-[#1d1d1d] hover:bg-[#252525] text-brand-gold border border-brand-gold/40 text-xs font-bold transition-all flex items-center justify-center gap-2">
-                    <i class="fa-brands fa-whatsapp text-emerald-400"></i>
-                    <span>Abrir Ficha & Reservar WhatsApp</span>
-                </button>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- MODAL "SUMAR MI COMERCIO" (B2B) -->
+    <!-- SUMAR COMERCIO MODAL (B2B) -->
     <div id="join-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
         <div class="bg-[#141414] border border-brand-gold/40 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative">
             <button onclick="closeJoinModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -511,69 +467,67 @@
                 <div class="w-12 h-12 rounded-xl bg-brand-gold/20 border border-brand-gold flex items-center justify-center mx-auto mb-3 text-brand-gold text-xl">
                     <i class="fa-solid fa-handshake"></i>
                 </div>
-                <h3 class="font-cinzel text-xl font-bold text-white">Suma tu Comercio a Mysterik Net</h3>
-                <p class="text-xs text-gray-400 mt-1">Conecta con clientes selectos de Mendoza y atrae reservas de forma directa por WhatsApp con beneficios exclusivos.</p>
+                <h3 class="font-cinzel text-xl font-bold text-white">Suma tu Lugar a Mysterik Net</h3>
+                <p class="text-xs text-gray-400 mt-1">Integra tu comercio en el mapa selecto de Mendoza y recibe contactos directos por WhatsApp.</p>
             </div>
 
             <div class="space-y-3.5 text-xs">
                 <div>
-                    <label class="block text-gray-300 font-semibold mb-1">Nombre del Comercio / Local</label>
-                    <input type="text" id="b2b-name" placeholder="Ej: Bar Speakeasy / Bodega X" class="w-full bg-[#0a0a0a] border border-brand-gold/30 rounded-xl px-3.5 py-2.5 text-white focus:border-brand-gold focus:outline-none">
+                    <label class="block text-gray-300 font-semibold mb-1">Nombre del Local</label>
+                    <input type="text" id="b2b-name" placeholder="Ej: Restó / Bar / Bodega" class="w-full bg-[#0a0a0a] border border-brand-gold/30 rounded-xl px-3.5 py-2.5 text-white focus:border-brand-gold focus:outline-none">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-gray-300 font-semibold mb-1">Zona / Ubicación</label>
+                        <label class="block text-gray-300 font-semibold mb-1">Zona</label>
                         <input type="text" id="b2b-zone" placeholder="Ej: Arístides / Chacras" class="w-full bg-[#0a0a0a] border border-brand-gold/30 rounded-xl px-3.5 py-2.5 text-white focus:border-brand-gold focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-gray-300 font-semibold mb-1">Categoría</label>
                         <select id="b2b-cat" class="w-full bg-[#0a0a0a] border border-brand-gold/30 rounded-xl px-3.5 py-2.5 text-white focus:border-brand-gold focus:outline-none">
-                            <option value="Cocktail / Bar">Cocktail / Bar</option>
+                            <option value="Cocktail / Speakeasy">Cocktail / Speakeasy</option>
                             <option value="Bodega / Sunset">Bodega / Sunset</option>
-                            <option value="Restaurante / Gourmet">Restaurante / Gourmet</option>
-                            <option value="Club / Boliche">Club / Boliche</option>
+                            <option value="Restó Gourmet">Restó Gourmet</option>
+                            <option value="Nightlife / Club">Nightlife / Club</option>
                             <option value="Café / Especialidad">Café / Especialidad</option>
                         </select>
                     </div>
                 </div>
-                <div>
-                    <label class="block text-gray-300 font-semibold mb-1">Propuesta de Beneficio Mysterik (Opcional)</label>
-                    <input type="text" id="b2b-perk" placeholder="Ej: Trago de bienvenida, 15% off, pase VIP..." class="w-full bg-[#0a0a0a] border border-brand-gold/30 rounded-xl px-3.5 py-2.5 text-white focus:border-brand-gold focus:outline-none">
-                </div>
 
                 <button onclick="submitB2B()" class="w-full mt-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:brightness-110 text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all">
                     <i class="fa-brands fa-whatsapp text-lg"></i>
-                    <span>Contactar Equipo Mysterik Net</span>
+                    <span>Contactar con Mysterik Net</span>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- JAVASCRIPT APPLICATION CORE -->
+    <!-- JAVASCRIPT APPLICATION LOGIC -->
     <script>
         /**
-         * MYSTERIK NET • MENDOZA EXPERIENCE MAP & VIP PASS
-         * Database of Affiliated Spots in Mendoza, Argentina
+         * MYSTERIK NET • MENDOZA EXPERIENCE MAP
+         * Curated list of spots in Mendoza with SVG Map Coordinates & Google Maps Navigation
          */
         const SPOTS_DATA = [
             {
                 id: 'gingell-co',
                 name: 'Gingell Co. Speakeasy',
                 category: 'cocktail',
-                categoryLabel: 'Cocktail Bar & Speakeasy',
+                categoryLabel: 'Cocktail & Speakeasy',
                 icon: '🍸',
+                nodeColor: '#D4AF37',
                 zone: 'aristides',
                 zoneLabel: 'Arístides Villanueva, Mendoza',
                 address: 'Arístides Villanueva 241, Ciudad de Mendoza',
-                lat: -32.8942,
-                lng: -68.8558,
+                svgX: 430,
+                svgY: 210,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Gingell+Co+Aristides+Villanueva+241+Mendoza',
                 phone: '5492615551001',
                 rating: 4.9,
                 reviewsCount: 312,
                 priceRange: '$$$',
                 hours: 'Mié a Dom: 20:00 a 03:30 hs',
-                badge: '🔥 Speakeasy Destacado',
-                description: 'El speakeasy más exclusivo de la Quinta Sección. Coctelería de autor inspirada en la era de la prohibición, ambiente íntimo a la luz de las velas y una carta secreta de destilados importados.',
+                experienceHighlight: 'Ambiente íntimo a la luz de las velas, coctelería de autor y carta secreta de destilados.',
+                description: 'El speakeasy de la Quinta Sección. Coctelería de autor inspirada en la era de la prohibición, ambientación con iluminación tenue y una cuidada selección de música jazz y deep house.',
                 image: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80',
                 gallery: [
                     'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80',
@@ -581,64 +535,199 @@
                     'https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80'
                 ],
                 vibes: ['Speakeasy Oculto', 'Cocktails de Autor', 'Música Jazz & Deep House', 'Ideal Parejas'],
-                mysterikPerk: '🍸 Cocktail Signature de cortesía con la primera ronda + Acceso prioritario sin espera.',
-                specialties: ['Old Fashioned Ahumado con madera de roble', 'Penicillin Andino', 'Tapas de mollejas crocantes al torrontés']
+                specialties: ['Old Fashioned Ahumado', 'Penicillin Andino', 'Tapas de autor']
             },
             {
-                id: 'vistalba-sunset',
-                name: 'Bodega Vistalba • Sunset Lounge',
-                category: 'bodega',
-                categoryLabel: 'Bodega & Sunset Experience',
-                icon: '🍷',
-                zone: 'chacras',
-                zoneLabel: 'Vistalba, Luján de Cuyo',
-                address: 'Roque Sáenz Peña 3531, Vistalba, Luján de Cuyo',
-                lat: -33.0118,
-                lng: -68.8895,
-                phone: '5492615552002',
-                rating: 5.0,
-                reviewsCount: 520,
-                priceRange: '$$$$',
-                hours: 'Jue a Dom: 17:30 a 01:00 hs',
-                badge: '🌅 Mejor Sunset 2026',
-                description: 'Disfruta de la caída del sol sobre la majestuosa Cordillera de los Andes rodeado de viñedos centenarios. Vinos de alta gama Tomero y Vistalba, cocina a los fuegos y sets de live acoustics y DJs.',
-                image: 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80',
+                id: 'chachingo-aristides',
+                name: 'Chachingo Craft Beer & Wine',
+                category: 'cocktail',
+                categoryLabel: 'Vinos de Autor & Craft Beer',
+                icon: '🍺',
+                nodeColor: '#D4AF37',
+                zone: 'aristides',
+                zoneLabel: 'Arístides Villanueva, Mendoza',
+                address: 'Arístides Villanueva 383, Ciudad de Mendoza',
+                svgX: 475,
+                svgY: 235,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Chachingo+Craft+Beer+Aristides+Villanueva+383+Mendoza',
+                phone: '5492615555005',
+                rating: 4.8,
+                reviewsCount: 810,
+                priceRange: '$$',
+                hours: 'Todos los días: 18:00 a 03:00 hs',
+                experienceHighlight: 'La mística de Alejandro Vigil con cervezas premiadas, vinos extremos de autor y gastronomía urbana.',
+                description: 'Un espacio emblemático en calle Arístides que reúne las reconocidas cervezas artesanales de Chachingo, vinos de autor y un animado patio urbano para disfrutar con amigos.',
+                image: 'https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=800&q=80',
                 gallery: [
-                    'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=800&q=80'
+                    'https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1584225064785-c62a8b43d148?auto=format&fit=crop&w=800&q=80'
                 ],
-                vibes: ['Vista a la Cordillera', 'Fogones al Atardecer', 'Live DJ Sets', 'Vinos Ícono'],
-                mysterikPerk: '🍷 Living VIP frente al viñedo + Copa de Espumante Tomero de bienvenida para todo el grupo.',
-                specialties: ['Corte Vistalba Corte A', 'Tablas de quesos artesanales y charcuterie mendocina', 'Costillar braseado al Malbec']
+                vibes: ['Patio Urbano', 'Vinos de Culto', 'Cervezas de Autor', 'After Office'],
+                specialties: ['Cervezas IPA extremas', 'Hamburguesa Chachingo gourmet', 'Vino El Enemigo']
+            },
+            {
+                id: 'anna-bistro',
+                name: 'Anna Bistró • Secret Garden',
+                category: 'gourmet',
+                categoryLabel: 'Cocina Mediterránea & Jardín',
+                icon: '🌿',
+                nodeColor: '#F59E0B',
+                zone: 'aristides',
+                zoneLabel: 'Quinta Sección, Ciudad de Mendoza',
+                address: 'Av. Juan B. Justo 161, Ciudad de Mendoza',
+                svgX: 395,
+                svgY: 185,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Anna+Bistro+Juan+B+Justo+161+Mendoza',
+                phone: '5492615556006',
+                rating: 4.8,
+                reviewsCount: 750,
+                priceRange: '$$$',
+                hours: 'Lunes a Domingo: 08:00 a 01:00 hs',
+                experienceHighlight: 'Cenas románticas y almuerzos en un parque arbolado secreto en plena ciudad.',
+                description: 'Un oasis verde en la Quinta Sección con cocina mediterránea, opciones de brunch gourmet, pastas artesanales y una excelente cava subterránea.',
+                image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['Jardín Secreto', 'Cocina Mediterránea', 'Desayunos & Cenas', 'Música Chillout'],
+                specialties: ['Lomo al Malbec', 'Crepes de salmón ahumado', 'Tarte Tatin casera']
+            },
+            {
+                id: 'shelter-coffee',
+                name: 'Shelter Coffee • Roasters',
+                category: 'cafe',
+                categoryLabel: 'Café de Especialidad & Pastelería',
+                icon: '☕',
+                nodeColor: '#D97706',
+                zone: 'aristides',
+                zoneLabel: 'Av. Belgrano, Ciudad de Mendoza',
+                address: 'Av. Belgrano 1184, Ciudad de Mendoza',
+                svgX: 450,
+                svgY: 195,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Shelter+Coffee+Belgrano+1184+Mendoza',
+                phone: '5492615551010',
+                rating: 4.9,
+                reviewsCount: 430,
+                priceRange: '$$',
+                hours: 'Lunes a Sábado: 08:30 a 20:30 hs',
+                experienceHighlight: 'Tostaduría de micro-lotes de café y pastelería francesa hojaldrada.',
+                description: 'Referente de la cultura del café de especialidad en Mendoza. Variedades de origen seleccionadas, métodos de filtrado y un ambiente sereno para reuniones o lectura.',
+                image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['Café de Especialidad', 'Pastelería Francesa', 'Espacio Relax'],
+                specialties: ['Flat White', 'Croissant de pistacho', 'Tostón con palta y huevo poché']
             },
             {
                 id: 'abrasado-toneles',
                 name: 'Abrasado • Bodega Los Toneles',
                 category: 'gourmet',
                 categoryLabel: 'Restó Gourmet & Carnes Maduradas',
-                icon: '🍽️',
-                zone: 'bodegas',
-                zoneLabel: 'Guaymallén / Gran Mendoza',
-                address: 'Av. Acceso Este 1360, Guaymallén, Mendoza',
-                lat: -32.9015,
-                lng: -68.8152,
+                icon: '🥩',
+                nodeColor: '#F59E0B',
+                zone: 'guaymallen',
+                zoneLabel: 'Guaymallén, Mendoza',
+                address: 'Av. Acceso Este 1360, Guaymallén',
+                svgX: 615,
+                svgY: 220,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Restaurante+Abrasado+Bodega+Los+Toneles+Mendoza',
                 phone: '5492615553003',
                 rating: 4.9,
                 reviewsCount: 680,
                 priceRange: '$$$$',
                 hours: 'Mar a Sáb: 12:30 a 15:30 / 20:30 a 00:00 hs',
-                badge: '⭐ Galardonado Michelin / Best Of',
-                description: 'Pioneros en la maduración en seco (Dry Aged) de carnes de pastura propia y aceites de oliva premiados. Una experiencia sensorial dentro de una bodega histórica declarada patrimonio cultural.',
+                experienceHighlight: 'Reconocido por carnes Dry Aged maduradas en seco y alta gastronomía en bodega patrimonio cultural.',
+                description: 'Una experiencia culinaria de nivel internacional dentro de una bodega histórica con cavas centenarias, maridajes de vinos de alta gama y atención sommelier personalizada.',
                 image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
                 gallery: [
                     'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80'
+                    'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80'
                 ],
                 vibes: ['Alta Gastronomía', 'Carnes Dry Aged', 'Cava Histórica', 'Servicio Sommelier'],
-                mysterikPerk: '🥩 Degustación de empanadas de carne madurada 45 días + Copa de bienvenida Mosquita Muerta Wines.',
-                specialties: ['Ojo de bife Dry Aged 60 días', 'Risotto de hongos de pino y trufa', 'Volcán de dulce de leche con helado de Malbec']
+                specialties: ['Ojo de bife madurado', 'Risotto trufado', 'Selección de vinos Mosquita Muerta']
+            },
+            {
+                id: 'queen-disco',
+                name: 'Queen Disco Mendoza',
+                category: 'nightlife',
+                categoryLabel: 'Club, Shows & Pop',
+                icon: '👑',
+                nodeColor: '#10B981',
+                zone: 'guaymallen',
+                zoneLabel: 'Dorrego, Guaymallén',
+                address: '25 de Mayo 318, Dorrego, Guaymallén',
+                svgX: 630,
+                svgY: 260,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Queen+Disco+25+de+Mayo+318+Guaymallen+Mendoza',
+                phone: '5492615559009',
+                rating: 4.8,
+                reviewsCount: 780,
+                priceRange: '$$',
+                hours: 'Viernes y Sábados: 00:00 a 06:30 hs',
+                experienceHighlight: 'Legendaria discoteca con shows en vivo de drags, bailarines y gran pista de baile.',
+                description: 'Un clásico de la noche mendocina reconocido por su despliegue escénico, música pop internacional, hits retro y ambiente festivo.',
+                image: 'https://images.unsplash.com/photo-1545128485-c400e7702796?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1545128485-c400e7702796?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['Shows en Vivo', 'Pista Pop & Retro', 'Ambiente Festivo'],
+                specialties: ['Shows de baile y drags', 'Barras con coctelería clásica']
+            },
+            {
+                id: 'the-garnish-bar',
+                name: 'The Garnish Bar • Lounge',
+                category: 'cocktail',
+                categoryLabel: 'Coctelería Clásica & High-End',
+                icon: '🍸',
+                nodeColor: '#D4AF37',
+                zone: 'palmares',
+                zoneLabel: 'Palmares Open Mall / Godoy Cruz',
+                address: 'Av. San Martín Sur 2875, Godoy Cruz',
+                svgX: 460,
+                svgY: 335,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=The+Garnish+Bar+Palmares+Open+Mall+Mendoza',
+                phone: '5492615551011',
+                rating: 4.9,
+                reviewsCount: 380,
+                priceRange: '$$$',
+                hours: 'Mar a Dom: 19:30 a 02:30 hs',
+                experienceHighlight: 'Barra sofisticada con más de 120 etiquetas de destilados y coctelería premiada.',
+                description: 'Un ambiente lounge de primer nivel con una de las colecciones de whiskies y gins más completas de la región, tapas gourmet y música soul.',
+                image: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['Barra Premium', 'Coctelería Molecular', 'Música Nu-Disco'],
+                specialties: ['Smoked Negroni', 'Rolls de autor', 'Gin Tonic botánico']
+            },
+            {
+                id: 'dantesco-chacras',
+                name: 'Dantesco • Casona & Fuegos',
+                category: 'gourmet',
+                categoryLabel: 'Asador & Pastas en Casona',
+                icon: '🍽️',
+                nodeColor: '#F59E0B',
+                zone: 'chacras',
+                zoneLabel: 'Chacras de Coria, Luján de Cuyo',
+                address: 'Italia 5829, Chacras de Coria',
+                svgX: 420,
+                svgY: 440,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Dantesco+Restaurante+Italia+5829+Chacras+de+Coria+Mendoza',
+                phone: '5492615551012',
+                rating: 4.8,
+                reviewsCount: 460,
+                priceRange: '$$$',
+                hours: 'Mar a Dom: 12:30 a 16:00 / 20:30 a 00:30 hs',
+                experienceHighlight: 'Majestuosa casona tradicional con parque arbolado, carnes a las brasas y pastas caseras.',
+                description: 'Ubicado en el corazón residencial de Chacras de Coria, combina la cocina a las brasas con pastas frescas y una atmósfera cálida ideal para compartir.',
+                image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['Parque Arbolado', 'Fuegos & Parrilla', 'Casona Histórica'],
+                specialties: ['Bife de chorizo al quebracho', 'Sorrentinos caseros', 'Flan tradicional']
             },
             {
                 id: 'grita-silencio',
@@ -646,244 +735,59 @@
                 category: 'nightlife',
                 categoryLabel: 'Club Nocturno & Open Air',
                 icon: '🪩',
+                nodeColor: '#10B981',
                 zone: 'chacras',
                 zoneLabel: 'Ruta Panamericana, Chacras de Coria',
                 address: 'Ruta Panamericana 7010, Chacras de Coria',
-                lat: -33.0012,
-                lng: -68.8950,
+                svgX: 370,
+                svgY: 470,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Grita+Silencio+Panamericana+7010+Chacras+de+Coria+Mendoza',
                 phone: '5492615554004',
                 rating: 4.8,
                 reviewsCount: 940,
                 priceRange: '$$$',
-                hours: 'Viernes, Sábados y Vísperas: 23:30 a 06:00 hs',
-                badge: '⚡ Top Nightclub Mendoza',
-                description: 'El epicentro de la fiesta mendocina. Múltiples pistas, sector Open Air bajo las estrellas, sonido Funktion-One y los mejores DJs de cachengue, house y techno internacional.',
+                hours: 'Viernes y Sábados: 23:30 a 06:00 hs',
+                experienceHighlight: 'Club nocturno de gran escala con sector Open Air y cabinas para DJs de renombre.',
+                description: 'Punto de encuentro de la vida nocturna en Chacras de Coria con pistas al aire libre bajo las estrellas, sonido de alta definición y sectores de living VIP.',
                 image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80',
                 gallery: [
                     'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1574391884720-bbc3740c59d1?auto=format&fit=crop&w=800&q=80'
+                    'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80'
                 ],
-                vibes: ['Sector VIP', 'Sonido High-End', 'Open Air', 'Fiesta Hasta el Amanecer'],
-                mysterikPerk: '🎟️ Acceso VIP Free Pass sin fila hasta las 02:00 hs + 15% off en servicio de botellas en mesa.',
-                specialties: ['Coctelería en jarras premium', 'Mesas Ultra VIP con vista a cabina DJ', 'Show de luces robóticas y lásers']
+                vibes: ['Sector VIP', 'Open Air', 'Fiesta & DJs'],
+                specialties: ['Coctelería premium', 'Mesas de living reservadas']
             },
             {
-                id: 'chachingo-aristides',
-                name: 'Chachingo Craft Beer & Wine',
-                category: 'cocktail',
-                categoryLabel: 'Craft Beer, Vinos de Autor & Tapas',
-                icon: '🍺',
-                zone: 'aristides',
-                zoneLabel: 'Arístides Villanueva, Mendoza',
-                address: 'Arístides Villanueva 383, Ciudad de Mendoza',
-                lat: -32.8948,
-                lng: -68.8582,
-                phone: '5492615555005',
-                rating: 4.8,
-                reviewsCount: 810,
-                priceRange: '$$',
-                hours: 'Todos los días: 18:00 a 03:00 hs',
-                badge: '🌟 Creación Alejandro Vigil',
-                description: 'La mística del enólogo Alejandro Vigil en pleno corazón de calle Arístides. Una combinación única de cervezas artesanales galardonadas, vinos extremos de autor y gastronomía callejera gourmet.',
-                image: 'https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=800&q=80',
-                gallery: [
-                    'https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1584225064785-c62a8b43d148?auto=format&fit=crop&w=800&q=80'
-                ],
-                vibes: ['Patio Urbano', 'Vinos de Culto', 'Cervezas Extremas', 'After Office'],
-                mysterikPerk: '🍺 2x1 en Cervezas Artesanales Chachingo durante la primera hora + Degustación de vino El Enemigo.',
-                specialties: ['Cerveza IPA Lupulada Extrema', 'Hamburguesa Chachingo con provoleta y panceta crocante', 'Vino El Enemigo Cabernet Franc']
-            },
-            {
-                id: 'anna-bistro',
-                name: 'Anna Bistró • Secret Garden',
-                category: 'gourmet',
-                categoryLabel: 'Cocina Mediterránea & Jardín Secreto',
-                icon: '🌿',
-                zone: 'aristides',
-                zoneLabel: 'Quinta Sección, Mendoza',
-                address: 'Av. Juan B. Justo 161, Ciudad de Mendoza',
-                lat: -32.8902,
-                lng: -68.8540,
-                phone: '5492615556006',
-                rating: 4.8,
-                reviewsCount: 750,
-                priceRange: '$$$',
-                hours: 'Lunes a Domingo: 08:00 a 01:00 hs',
-                badge: '🍃 Oasis Gastronómico',
-                description: 'Un jardín escondido en plena Ciudad de Mendoza. Desayunos europeos, almuerzos al aire libre y cenas románticas con iluminación tenue y una de las cavas de vinos más ricas de la región.',
-                image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
-                gallery: [
-                    'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80'
-                ],
-                vibes: ['Jardín Botánico Secreto', 'Cocina Francesa & Criolla', 'Desayunos & Cenas', 'Música Chillout'],
-                mysterikPerk: '☕ Café de especialidad y Petit Four de autor sin cargo con tu reserva de almuerzo o cena.',
-                specialties: ['Lomo al Malbec con papas rústicas', 'Crepes franceses de salmón ahumado', 'Tarte Tatin tibia con helado de vainilla']
-            },
-            {
-                id: 'riccitelli-bistro',
-                name: 'Matías Riccitelli Wines & Bistro',
+                id: 'vistalba-sunset',
+                name: 'Bodega Vistalba • Sunset Lounge',
                 category: 'bodega',
-                categoryLabel: 'Bodega de Vanguardia & Biodinámica',
-                icon: '🍇',
-                zone: 'chacras',
-                zoneLabel: 'Las Compuertas, Luján de Cuyo',
-                address: 'Callejón de la Reta 750, Las Compuertas',
-                lat: -33.0289,
-                lng: -68.9421,
-                phone: '5492615557007',
-                rating: 4.9,
-                reviewsCount: 410,
+                categoryLabel: 'Bodega & Vista a la Cordillera',
+                icon: '🍷',
+                nodeColor: '#8B5CF6',
+                zone: 'lujan',
+                zoneLabel: 'Vistalba, Luján de Cuyo',
+                address: 'Roque Sáenz Peña 3531, Vistalba, Luján de Cuyo',
+                svgX: 380,
+                svgY: 570,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Bodega+Vistalba+Roque+Saenz+Pena+3531+Lujan+de+Cuyo+Mendoza',
+                phone: '5492615552002',
+                rating: 5.0,
+                reviewsCount: 520,
                 priceRange: '$$$$',
-                hours: 'Mié a Dom: 12:00 a 18:00 hs (Almuerzos & Sunsets)',
-                badge: '🎨 Innovación & Alta Gama',
-                description: 'Una de las bodegas más rupturistas e innovadoras del mundo vitivinícola. Vinos de parcelas únicas, cocina basada en huerta orgánica propia y arte contemporáneo en cada rincón.',
+                hours: 'Jue a Dom: 17:30 a 01:00 hs',
+                experienceHighlight: 'Sunset frente a los viñedos con vistas panorámicas a la Cordillera de los Andes y vinos ícono.',
+                description: 'Una de las postales más imponentes de Mendoza: atardeceres entre viñedos centenarios, cocina a los fuegos, maridaje con vinos Tomero y Vistalba, y música acústica en vivo.',
                 image: 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80',
                 gallery: [
                     'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80',
                     'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80'
                 ],
-                vibes: ['Huerta Biodinámica', 'Vinos de Parcela', 'Cocina de Estación', 'Paisaje de Montaña'],
-                mysterikPerk: '✨ Copa de degustación de Riccitelli The Apple Doesn\'t Fall Far From The Tree + Tour express a cava.',
-                specialties: ['Menú de 6 pasos maridado', 'Trucha curada con hierbas de la huerta', 'Riccitelli Republica del Malbec']
-            },
-            {
-                id: 'brader-hops',
-                name: 'Brader Hops • Craft & Beer Garden',
-                category: 'cocktail',
-                categoryLabel: 'Craft Brewery & Street Food',
-                icon: '🍻',
-                zone: 'aristides',
-                zoneLabel: 'Av. Belgrano / Centro, Mendoza',
-                address: 'Belgrano 1437, Ciudad de Mendoza',
-                lat: -32.8912,
-                lng: -68.8495,
-                phone: '5492615558008',
-                rating: 4.7,
-                reviewsCount: 590,
-                priceRange: '$$',
-                hours: 'Mar a Dom: 19:00 a 03:00 hs',
-                badge: '🎸 Terraza & Rock Vibes',
-                description: 'Terraza cervecera y coctelera con espíritu rebelde. Más de 20 canillas de microcervecerías artesanales de todo el país, cócteles tirados y hamburguesas smash con pan casero.',
-                image: 'https://images.unsplash.com/photo-1538488881522-4321453a9923?auto=format&fit=crop&w=800&q=80',
-                gallery: [
-                    'https://images.unsplash.com/photo-1538488881522-4321453a9923?auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1584225064785-c62a8b43d148?auto=format&fit=crop&w=800&q=80'
-                ],
-                vibes: ['Terraza al Aire Libre', 'Smash Burgers', '20+ Canillas Craft', 'Buena Música'],
-                mysterikPerk: '🍟 Papas Brader con cheddar fundido y panceta de regalo con tu mesa de 4 o más personas.',
-                specialties: ['Smash Burger Triple Bacon', 'Cerveza Neipa Tropical', 'Gin Tonic infusionado en frutos rojos de la Patagonia']
-            },
-            {
-                id: 'queen-disco',
-                name: 'Queen Disco Mendoza',
-                category: 'nightlife',
-                categoryLabel: 'Discoteca, Pop & Show',
-                icon: '👑',
-                zone: 'bodegas',
-                zoneLabel: 'Dorrego, Guaymallén',
-                address: '25 de Mayo 318, Dorrego, Guaymallén',
-                lat: -32.8988,
-                lng: -68.8350,
-                phone: '5492615559009',
-                rating: 4.8,
-                reviewsCount: 780,
-                priceRange: '$$',
-                hours: 'Viernes y Sábados: 00:00 a 06:30 hs',
-                badge: '🌈 Templo Pop & Diversidad',
-                description: 'Legendaria discoteca ícono de Mendoza. Una puesta en escena impactante con drags, bailarines, pop internacional, hits retro y la fiesta más vibrante y libre del oeste argentino.',
-                image: 'https://images.unsplash.com/photo-1545128485-c400e7702796?auto=format&fit=crop&w=800&q=80',
-                gallery: [
-                    'https://images.unsplash.com/photo-1545128485-c400e7702796?auto=format&fit=crop&w=800&q=80'
-                ],
-                vibes: ['Shows en Vivo', 'Mega Pista Pop & Cachengue', 'Full Diversidad', 'Clásicos'],
-                mysterikPerk: '🍹 2x1 en barra de cócteles hasta las 02:00 hs + Ingreso express por fila Mysterik VIP.',
-                specialties: ['Shows Drag Queen de nivel internacional', 'Tragos gigantes para compartir', 'Pista electrónica sector mezzanine']
-            },
-            {
-                id: 'shelter-coffee',
-                name: 'Shelter Coffee • Specialty Roasters',
-                category: 'cafe',
-                categoryLabel: 'Café de Especialidad & Pastelería',
-                icon: '☕',
-                zone: 'aristides',
-                zoneLabel: 'Av. Belgrano, Mendoza',
-                address: 'Av. Belgrano 1184, Ciudad de Mendoza',
-                lat: -32.8925,
-                lng: -68.8505,
-                phone: '5492615551010',
-                rating: 4.9,
-                reviewsCount: 430,
-                priceRange: '$$',
-                hours: 'Lunes a Sábado: 08:30 a 20:30 hs',
-                badge: '☕ Tostaduría de Autor',
-                description: 'El templo del café de especialidad en Mendoza. Granos tostados en el lugar, métodos de filtrado Chemex, V60 y Aeropress, junto con croissants de pistacho y medialunas de manteca hojaldradas.',
-                image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80',
-                gallery: [
-                    'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80'
-                ],
-                vibes: ['Especialidad 100% Arábica', 'Espacio Coworking & Relax', 'Pastelería Francesa'],
-                mysterikPerk: '🥐 20% OFF en combo Desayuno/Merienda Especialidad + Degustación de Cold Brew.',
-                specialties: ['Flat White con leche vaporizada sedosa', 'Croissant relleno de pistacho y chocolate blanco', 'Tostón de palta, huevo poché y semillas tostadas']
-            },
-            {
-                id: 'palmares-the-garnish',
-                name: 'The Garnish Bar • Cocktail Lounge',
-                category: 'cocktail',
-                categoryLabel: 'Coctelería Clásica & High-End',
-                icon: '🍸',
-                zone: 'palmares',
-                zoneLabel: 'Palmares Open Mall / Godoy Cruz',
-                address: 'Av. San Martín Sur 2875, Godoy Cruz, Mendoza',
-                lat: -32.9515,
-                lng: -68.8610,
-                phone: '5492615551011',
-                rating: 4.9,
-                reviewsCount: 380,
-                priceRange: '$$$',
-                hours: 'Mar a Dom: 19:30 a 02:30 hs',
-                badge: '💎 Barra Premium',
-                description: 'Alta coctelería creada por bartenders premiados internacionalmente. Más de 120 etiquetas de whiskies, rones y gins de todo el mundo acompañados de tapas gourmet y sushi fusión.',
-                image: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=800&q=80',
-                gallery: [
-                    'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=800&q=80'
-                ],
-                vibes: ['High-End Bar', 'Coctelería Molecular', 'Música Soul & Nu-Disco', 'Terraza'],
-                mysterikPerk: '🍸 Shot de bienvenida de licor artesanal botánico + 10% de descuento en el total de la mesa.',
-                specialties: ['Smoked Negroni en campana de cristal', 'Rolls de salmón flambeado al pisco', 'Gin Tonic Garnish con botánicos mendocinos']
-            },
-            {
-                id: 'dantesco-chacras',
-                name: 'Dantesco • Casona & Fuegos',
-                category: 'gourmet',
-                categoryLabel: 'Asador Contemporáneo & Casona',
-                icon: '🥩',
-                zone: 'chacras',
-                zoneLabel: 'Chacras de Coria, Luján de Cuyo',
-                address: 'Italia 5829, Chacras de Coria, Mendoza',
-                lat: -32.9980,
-                lng: -68.8805,
-                phone: '5492615551012',
-                rating: 4.8,
-                reviewsCount: 460,
-                priceRange: '$$$',
-                hours: 'Mar a Dom: 12:30 a 16:00 / 20:30 a 00:30 hs',
-                badge: '🏡 Casona Tradicional',
-                description: 'Una majestuosa casona arbolada en el corazón de Chacras de Coria. Carnes a las brasas de quebracho, pastas caseras rellenas y una amplia galería para noches cálidas mendocinas.',
-                image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
-                gallery: [
-                    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80'
-                ],
-                vibes: ['Galería & Parque Arbolado', 'Fuegos & Parrilla', 'Ideal Familias & Amigos', 'Cava'],
-                mysterikPerk: '🍷 Botella de vino de cortesía por mesa en consumos superiores a $40.000.',
-                specialties: ['Bife de chorizo al quebracho con chimichurri fresco', 'Sorrentinos de calabaza asada y queso brie', 'Flan casero con dulce de leche de campo']
+                vibes: ['Vista a la Cordillera', 'Fogones al Atardecer', 'Vinos de Alta Gama', 'Música en Vivo'],
+                specialties: ['Corte Vistalba Ícono', 'Tablas de quesos y charcuterie', 'Fuegos al Malbec']
             }
         ];
 
-        // App State
+        // State
         let currentFilter = {
             category: 'all',
             zone: 'all',
@@ -893,136 +797,60 @@
         };
 
         let favorites = JSON.parse(localStorage.getItem('mysterik_favorites') || '[]');
-        let map = null;
-        let markersGroup = null;
         let currentSelectedSpot = null;
-        let userLocationMarker = null;
 
         // Custom Reservation State
         let bookingState = {
             guests: 2,
             moment: 'Hoy por la noche',
-            experienceType: 'Cena & Tragos VIP'
+            experienceType: 'Cena & Tragos'
         };
 
         /**
-         * Initialize Leaflet Map
+         * Render Nodes on the Local SVG Map
          */
-        function initMap() {
-            // Mendoza coordinates: lat: -32.8908, lng: -68.8272
-            map = L.map('mendoza-map', {
-                center: [-32.9300, -68.8650],
-                zoom: 12,
-                zoomControl: true,
-                attributionControl: false
-            });
-
-            // CartoDB Dark Matter Tiles (High contrast, dark luxury style)
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png', {
-                maxZoom: 19,
-                subdomains: 'abcd'
-            }).addTo(map);
-
-            markersGroup = L.layerGroup().addTo(map);
-
-            // Render spots on map
-            renderMapMarkers();
-        }
-
-        /**
-         * Create custom HTML marker icons with pulse glow
-         */
-        function createCustomMarkerIcon(spot, isHighlighted = false) {
-            const size = isHighlighted ? 46 : 38;
-            const bgClass = isHighlighted 
-                ? 'bg-gradient-to-br from-brand-gold via-amber-300 to-brand-goldDark text-black scale-110 shadow-neon-pin' 
-                : 'bg-black/90 text-brand-goldLight border border-brand-gold/70 shadow-gold-glow';
-
-            const pulseClass = isHighlighted ? 'marker-pulse-active' : '';
-
-            const html = `
-                <div class="custom-map-marker ${pulseClass} ${bgClass}" style="width: ${size}px; height: ${size}px; font-size: ${size * 0.44}px; box-shadow: 0 0 15px rgba(212,175,55,0.45); border-radius: 50%;">
-                    <span>${spot.icon}</span>
-                </div>
-            `;
-
-            return L.divIcon({
-                html: html,
-                className: 'custom-leaflet-icon',
-                iconSize: [size, size],
-                iconAnchor: [size / 2, size / 2],
-                popupAnchor: [0, -size / 2]
-            });
-        }
-
-        /**
-         * Render/Update Markers on Leaflet Map
-         */
-        function renderMapMarkers() {
-            if (!map || !markersGroup) return;
-            markersGroup.clearLayers();
+        function renderSvgMapNodes() {
+            const container = document.getElementById('svg-nodes-container');
+            if (!container) return;
 
             const filtered = getFilteredSpots();
 
-            filtered.forEach(spot => {
-                const marker = L.marker([spot.lat, spot.lng], {
-                    icon: createCustomMarkerIcon(spot)
-                });
-
-                // Custom Popup Content
-                const popupContent = `
-                    <div class="p-3 w-64 bg-[#111111] text-gray-100 rounded-2xl overflow-hidden font-sans">
-                        <div class="relative h-28 -mx-3 -mt-3 mb-2.5 overflow-hidden rounded-t-xl">
-                            <img src="${spot.image}" class="w-full h-full object-cover" alt="${spot.name}">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                            <span class="absolute bottom-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded bg-black/80 text-brand-gold border border-brand-gold/40">
-                                ${spot.icon} ${spot.categoryLabel}
-                            </span>
-                        </div>
-                        <h4 class="font-cinzel font-bold text-sm text-white leading-tight mb-1">${spot.name}</h4>
-                        <p class="text-[11px] text-brand-gold/80 mb-2 flex items-center gap-1">
-                            <i class="fa-solid fa-location-dot text-[10px]"></i> ${spot.zoneLabel}
-                        </p>
-                        <div class="p-1.5 rounded-lg bg-brand-gold/10 border border-brand-gold/25 mb-2.5 text-[10px] text-brand-goldLight font-medium">
-                            ✨ <strong>Beneficio:</strong> ${spot.mysterikPerk.substring(0, 55)}...
-                        </div>
-                        <button onclick="openDetailModal('${spot.id}')" class="w-full py-1.5 bg-gradient-to-r from-brand-gold to-brand-goldDark text-black text-xs font-bold rounded-lg hover:brightness-110 transition-all flex items-center justify-center gap-1.5 shadow-gold-sm">
-                            <span>Ver Ficha & Reservar</span>
-                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                        </button>
-                    </div>
+            container.innerHTML = filtered.map(spot => {
+                const isSelected = currentSelectedSpot && currentSelectedSpot.id === spot.id;
+                const nodeClass = isSelected ? 'map-node active-node' : 'map-node';
+                
+                return `
+                    <g class="${nodeClass}" id="svg-node-${spot.id}" onclick="onSpotNodeClick('${spot.id}')" transform="translate(${spot.svgX}, ${spot.svgY})">
+                        <!-- Outer Pulse Circle -->
+                        <circle r="22" fill="${spot.nodeColor}" fill-opacity="0.2" class="animate-ping" style="animation-duration: 3s;"></circle>
+                        <!-- Main Node Circle -->
+                        <circle r="16" fill="#111111" stroke="${spot.nodeColor}" stroke-width="2.5" filter="url(#goldGlow)"></circle>
+                        <!-- Icon Emoji -->
+                        <text text-anchor="middle" dy="5" font-size="14">${spot.icon}</text>
+                        <!-- Label Tag -->
+                        <rect x="-60" y="20" width="120" height="18" rx="6" fill="#0c0c0c" fill-opacity="0.9" stroke="${spot.nodeColor}" stroke-width="0.8" stroke-opacity="0.6"></rect>
+                        <text x="0" y="32" text-anchor="middle" fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="8.5" font-weight="700">
+                            ${spot.name.split('•')[0].substring(0, 18)}
+                        </text>
+                    </g>
                 `;
-
-                marker.bindPopup(popupContent, {
-                    maxWidth: 280,
-                    className: 'mysterik-leaflet-popup'
-                });
-
-                marker.on('click', () => {
-                    highlightSpotCard(spot.id);
-                });
-
-                markersGroup.addLayer(marker);
-            });
+            }).join('');
         }
 
         /**
-         * Get filtered and sorted list of spots
+         * Get Filtered Spots
          */
         function getFilteredSpots() {
             let list = [...SPOTS_DATA];
 
-            // Category filter
             if (currentFilter.category !== 'all') {
                 list = list.filter(s => s.category === currentFilter.category);
             }
 
-            // Zone filter
             if (currentFilter.zone !== 'all') {
                 list = list.filter(s => s.zone === currentFilter.zone);
             }
 
-            // Search filter
             if (currentFilter.search.trim() !== '') {
                 const q = currentFilter.search.toLowerCase();
                 list = list.filter(s => 
@@ -1034,12 +862,10 @@
                 );
             }
 
-            // Favorites filter
             if (currentFilter.onlyFavorites) {
                 list = list.filter(s => favorites.includes(s.id));
             }
 
-            // Sort
             if (currentFilter.sort === 'rating') {
                 list.sort((a, b) => b.rating - a.rating || b.reviewsCount - a.reviewsCount);
             } else if (currentFilter.sort === 'name') {
@@ -1050,7 +876,7 @@
         }
 
         /**
-         * Render Cards in Feed Panel
+         * Render Spots List in Feed Panel
          */
         function renderSpotsList() {
             const listContainer = document.getElementById('spots-list');
@@ -1065,9 +891,9 @@
                         <div class="w-16 h-16 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center mx-auto mb-3 text-2xl text-brand-gold">
                             🔍
                         </div>
-                        <h4 class="font-cinzel text-lg text-white font-bold mb-1">Sin resultados encontrados</h4>
-                        <p class="text-xs text-gray-400 mb-4">Prueba cambiando los filtros de zona o categoría para descubrir más spots en Mendoza.</p>
-                        <button onclick="resetFiltersAndCenter()" class="px-4 py-2 rounded-full bg-brand-gold/20 border border-brand-gold text-brand-goldLight text-xs font-bold hover:bg-brand-gold hover:text-black transition-all">
+                        <h4 class="font-cinzel text-lg text-white font-bold mb-1">Sin lugares encontrados</h4>
+                        <p class="text-xs text-gray-400 mb-4">Prueba seleccionando otra zona o categoría de Mendoza.</p>
+                        <button onclick="resetFilters()" class="px-4 py-2 rounded-full bg-brand-gold/20 border border-brand-gold text-brand-goldLight text-xs font-bold hover:bg-brand-gold hover:text-black transition-all">
                             Restablecer Filtros
                         </button>
                     </div>
@@ -1080,11 +906,11 @@
                 return `
                     <article 
                         id="card-${spot.id}" 
-                        class="glass-card gold-border-glow rounded-2xl p-3.5 sm:p-4 cursor-pointer transition-all duration-300 hover:scale-[1.01] hover:bg-[#181818] relative group"
+                        class="glass-card gold-border-glow rounded-2xl p-3.5 sm:p-4 cursor-pointer transition-all duration-300 hover:scale-[1.01] hover:bg-[#191919] relative group"
                         onclick="onSpotCardClick('${spot.id}')">
                         
                         <div class="flex gap-3.5">
-                            <!-- Image Thumbnail -->
+                            <!-- Thumbnail -->
                             <div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden flex-shrink-0 bg-black/60">
                                 <img src="${spot.image}" alt="${spot.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                                 <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-black/80 text-[10px] text-brand-gold font-bold backdrop-blur border border-brand-gold/30">
@@ -1095,7 +921,6 @@
                             <!-- Info -->
                             <div class="flex-1 min-w-0 flex flex-col justify-between">
                                 <div>
-                                    <!-- Header / Badge -->
                                     <div class="flex items-start justify-between gap-1 mb-1">
                                         <h3 class="font-cinzel font-bold text-sm sm:text-base text-white group-hover:text-brand-gold transition-colors truncate">
                                             ${spot.name}
@@ -1103,7 +928,7 @@
                                         <button 
                                             onclick="event.stopPropagation(); toggleFavorite('${spot.id}')" 
                                             class="p-1 text-gray-400 hover:text-rose-500 transition-colors" 
-                                            title="Guardar favorito">
+                                            title="Guardar">
                                             <i class="${isFav ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart text-xs"></i>
                                         </button>
                                     </div>
@@ -1117,18 +942,33 @@
                                             <i class="fa-solid fa-star text-[10px]"></i> ${spot.rating}
                                         </span>
                                         <span>•</span>
-                                        <span class="text-emerald-400 font-mono text-[10px]">${spot.priceRange}</span>
+                                        <span class="text-gray-300 font-mono text-[10px]">${spot.priceRange}</span>
                                     </div>
 
                                     <p class="text-xs text-gray-300 line-clamp-2 leading-relaxed mb-2">
-                                        ${spot.description}
+                                        ${spot.experienceHighlight}
                                     </p>
                                 </div>
 
-                                <!-- Beneficio Highlight Pill -->
-                                <div class="bg-gradient-to-r from-amber-500/15 via-brand-gold/20 to-transparent border-l-2 border-brand-gold px-2.5 py-1 rounded-r-lg text-[10px] text-brand-goldLight flex items-center justify-between gap-1">
-                                    <span class="truncate font-medium">✨ <strong>Beneficio Mysterik:</strong> ${spot.mysterikPerk}</span>
-                                    <i class="fa-brands fa-whatsapp text-emerald-400 text-xs flex-shrink-0"></i>
+                                <!-- Action Buttons: Expand & Maps -->
+                                <div class="flex items-center gap-2 pt-1">
+                                    <button 
+                                        onclick="event.stopPropagation(); openDetailModal('${spot.id}')" 
+                                        class="flex-1 py-1.5 px-2.5 rounded-lg bg-brand-gold/15 hover:bg-brand-gold hover:text-black text-brand-goldLight text-[11px] font-bold border border-brand-gold/40 transition-all flex items-center justify-center gap-1.5">
+                                        <i class="fa-brands fa-whatsapp text-emerald-400 text-xs"></i>
+                                        <span>Ver & Contactar</span>
+                                    </button>
+
+                                    <a 
+                                        href="${spot.mapsUrl}" 
+                                        target="_blank" 
+                                        rel="noopener noreferrer" 
+                                        onclick="event.stopPropagation();" 
+                                        title="Abrir en Google Maps" 
+                                        class="py-1.5 px-2.5 rounded-lg bg-[#1a1a1a] hover:bg-[#252525] text-gray-300 hover:text-white text-[11px] font-medium border border-gray-700 flex items-center gap-1 transition-all">
+                                        <i class="fa-solid fa-location-arrow text-brand-gold text-[10px]"></i>
+                                        <span class="hidden sm:inline">Maps</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -1139,27 +979,19 @@
         }
 
         /**
-         * Card click behavior: Focus map & open modal
+         * Handle Spot Click from Node or Card
          */
-        function onSpotCardClick(spotId) {
-            const spot = SPOTS_DATA.find(s => s.id === spotId);
-            if (!spot) return;
-
-            // Pan map smoothly
-            if (map) {
-                map.flyTo([spot.lat, spot.lng], 15, {
-                    animate: true,
-                    duration: 1.2
-                });
-            }
-
-            // Open detail modal
+        function onSpotNodeClick(spotId) {
+            highlightSpotCard(spotId);
             openDetailModal(spotId);
         }
 
-        /**
-         * Highlight a card in the feed when marker is clicked
-         */
+        function onSpotCardClick(spotId) {
+            currentSelectedSpot = SPOTS_DATA.find(s => s.id === spotId);
+            renderSvgMapNodes();
+            openDetailModal(spotId);
+        }
+
         function highlightSpotCard(spotId) {
             const card = document.getElementById(`card-${spotId}`);
             if (card) {
@@ -1172,27 +1004,25 @@
         }
 
         /**
-         * Open Detail Modal with WhatsApp Booking Concierge
+         * Open Detail Modal with Person Selector & WhatsApp Contact
          */
         function openDetailModal(spotId) {
             const spot = SPOTS_DATA.find(s => s.id === spotId);
             if (!spot) return;
 
             currentSelectedSpot = spot;
-            bookingState.guests = 2; // default
+            bookingState.guests = 2;
             bookingState.moment = 'Hoy por la noche';
-            bookingState.experienceType = 'Cena & Tragos VIP';
+            bookingState.experienceType = 'Cena & Tragos';
 
             const modal = document.getElementById('detail-modal');
             const card = document.getElementById('detail-modal-card');
             const container = document.getElementById('modal-content-container');
 
-            const isFav = favorites.includes(spot.id);
-
             container.innerHTML = `
-                <!-- Gallery Carousel / Cover Image -->
+                <!-- Main Image Banner -->
                 <div class="relative h-60 sm:h-72 w-full bg-black overflow-hidden">
-                    <img id="detail-main-img" src="${spot.image}" alt="${spot.name}" class="w-full h-full object-cover transition-all duration-300">
+                    <img id="detail-main-img" src="${spot.image}" alt="${spot.name}" class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-[#121212] via-black/40 to-transparent"></div>
                     
                     <!-- Floating Tags -->
@@ -1206,7 +1036,7 @@
                         </span>
                     </div>
 
-                    <!-- Title & Rating Overlay -->
+                    <!-- Title & Rating -->
                     <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
                         <div>
                             <h2 class="font-cinzel text-xl sm:text-3xl font-bold text-white leading-tight drop-shadow-md">
@@ -1221,15 +1051,15 @@
                             <div class="text-amber-400 font-bold text-sm sm:text-base flex items-center gap-1">
                                 <i class="fa-solid fa-star"></i> ${spot.rating}
                             </div>
-                            <div class="text-[9px] text-gray-400">${spot.reviewsCount} opiniones</div>
+                            <div class="text-[9px] text-gray-400">${spot.reviewsCount} reseñas</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Gallery Thumbnails (if multiple) -->
+                <!-- Gallery Thumbnails -->
                 ${spot.gallery && spot.gallery.length > 1 ? `
                     <div class="flex gap-2 px-6 pt-3 overflow-x-auto no-scrollbar">
-                        ${spot.gallery.map((img, i) => `
+                        ${spot.gallery.map((img) => `
                             <button onclick="document.getElementById('detail-main-img').src='${img}'" class="w-16 h-12 rounded-lg overflow-hidden border border-brand-gold/30 hover:border-brand-gold flex-shrink-0 transition-all">
                                 <img src="${img}" class="w-full h-full object-cover">
                             </button>
@@ -1237,58 +1067,58 @@
                     </div>
                 ` : ''}
 
-                <!-- Content Info -->
+                <!-- Modal Body Content -->
                 <div class="p-6 space-y-6">
                     
-                    <!-- BENEFICIO EXCLUSIVO MYSTERIK NET -->
-                    <div class="bg-gradient-to-r from-brand-gold/20 via-amber-950/40 to-brand-gold/10 border-2 border-brand-gold rounded-2xl p-4 shadow-gold-glow relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-24 h-24 bg-brand-gold/20 rounded-full blur-2xl"></div>
-                        <div class="flex items-start gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-gold to-brand-goldDark text-black flex items-center justify-center text-lg font-bold flex-shrink-0 shadow-md">
-                                💎
+                    <!-- Direct Google Maps Navigation Card -->
+                    <div class="bg-[#181818] border border-brand-gold/30 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-brand-gold/20 text-brand-gold flex items-center justify-center text-lg flex-shrink-0">
+                                <i class="fa-solid fa-map-location-dot"></i>
                             </div>
                             <div>
-                                <span class="text-[10px] font-mono font-bold tracking-widest uppercase text-brand-gold px-2 py-0.5 rounded bg-black/60 border border-brand-gold/30">
-                                    Beneficio Exclusivo Mysterik Net
-                                </span>
-                                <p class="text-sm sm:text-base font-bold text-white mt-1 leading-snug">
-                                    ${spot.mysterikPerk}
-                                </p>
-                                <p class="text-[11px] text-brand-goldLight/80 mt-1">
-                                    Válido al enviar tu consulta o reserva mediante el botón de WhatsApp debajo.
-                                </p>
+                                <h4 class="font-bold text-white text-xs sm:text-sm">Ubicación en Mendoza</h4>
+                                <p class="text-[11px] text-gray-400">${spot.address}</p>
                             </div>
                         </div>
+                        <a 
+                            href="${spot.mapsUrl}" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-gold to-brand-goldDark text-black text-xs font-bold hover:brightness-110 flex items-center justify-center gap-2 shadow-gold-sm transition-all">
+                            <i class="fa-solid fa-location-arrow"></i>
+                            <span>Abrir en Google Maps</span>
+                        </a>
                     </div>
 
                     <!-- Description & Hours -->
                     <div>
-                        <h4 class="font-cinzel font-bold text-sm text-brand-gold uppercase tracking-wider mb-2">Sobre este Comercio</h4>
+                        <h4 class="font-cinzel font-bold text-sm text-brand-gold uppercase tracking-wider mb-2">Acerca del Lugar</h4>
                         <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
                             ${spot.description}
                         </p>
                         <div class="mt-3 flex flex-wrap gap-4 text-xs text-gray-400">
                             <span class="flex items-center gap-1.5"><i class="fa-regular fa-clock text-brand-gold"></i> ${spot.hours}</span>
-                            <span class="flex items-center gap-1.5"><i class="fa-solid fa-wallet text-brand-gold"></i> Rango: <strong class="text-emerald-400 font-mono">${spot.priceRange}</strong></span>
+                            <span class="flex items-center gap-1.5"><i class="fa-solid fa-wallet text-brand-gold"></i> Rango: <strong class="text-white font-mono">${spot.priceRange}</strong></span>
                         </div>
                     </div>
 
                     <!-- Atmosphere / Vibes Tags -->
                     <div>
-                        <h4 class="font-cinzel font-bold text-xs text-brand-gold uppercase tracking-wider mb-2">Atmósfera & Estilo</h4>
+                        <h4 class="font-cinzel font-bold text-xs text-brand-gold uppercase tracking-wider mb-2">Ambiente & Estilo</h4>
                         <div class="flex flex-wrap gap-2">
                             ${spot.vibes.map(vibe => `
-                                <span class="px-3 py-1 rounded-full bg-[#1e1e1e] border border-brand-gold/20 text-xs text-gray-200">
+                                <span class="px-3 py-1 rounded-full bg-[#1b1b1b] border border-brand-gold/20 text-xs text-gray-200">
                                     ✨ ${vibe}
                                 </span>
                             `).join('')}
                         </div>
                     </div>
 
-                    <!-- Especialidades Recomendadas -->
+                    <!-- Especialidades -->
                     ${spot.specialties ? `
                         <div>
-                            <h4 class="font-cinzel font-bold text-xs text-brand-gold uppercase tracking-wider mb-2">Especialidades de la Casa</h4>
+                            <h4 class="font-cinzel font-bold text-xs text-brand-gold uppercase tracking-wider mb-2">Destacados de la Carta</h4>
                             <ul class="space-y-1.5 text-xs text-gray-300">
                                 ${spot.specialties.map(spec => `
                                     <li class="flex items-center gap-2">
@@ -1300,90 +1130,77 @@
                         </div>
                     ` : ''}
 
-                    <div class="border-t border-brand-gold/20 pt-6"></div>
+                    <div class="border-t border-brand-gold/20 pt-4"></div>
 
-                    <!-- WHATSAPP CONCIERGE BOOKING GENERATOR -->
-                    <div class="bg-[#0e0e0e] border border-brand-gold/40 rounded-2xl p-5 space-y-4">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h3 class="font-cinzel font-bold text-base text-white flex items-center gap-2">
-                                    <i class="fa-brands fa-whatsapp text-emerald-400 text-lg"></i>
-                                    <span>Asistente de Reserva Mysterik</span>
-                                </h3>
-                                <p class="text-[11px] text-gray-400">Personaliza tu salida y genera el mensaje con beneficio activado.</p>
-                            </div>
+                    <!-- WHATSAPP CONCIERGE (Simple & direct message generator) -->
+                    <div class="bg-[#0e0e0e] border border-brand-gold/40 rounded-2xl p-5 space-y-4 shadow-xl">
+                        <div>
+                            <h3 class="font-cinzel font-bold text-base text-white flex items-center gap-2">
+                                <i class="fa-brands fa-whatsapp text-emerald-400 text-lg"></i>
+                                <span>Coordinar Experiencia Especial por WhatsApp</span>
+                            </h3>
+                            <p class="text-[11px] text-gray-400">Arma un mensaje personalizado de parte de Mysterik Net.</p>
                         </div>
 
-                        <!-- Selector Personas -->
+                        <!-- Selector Personas & Momento -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <div>
-                                <label class="block text-xs font-semibold text-gray-300 mb-1.5">¿Cuántas personas son?</label>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1.5">Número de Personas</label>
                                 <div class="flex items-center bg-[#181818] border border-brand-gold/30 rounded-xl p-1 justify-between">
-                                    <button onclick="updateGuests(-1)" class="w-9 h-9 rounded-lg bg-[#252525] hover:bg-brand-gold hover:text-black text-brand-gold font-bold text-sm transition-all flex items-center justify-center">
+                                    <button onclick="updateGuests(-1)" class="w-9 h-9 rounded-lg bg-[#242424] hover:bg-brand-gold hover:text-black text-brand-gold font-bold text-sm transition-all flex items-center justify-center">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                     <div class="text-center">
                                         <span id="booking-guests-count" class="font-bold text-sm text-white font-mono">2</span>
                                         <span class="text-[10px] text-gray-400 block -mt-1">personas</span>
                                     </div>
-                                    <button onclick="updateGuests(1)" class="w-9 h-9 rounded-lg bg-[#252525] hover:bg-brand-gold hover:text-black text-brand-gold font-bold text-sm transition-all flex items-center justify-center">
+                                    <button onclick="updateGuests(1)" class="w-9 h-9 rounded-lg bg-[#242424] hover:bg-brand-gold hover:text-black text-brand-gold font-bold text-sm transition-all flex items-center justify-center">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
 
-                            <!-- Selector Momento / Fecha -->
                             <div>
-                                <label class="block text-xs font-semibold text-gray-300 mb-1.5">¿Cuándo planeas ir?</label>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1.5">Momento / Fecha estimada</label>
                                 <select id="booking-moment" onchange="bookingState.moment = this.value; updateWhatsAppPreview();" class="w-full h-11 bg-[#181818] border border-brand-gold/30 rounded-xl px-3 text-xs text-white focus:outline-none focus:border-brand-gold font-medium cursor-pointer">
                                     <option value="Hoy por la noche">🌙 Hoy por la noche</option>
-                                    <option value="Mañana por la tarde/noche">✨ Mañana por la noche</option>
+                                    <option value="Mañana por la noche">✨ Mañana por la noche</option>
                                     <option value="Este fin de semana">🎉 Este fin de semana</option>
-                                    <option value="Almuerzo / Sunset">🌅 Almuerzo / Sunset</option>
-                                    <option value="Consultar disponibilidad general">📅 Consultar fecha puntual</option>
+                                    <option value="Almuerzo / Tarde">🌅 Almuerzo / Tarde</option>
+                                    <option value="Consultar disponibilidad">📅 Consultar fecha puntual</option>
                                 </select>
                             </div>
                         </div>
 
-                        <!-- Selector Tipo de Experiencia -->
+                        <!-- Selector Tipo de Plan -->
                         <div>
-                            <label class="block text-xs font-semibold text-gray-300 mb-1.5">Tipo de Experiencia</label>
-                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                                <button onclick="setExperienceType('Cena & Tragos VIP', this)" class="exp-type-btn active-exp px-2.5 py-2 rounded-xl border border-brand-gold bg-brand-gold/20 text-brand-goldLight text-[11px] font-bold text-center transition-all">
-                                    🍽️ Cena & Tragos
+                            <label class="block text-xs font-semibold text-gray-300 mb-1.5">Tipo de Plan</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="setExperienceType('Cena & Tragos', this)" class="exp-type-btn px-2.5 py-2 rounded-xl border border-brand-gold bg-brand-gold/20 text-brand-goldLight text-[11px] font-bold text-center transition-all">
+                                    🍽️ Cena / Tragos
                                 </button>
                                 <button onclick="setExperienceType('Sunset & Vinos', this)" class="exp-type-btn px-2.5 py-2 rounded-xl border border-gray-800 bg-[#161616] text-gray-300 hover:text-white hover:border-brand-gold/40 text-[11px] font-medium text-center transition-all">
                                     🌅 Sunset / Vinos
                                 </button>
-                                <button onclick="setExperienceType('Mesa Boliche / Fiesta', this)" class="exp-type-btn px-2.5 py-2 rounded-xl border border-gray-800 bg-[#161616] text-gray-300 hover:text-white hover:border-brand-gold/40 text-[11px] font-medium text-center transition-all">
-                                    🪩 Mesa VIP / Fiesta
+                                <button onclick="setExperienceType('Mesa VIP / Salida', this)" class="exp-type-btn px-2.5 py-2 rounded-xl border border-gray-800 bg-[#161616] text-gray-300 hover:text-white hover:border-brand-gold/40 text-[11px] font-medium text-center transition-all">
+                                    🪩 Mesa / Fiesta
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Preview del Mensaje -->
+                        <!-- Preview -->
                         <div class="bg-black/70 border border-brand-gold/20 rounded-xl p-3 text-[11px] text-gray-300 font-mono">
-                            <span class="text-[9px] uppercase tracking-widest text-brand-gold/70 block mb-1 font-sans">Vista previa del mensaje WhatsApp:</span>
+                            <span class="text-[9px] uppercase tracking-widest text-brand-gold/70 block mb-1 font-sans">Mensaje generado:</span>
                             <p id="whatsapp-message-preview" class="italic text-gray-400 whitespace-pre-line"></p>
                         </div>
 
-                        <!-- CTA WHATSAPP BUTTON -->
-                        <div class="pt-2">
-                            <button 
-                                onclick="sendWhatsAppBooking()" 
-                                class="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-700 hover:brightness-110 active:scale-[0.99] text-white font-extrabold text-sm tracking-wide shadow-xl flex items-center justify-center gap-2.5 transition-all">
-                                <i class="fa-brands fa-whatsapp text-xl"></i>
-                                <span>Contactar por WhatsApp con Beneficio Mysterik Net</span>
-                            </button>
-                        </div>
-
-                        <!-- Google Maps Navigation Button -->
-                        <div class="text-center pt-1">
-                            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot.name + ' ' + spot.address)}" target="_blank" rel="noopener noreferrer" class="text-xs text-brand-gold/80 hover:text-brand-gold hover:underline inline-flex items-center gap-1.5">
-                                <i class="fa-solid fa-location-arrow"></i>
-                                <span>Abrir ubicación exacta en Google Maps</span>
-                            </a>
-                        </div>
+                        <!-- Big WhatsApp CTA -->
+                        <button 
+                            onclick="sendWhatsAppBooking()" 
+                            class="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-700 hover:brightness-110 active:scale-[0.99] text-white font-extrabold text-sm tracking-wide shadow-xl flex items-center justify-center gap-2.5 transition-all">
+                            <i class="fa-brands fa-whatsapp text-xl"></i>
+                            <span>Enviar Mensaje de parte de Mysterik Net</span>
+                        </button>
 
                     </div>
 
@@ -1392,7 +1209,7 @@
 
             updateWhatsAppPreview();
 
-            // Show Modal with Animation
+            // Show Modal
             modal.classList.remove('hidden');
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
@@ -1401,7 +1218,7 @@
         }
 
         /**
-         * Update Guests Count in Booking Widget
+         * Update Guests
          */
         function updateGuests(delta) {
             let next = bookingState.guests + delta;
@@ -1413,42 +1230,32 @@
             updateWhatsAppPreview();
         }
 
-        /**
-         * Update Experience Type
-         */
         function setExperienceType(type, btn) {
             bookingState.experienceType = type;
             document.querySelectorAll('.exp-type-btn').forEach(b => {
                 b.className = 'exp-type-btn px-2.5 py-2 rounded-xl border border-gray-800 bg-[#161616] text-gray-300 hover:text-white hover:border-brand-gold/40 text-[11px] font-medium text-center transition-all';
             });
-            btn.className = 'exp-type-btn active-exp px-2.5 py-2 rounded-xl border border-brand-gold bg-brand-gold/20 text-brand-goldLight text-[11px] font-bold text-center transition-all';
+            btn.className = 'exp-type-btn px-2.5 py-2 rounded-xl border border-brand-gold bg-brand-gold/20 text-brand-goldLight text-[11px] font-bold text-center transition-all';
             updateWhatsAppPreview();
         }
 
         /**
-         * Generate the formatted WhatsApp Message
+         * WhatsApp Message Construction
          */
         function generateWhatsAppMessage() {
             if (!currentSelectedSpot) return '';
             const spot = currentSelectedSpot;
-            const text = 
-`¡Hola ${spot.name}! 👋
+            return `¡Hola ${spot.name}! 👋
 Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia especial.
 
 📍 *Lugar:* ${spot.name} (${spot.zoneLabel.split(',')[0]})
 👥 *Número de Personas:* ${bookingState.guests} ${bookingState.guests === 1 ? 'persona' : 'personas'}
 📅 *Momento estimado:* ${bookingState.moment}
 🍸 *Plan:* ${bookingState.experienceType}
-💎 *Beneficio Mysterik Activo:* ${spot.mysterikPerk}
 
-¿Tienen disponibilidad y nos podrían confirmar la reserva/beneficio? ¡Muchas gracias!`;
-
-            return text;
+¿Tienen disponibilidad y nos podrían confirmar para coordinar la mesa/visita? ¡Muchas gracias!`;
         }
 
-        /**
-         * Update Live WhatsApp Message Preview
-         */
         function updateWhatsAppPreview() {
             const previewEl = document.getElementById('whatsapp-message-preview');
             if (previewEl) {
@@ -1456,9 +1263,6 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
             }
         }
 
-        /**
-         * Send WhatsApp Booking
-         */
         function sendWhatsAppBooking() {
             if (!currentSelectedSpot) return;
             const message = generateWhatsAppMessage();
@@ -1467,9 +1271,11 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
             window.open(url, '_blank');
         }
 
-        /**
-         * Close Detail Modal
-         */
+        function openGeneralConcierge() {
+            const msg = `¡Hola Mysterik Net! 👋 Busco recomendaciones y coordinación para una salida especial en Mendoza.`;
+            window.open(`https://wa.me/5492617094195?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
         function closeDetailModal() {
             const modal = document.getElementById('detail-modal');
             const card = document.getElementById('detail-modal-card');
@@ -1478,11 +1284,12 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
             setTimeout(() => {
                 modal.classList.add('hidden');
                 currentSelectedSpot = null;
+                renderSvgMapNodes();
             }, 300);
         }
 
         /**
-         * Filter Handlers
+         * Filtering Logic
          */
         function setCategory(cat) {
             currentFilter.category = cat;
@@ -1494,27 +1301,15 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
                 }
             });
             renderSpotsList();
-            renderMapMarkers();
+            renderSvgMapNodes();
         }
 
         function setZone(zone) {
             currentFilter.zone = zone;
+            const zoneSelect = document.getElementById('zone-select');
+            if (zoneSelect) zoneSelect.value = zone;
             renderSpotsList();
-            renderMapMarkers();
-
-            // Auto-pan map to zone center
-            if (map) {
-                const zoneCoordinates = {
-                    'all': [-32.9300, -68.8650, 12],
-                    'aristides': [-32.8942, -68.8558, 15],
-                    'chacras': [-33.0050, -68.8870, 14],
-                    'bodegas': [-32.9300, -68.8200, 13],
-                    'palmares': [-32.9515, -68.8610, 15],
-                    'uco': [-33.5500, -69.1000, 11]
-                };
-                const coords = zoneCoordinates[zone] || zoneCoordinates['all'];
-                map.flyTo([coords[0], coords[1]], coords[2], { duration: 1.2 });
-            }
+            renderSvgMapNodes();
         }
 
         function handleSearch(val) {
@@ -1525,7 +1320,7 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
                 else clearBtn.classList.add('hidden');
             }
             renderSpotsList();
-            renderMapMarkers();
+            renderSvgMapNodes();
         }
 
         function clearSearch() {
@@ -1550,7 +1345,7 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
                 btn.classList.remove('bg-rose-950/40', 'border-rose-500', 'text-rose-400');
             }
             renderSpotsList();
-            renderMapMarkers();
+            renderSvgMapNodes();
         }
 
         function toggleFavorite(spotId) {
@@ -1569,7 +1364,7 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
             if (badge) badge.textContent = favorites.length;
         }
 
-        function resetFiltersAndCenter() {
+        function resetFilters() {
             currentFilter = {
                 category: 'all',
                 zone: 'all',
@@ -1581,169 +1376,35 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
             if (zoneSelect) zoneSelect.value = 'all';
             clearSearch();
             setCategory('all');
-            recenterMap();
         }
 
-        function recenterMap() {
-            if (map) {
-                map.flyTo([-32.9300, -68.8650], 12, { duration: 1.0 });
-            }
+        function resetMapView() {
+            resetFilters();
         }
 
-        /**
-         * View Mode Switcher: Split / Map Only / Cards Only
-         */
         function setViewMode(mode) {
-            const feedPanel = document.getElementById('feed-panel');
             const mapPanel = document.getElementById('map-panel');
+            const feedPanel = document.getElementById('feed-panel');
             const btnSplit = document.getElementById('view-split-btn');
-            const btnMap = document.getElementById('view-map-btn');
             const btnCards = document.getElementById('view-cards-btn');
 
-            [btnSplit, btnMap, btnCards].forEach(b => {
-                b.className = 'p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1';
-            });
-
             if (mode === 'split') {
-                feedPanel.classList.remove('hidden', 'w-full', 'h-full');
-                feedPanel.classList.add('w-full', 'lg:w-[480px]', 'xl:w-[540px]', 'h-1/2', 'lg:h-full');
                 mapPanel.classList.remove('hidden');
+                feedPanel.classList.remove('hidden', 'w-full');
+                feedPanel.classList.add('w-full', 'lg:w-1/2', 'xl:w-5/12');
                 btnSplit.className = 'p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium transition-all nav-tab-active flex items-center gap-1';
-            } else if (mode === 'map') {
-                feedPanel.classList.add('hidden');
-                mapPanel.classList.remove('hidden');
-                btnMap.className = 'p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium transition-all nav-tab-active flex items-center gap-1';
+                btnCards.className = 'p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1';
             } else if (mode === 'cards') {
                 mapPanel.classList.add('hidden');
-                feedPanel.classList.remove('hidden', 'lg:w-[480px]', 'xl:w-[540px]', 'h-1/2');
-                feedPanel.classList.add('w-full', 'h-full');
+                feedPanel.classList.remove('hidden', 'lg:w-1/2', 'xl:w-5/12');
+                feedPanel.classList.add('w-full');
                 btnCards.className = 'p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium transition-all nav-tab-active flex items-center gap-1';
+                btnSplit.className = 'p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1';
             }
-
-            setTimeout(() => {
-                if (map) map.invalidateSize();
-            }, 300);
         }
 
         /**
-         * User Geolocation in Mendoza
-         */
-        function locateUser() {
-            if (!navigator.geolocation) {
-                alert('La geolocalización no está soportada por tu navegador.');
-                return;
-            }
-
-            const btn = document.getElementById('btn-geolocate');
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-brand-gold"></i> <span class="hidden lg:inline">Buscando...</span>`;
-
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    const { latitude, longitude } = pos.coords;
-                    btn.innerHTML = `<i class="fa-solid fa-location-dot text-emerald-400"></i> <span class="hidden lg:inline text-emerald-400">Ubicado</span>`;
-
-                    if (map) {
-                        if (userLocationMarker) map.removeLayer(userLocationMarker);
-
-                        const userIcon = L.divIcon({
-                            html: `<div class="w-5 h-5 rounded-full bg-blue-500 border-2 border-white shadow-lg animate-ping"></div><div class="w-5 h-5 rounded-full bg-blue-600 border-2 border-white shadow-lg -mt-5"></div>`,
-                            className: 'user-loc-icon',
-                            iconSize: [20, 20]
-                        });
-
-                        userLocationMarker = L.marker([latitude, longitude], { icon: userIcon }).addTo(map);
-                        userLocationMarker.bindPopup('📍 Tu ubicación actual').openPopup();
-
-                        map.flyTo([latitude, longitude], 14, { duration: 1.2 });
-                    }
-                },
-                (err) => {
-                    // Fallback to Arístides center if user is outside or refuses GPS
-                    btn.innerHTML = `<i class="fa-solid fa-location-crosshairs text-brand-gold"></i> <span class="hidden lg:inline">Cerca de mí</span>`;
-                    alert('No pudimos acceder a tu GPS. Te centramos en Calle Arístides, Mendoza.');
-                    if (map) map.flyTo([-32.8942, -68.8558], 15, { duration: 1.0 });
-                },
-                { timeout: 8000 }
-            );
-        }
-
-        /**
-         * ROULETTE / ORACULO GAMIFICATION LOGIC
-         */
-        let rouletteWinner = null;
-        let isSpinning = false;
-
-        function openRouletteModal() {
-            const modal = document.getElementById('roulette-modal');
-            modal.classList.remove('hidden');
-            setTimeout(() => modal.classList.remove('opacity-0'), 10);
-        }
-
-        function closeRouletteModal() {
-            const modal = document.getElementById('roulette-modal');
-            modal.classList.add('opacity-0');
-            setTimeout(() => modal.classList.add('hidden'), 300);
-        }
-
-        function spinRoulette() {
-            if (isSpinning) return;
-            isSpinning = true;
-
-            const spinnerIcon = document.getElementById('roulette-spinner-icon');
-            const titleEl = document.getElementById('roulette-result-title');
-            const subEl = document.getElementById('roulette-result-subtitle');
-            const benefitEl = document.getElementById('roulette-result-benefit');
-            const viewBtn = document.getElementById('btn-view-roulette-spot');
-            const spinBtn = document.getElementById('btn-spin-roulette');
-
-            spinBtn.disabled = true;
-            spinBtn.classList.add('opacity-60');
-            viewBtn.classList.add('hidden');
-            benefitEl.classList.add('hidden');
-
-            spinnerIcon.classList.add('roulette-spinning');
-            titleEl.textContent = 'Consultando los astros de Mendoza...';
-
-            let count = 0;
-            const interval = setInterval(() => {
-                const randomSpot = SPOTS_DATA[Math.floor(Math.random() * SPOTS_DATA.length)];
-                spinnerIcon.textContent = randomSpot.icon;
-                titleEl.textContent = randomSpot.name;
-                subEl.textContent = randomSpot.zoneLabel;
-                count++;
-
-                if (count > 18) {
-                    clearInterval(interval);
-                    spinnerIcon.classList.remove('roulette-spinning');
-                    
-                    // Final Pick
-                    rouletteWinner = SPOTS_DATA[Math.floor(Math.random() * SPOTS_DATA.length)];
-                    spinnerIcon.textContent = rouletteWinner.icon;
-                    titleEl.textContent = `✨ ${rouletteWinner.name} ✨`;
-                    subEl.textContent = `📍 ${rouletteWinner.zoneLabel} • Rating: ⭐ ${rouletteWinner.rating}`;
-                    
-                    benefitEl.textContent = `💎 Desbloqueado: ${rouletteWinner.mysterikPerk}`;
-                    benefitEl.classList.remove('hidden');
-
-                    viewBtn.classList.remove('hidden');
-                    spinBtn.disabled = false;
-                    spinBtn.classList.remove('opacity-60');
-                    spinBtn.textContent = '🔄 Girar de Nuevo';
-                    isSpinning = false;
-                }
-            }, 100);
-        }
-
-        function viewRouletteWinner() {
-            if (!rouletteWinner) return;
-            closeRouletteModal();
-            setTimeout(() => {
-                onSpotCardClick(rouletteWinner.id);
-            }, 350);
-        }
-
-        /**
-         * B2B Sumar Comercio Logic
+         * B2B Join Modal
          */
         function openJoinModal() {
             const modal = document.getElementById('join-modal');
@@ -1761,32 +1422,27 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
             const name = document.getElementById('b2b-name').value || 'Comercio Mendoza';
             const zone = document.getElementById('b2b-zone').value || 'Mendoza';
             const cat = document.getElementById('b2b-cat').value;
-            const perk = document.getElementById('b2b-perk').value || 'Beneficio especial a definir';
 
             const msg = `¡Hola Mysterik Net! 👋 Quiero sumar mi comercio a la red de Mendoza:
 🏛️ *Nombre:* ${name}
 📍 *Zona:* ${zone}
-🏷️ *Categoría:* ${cat}
-💎 *Propuesta de Beneficio Mysterik:* ${perk}`;
+🏷️ *Categoría:* ${cat}`;
 
             window.open(`https://wa.me/5492617094195?text=${encodeURIComponent(msg)}`, '_blank');
             closeJoinModal();
         }
 
-        // Close modal when clicking backdrop
+        // Close on backdrop click
         window.addEventListener('click', (e) => {
             const detailModal = document.getElementById('detail-modal');
-            const rouletteModal = document.getElementById('roulette-modal');
             const joinModal = document.getElementById('join-modal');
-
             if (e.target === detailModal) closeDetailModal();
-            if (e.target === rouletteModal) closeRouletteModal();
             if (e.target === joinModal) closeJoinModal();
         });
 
-        // Initialize on DOM load
+        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            initMap();
+            renderSvgMapNodes();
             renderSpotsList();
             updateFavCount();
         });
