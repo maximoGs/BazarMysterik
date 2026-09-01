@@ -2,7 +2,7 @@
 <html lang="es" class="dark scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Mysterik Net • Mendoza Experience Map</title>
     
     <!-- Meta SEO & Social Graph -->
@@ -12,14 +12,14 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Mysterik Net">
 
-    <!-- Anti-Cache Meta Tags to ensure fresh content -->
+    <!-- Anti-Cache Meta Tags to guarantee immediate fresh loads -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
-    <link rel="apple-touch-icon" href="logomysterik.png">
-    <link rel="icon" type="image/png" href="logomysterik.png">
-    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="logomysterik.png?v=3">
+    <link rel="icon" type="image/png" href="logomysterik.png?v=3">
+    <link rel="manifest" href="manifest.json?v=3">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -87,28 +87,32 @@
         }
 
         .glass-header {
-            background: rgba(8, 8, 8, 0.94);
+            background: rgba(10, 10, 10, 0.96);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
         }
 
         .glass-card {
-            background: rgba(18, 18, 18, 0.88);
+            background: rgba(18, 18, 18, 0.90);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
 
-        /* Map Container Settings: Always Full Height & Non-overlapping */
+        .glass-panel {
+            background: rgba(14, 14, 14, 0.94);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        /* Map Container Layout: Clean & Robust */
         #map-wrapper {
             position: relative;
             width: 100%;
             height: 100%;
-            min-height: 250px;
+            min-height: 260px;
         }
 
         #mendoza-map {
-            position: absolute;
-            inset: 0;
             width: 100%;
             height: 100%;
             background: #e5e3df;
@@ -117,27 +121,10 @@
 
         .leaflet-container {
             font-family: 'Plus Jakarta Sans', sans-serif !important;
+            background: #111111 !important;
         }
 
-        /* Custom Leaflet Controls */
-        .leaflet-bar {
-            border: 1px solid rgba(212, 175, 55, 0.4) !important;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
-            border-radius: 12px !important;
-            overflow: hidden;
-        }
-        .leaflet-bar a {
-            background-color: #161616 !important;
-            color: #D4AF37 !important;
-            border-bottom: 1px solid #2a2415 !important;
-            transition: all 0.2s ease;
-        }
-        .leaflet-bar a:hover {
-            background-color: #262215 !important;
-            color: #FFF3B0 !important;
-        }
-
-        /* Animated Pulsing Map Pin */
+        /* Animated Map Pin */
         @keyframes pinBounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-5px); }
@@ -186,32 +173,24 @@
             color: #FFF3B0;
             box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
         }
-
-        /* Avoid button overlap on mobile devices */
-        @media (max-width: 640px) {
-            .mobile-safe-bottom {
-                padding-bottom: env(safe-area-inset-bottom, 12px);
-            }
-        }
     </style>
 </head>
 
 <body class="bg-brand-black text-gray-100 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-gold selection:text-black overflow-x-hidden">
 
-    <!-- TOP ANNOUNCEMENT / QUICK BAR -->
-    <aside class="bg-gradient-to-r from-[#050505] via-[#1a1506] to-[#050505] border-b border-brand-gold/25 py-1 px-3 text-center text-[10px] sm:text-[11px] tracking-wider text-brand-goldLight flex items-center justify-between z-50">
+    <!-- 1. TOP ANNOUNCEMENT & AGE STATUS BAR -->
+    <aside class="bg-gradient-to-r from-[#050505] via-[#1a1506] to-[#050505] border-b border-brand-gold/25 py-1 px-3 text-[10px] sm:text-[11px] tracking-wider text-brand-goldLight flex items-center justify-between z-50 flex-shrink-0">
         <div class="hidden sm:flex items-center gap-2 text-brand-gold/80 pl-1">
             <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             <span class="font-semibold tracking-widest uppercase" data-i18n="networkLive">Mendoza • Red Mysterik Net</span>
         </div>
         
-        <div class="flex items-center justify-center gap-1.5 mx-auto font-medium truncate">
+        <div class="flex items-center justify-center gap-1.5 mx-auto font-medium truncate px-2">
             <i class="fa-solid fa-gem text-brand-gold text-[10px]"></i>
             <span data-i18n="topBarText">Experiencias en Mendoza • WhatsApp directo de parte de <strong class="text-white font-cinzel">Mysterik Net</strong></span>
         </div>
 
         <div class="flex items-center gap-2 pr-1">
-            <!-- Age badge button -->
             <button onclick="openAgeModal()" id="top-age-badge" class="px-2 py-0.5 rounded-full bg-amber-500/10 border border-brand-gold/40 text-[10px] font-bold text-brand-gold hover:bg-brand-gold hover:text-black transition-all flex items-center gap-1">
                 <span>🔞</span>
                 <span id="age-badge-text" data-i18n="ageBadge">+18</span>
@@ -219,14 +198,14 @@
         </div>
     </aside>
 
-    <!-- HEADER / NAVIGATION (Clean & Anti-Overlap) -->
-    <header class="sticky top-0 z-40 glass-header border-b border-brand-gold/20 shadow-lg">
-        <div class="max-w-7xl mx-auto px-3 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-3">
+    <!-- 2. MAIN APP HEADER (Anti-Overlap Structure) -->
+    <header class="sticky top-0 z-40 glass-header border-b border-brand-gold/20 shadow-lg flex-shrink-0">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
             
-            <!-- BRAND LOGO -->
+            <!-- BRAND LOGO (Updated to latest version) -->
             <div class="flex items-center gap-2.5 cursor-pointer group flex-shrink-0" onclick="resetFiltersAndCenter()">
-                <div class="relative w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-brand-gold/30 to-brand-goldDark/10 p-[1.5px] shadow-gold-glow flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
-                    <img src="logomysterik.png" alt="Mysterik Net Logo" class="w-full h-full object-contain rounded-[10px] bg-black/70 p-1" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=100&q=80';">
+                <div class="relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-brand-gold/40 to-brand-goldDark/20 p-[1.5px] shadow-gold-glow flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+                    <img src="logomysterik.png?v=3" alt="Mysterik Net Logo" class="w-full h-full object-contain rounded-[10px] bg-black/85 p-1" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=100&q=80';">
                 </div>
                 <div>
                     <div class="flex items-center gap-1">
@@ -237,8 +216,8 @@
                 </div>
             </div>
 
-            <!-- SEARCH BAR (Desktop) -->
-            <div class="hidden md:flex flex-1 max-w-md mx-3 relative">
+            <!-- SEARCH BAR (Desktop Central) -->
+            <div class="hidden md:flex flex-1 max-w-sm lg:max-w-md mx-2 relative">
                 <div class="relative w-full">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-gold/60 text-xs"></i>
                     <input 
@@ -255,29 +234,29 @@
                 </div>
             </div>
 
-            <!-- RIGHT ACTIONS: Language Switcher, Install Shortcut, Views -->
-            <div class="flex items-center gap-1.5 sm:gap-2.5">
+            <!-- HEADER ACTIONS: Language, Crear Acceso Directo, Views -->
+            <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
                 
-                <!-- LANGUAGE SELECTOR DROPDOWN (ES / EN / PT) -->
+                <!-- LANGUAGE SELECTOR (ES / EN / PT) -->
                 <div class="relative">
-                    <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-[#151515] border border-brand-gold/40 text-brand-goldLight text-[11px] sm:text-xs font-bold rounded-xl px-2 sm:px-3 py-1.5 focus:outline-none focus:border-brand-gold cursor-pointer transition-all">
+                    <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-[#161616] border border-brand-gold/40 text-brand-goldLight text-[11px] sm:text-xs font-bold rounded-xl px-2 sm:px-3 py-1.5 focus:outline-none focus:border-brand-gold cursor-pointer transition-all">
                         <option value="es">🇪🇸 ES</option>
                         <option value="en">🇺🇸 EN</option>
                         <option value="pt">🇧🇷 PT</option>
                     </select>
                 </div>
 
-                <!-- INSTALL PWA SHORTCUT BUTTON -->
+                <!-- CREAR ACCESO DIRECTO BUTTON (Explicitly requested) -->
                 <button 
                     id="btn-install-app" 
                     onclick="triggerInstallPrompt()" 
-                    title="Instalar App / Acceso Directo"
-                    class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-brand-gold/20 via-amber-500/20 to-brand-goldDark/20 border border-brand-gold/50 text-brand-goldLight text-[11px] sm:text-xs font-bold flex items-center gap-1.5 hover:scale-105 active:scale-95 transition-all shadow-gold-glow">
-                    <i class="fa-solid fa-mobile-screen-button text-xs"></i>
-                    <span class="hidden sm:inline" data-i18n="installApp">Instalar App</span>
+                    title="Crear Acceso Directo en Celular"
+                    class="px-2.5 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/20 via-brand-gold/30 to-brand-goldDark/20 border border-brand-gold/60 text-brand-goldLight text-[11px] sm:text-xs font-extrabold flex items-center gap-1.5 hover:scale-105 active:scale-95 transition-all shadow-gold-glow">
+                    <i class="fa-solid fa-arrow-down-to-bracket text-xs text-brand-gold"></i>
+                    <span data-i18n="createShortcut">Crear Acceso Directo</span>
                 </button>
 
-                <!-- VIEW MODE TOGGLE -->
+                <!-- VIEW MODE TOGGLE (Desktop / Mobile) -->
                 <div class="flex items-center bg-[#141414] p-0.5 sm:p-1 rounded-xl border border-brand-gold/25">
                     <button 
                         id="view-split-btn" 
@@ -305,7 +284,7 @@
                     </button>
                 </div>
 
-                <!-- FAVORITES COUNTER -->
+                <!-- FAVORITES -->
                 <button 
                     onclick="toggleFavoritesFilter()" 
                     id="btn-favorites-filter"
@@ -318,8 +297,9 @@
             </div>
         </div>
 
-        <!-- MOBILE SEARCH & FILTERS -->
-        <div class="px-3 pb-2.5 flex flex-col gap-2 max-w-7xl mx-auto">
+        <!-- 3. MOBILE SEARCH & FILTERS BAR (Modular & Dedicated Container) -->
+        <div class="px-3 pb-2.5 pt-1 flex flex-col gap-2 max-w-7xl mx-auto border-t border-brand-gold/10">
+            <!-- Mobile Search -->
             <div class="md:hidden relative w-full">
                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-gold/60 text-xs"></i>
                 <input 
@@ -332,8 +312,8 @@
                 >
             </div>
 
-            <!-- FILTER CHIPS (Scrollable with neat gaps) -->
-            <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
+            <!-- Categories and Zone Filter Chips -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-0.5 text-xs no-scrollbar">
                 <button onclick="setCategory('all')" class="category-chip px-3 py-1.5 rounded-full border border-brand-gold/40 bg-brand-gold/20 text-brand-goldLight font-bold whitespace-nowrap flex items-center gap-1.5 active-chip shadow-gold-sm flex-shrink-0" data-cat="all">
                     <span data-i18n="catAll">✨ Todos</span>
                 </button>
@@ -355,7 +335,7 @@
 
                 <div class="h-4 w-[1px] bg-brand-gold/30 mx-1 flex-shrink-0"></div>
 
-                <!-- Selector de Zona Mendoza -->
+                <!-- Zone Select -->
                 <select id="zone-select" onchange="setZone(this.value)" class="bg-[#141414] border border-brand-gold/30 text-brand-goldLight text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-brand-gold font-medium cursor-pointer flex-shrink-0">
                     <option value="all" data-i18n="zoneAll">📍 Toda Mendoza</option>
                     <option value="aristides" data-i18n="zoneAristides">🏙️ Arístides & Centro</option>
@@ -369,40 +349,40 @@
         </div>
     </header>
 
-    <!-- MAIN CONTENT LAYOUT -->
-    <main class="flex-1 flex flex-col relative overflow-hidden" style="height: calc(100vh - 128px);">
+    <!-- 4. MAIN SPLIT INTERFACE -->
+    <main class="flex-1 flex flex-col relative overflow-hidden" style="height: calc(100vh - 138px);">
 
         <div id="main-container" class="flex-1 w-full h-full flex flex-col lg:flex-row relative">
 
-            <!-- LEAFLET MAP OF MENDOZA -->
-            <section id="map-panel" class="w-full lg:w-1/2 xl:w-7/12 h-1/2 lg:h-full relative bg-[#0a0a0a] border-b lg:border-b-0 lg:border-r border-brand-gold/20 order-1 lg:order-1">
+            <!-- MODULAR MAP PANEL (Dedicated Toolbar to prevent any overlap) -->
+            <section id="map-panel" class="w-full lg:w-1/2 xl:w-7/12 h-1/2 lg:h-full relative bg-[#090909] border-b lg:border-b-0 lg:border-r border-brand-gold/20 flex flex-col order-1 lg:order-1 overflow-hidden">
                 
-                <div id="map-wrapper">
+                <!-- Dedicated Map Container -->
+                <div class="flex-1 w-full h-full relative" id="map-wrapper">
                     <div id="mendoza-map"></div>
-                </div>
 
-                <!-- MAP CONTROLS (Positioned cleanly to prevent any overlap) -->
-                <!-- Top Right: Recenter Button -->
-                <button onclick="recenterMap()" title="Centrar Mendoza" class="absolute top-3 right-3 z-[400] bg-[#121212]/95 hover:bg-[#202020] border border-brand-gold/40 text-brand-goldLight py-1.5 px-3 rounded-xl shadow-2xl hover:scale-105 transition-all text-xs flex items-center gap-1.5 backdrop-blur font-semibold">
-                    <i class="fa-solid fa-crosshairs text-brand-gold"></i>
-                    <span class="hidden sm:inline" data-i18n="recenterMap">Centrar</span>
-                </button>
+                    <!-- DEDICATED MAP FLOATING CONTROL BAR (Bottom Docked, Anti-Overlap) -->
+                    <div class="absolute bottom-3 inset-x-3 z-[400] flex items-center justify-between pointer-events-none">
+                        
+                        <!-- Map Layer Switcher: Zero API Key, Clean Tiles -->
+                        <div class="pointer-events-auto bg-[#121212]/95 border border-brand-gold/40 rounded-2xl p-1 flex items-center shadow-2xl backdrop-blur">
+                            <button id="tile-voyager-btn" onclick="setTileStyle('voyager')" class="px-2.5 py-1.5 text-[10px] sm:text-xs rounded-xl font-bold transition-all bg-brand-gold/25 text-brand-goldLight border border-brand-gold/50 flex items-center gap-1">
+                                <span>🗺️</span> <span data-i18n="mapUrban">Urbano</span>
+                            </button>
+                            <button id="tile-dark-btn" onclick="setTileStyle('dark')" class="px-2.5 py-1.5 text-[10px] sm:text-xs rounded-xl font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1">
+                                <span>🌙</span> <span data-i18n="mapDark">Oscuro</span>
+                            </button>
+                        </div>
 
-                <!-- Top Left: Map Style Toggle -->
-                <div class="absolute top-3 left-3 z-[400] bg-[#121212]/95 border border-brand-gold/30 rounded-xl p-0.5 flex items-center shadow-xl backdrop-blur">
-                    <button id="tile-voyager-btn" onclick="setTileStyle('voyager')" class="px-2.5 py-1 text-[10px] sm:text-[11px] rounded-lg font-bold transition-all bg-brand-gold/20 text-brand-goldLight border border-brand-gold/40">
-                        🗺️ <span data-i18n="mapUrban">Urbano</span>
-                    </button>
-                    <button id="tile-dark-btn" onclick="setTileStyle('dark')" class="px-2.5 py-1 text-[10px] sm:text-[11px] rounded-lg font-medium text-gray-400 hover:text-white transition-all">
-                        🌙 <span data-i18n="mapDark">Oscuro</span>
-                    </button>
-                </div>
+                        <!-- Recenter Button -->
+                        <div class="pointer-events-auto flex items-center gap-2">
+                            <button onclick="recenterMap()" title="Centrar Mendoza" class="bg-[#121212]/95 hover:bg-[#222222] border border-brand-gold/40 text-brand-goldLight py-1.5 px-3 rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition-all text-[11px] sm:text-xs flex items-center gap-1.5 backdrop-blur font-bold">
+                                <i class="fa-solid fa-crosshairs text-brand-gold text-xs"></i>
+                                <span data-i18n="recenterMap">Centrar</span>
+                            </button>
+                        </div>
 
-                <!-- Bottom Left Status -->
-                <div class="absolute bottom-3 left-3 z-[400] bg-[#111111]/95 border border-brand-gold/30 rounded-2xl p-1.5 px-3 shadow-2xl backdrop-blur hidden sm:flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                    <span class="text-xs font-bold text-white">Mendoza, Argentina</span>
-                    <span class="text-[10px] text-brand-goldLight/80">• GPS Real</span>
+                    </div>
                 </div>
 
             </section>
@@ -411,7 +391,7 @@
             <section id="feed-panel" class="w-full lg:w-1/2 xl:w-5/12 h-1/2 lg:h-full flex flex-col bg-[#0c0c0c] z-20 order-2 lg:order-2">
                 
                 <!-- Feed Header -->
-                <div class="px-3.5 py-2.5 bg-[#121212] border-b border-brand-gold/15 flex items-center justify-between text-xs">
+                <div class="px-3.5 py-2.5 bg-[#121212] border-b border-brand-gold/15 flex items-center justify-between text-xs flex-shrink-0">
                     <div class="flex items-center gap-1.5">
                         <span id="results-count" class="font-bold text-brand-gold font-mono">11</span>
                         <span class="text-gray-400" data-i18n="spotsCountLabel">lugares destacados en Mendoza</span>
@@ -432,7 +412,7 @@
                 </div>
 
                 <!-- Footer Concierge Bar -->
-                <div class="p-2.5 bg-[#080808] border-t border-brand-gold/15 text-center text-xs flex items-center justify-between px-3.5">
+                <div class="p-2.5 bg-[#080808] border-t border-brand-gold/15 text-center text-xs flex items-center justify-between px-3.5 flex-shrink-0">
                     <span class="text-gray-400 text-[11px]" data-i18n="footerQuestion">¿Buscas una mesa especial?</span>
                     <button onclick="openGeneralConcierge()" class="text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1 transition-colors text-xs">
                         <i class="fa-brands fa-whatsapp text-sm"></i>
@@ -461,7 +441,7 @@
         </div>
     </div>
 
-    <!-- AGE VERIFICATION MODAL (+18 Check) -->
+    <!-- AGE VERIFICATION MODAL (+18 Gate) -->
     <div id="age-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
         <div class="bg-[#141414] border border-brand-gold rounded-3xl max-w-md w-full p-6 sm:p-8 text-center shadow-gold-lg relative">
             <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-gold/30 to-black border border-brand-gold/60 text-2xl mb-4 shadow-gold-glow flex items-center justify-center mx-auto">
@@ -482,76 +462,38 @@
         </div>
     </div>
 
-    <!-- PWA INSTALL INSTRUCTIONS MODAL (For iOS Safari or fallback) -->
+    <!-- PWA CREAR ACCESO DIRECTO MODAL (Easy step-by-step for mobile launcher) -->
     <div id="install-guide-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
         <div class="bg-[#141414] border border-brand-gold/40 rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl relative">
             <button onclick="closeInstallGuideModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
-            <div class="w-14 h-14 rounded-2xl bg-brand-gold/20 border border-brand-gold flex items-center justify-center mx-auto mb-3 text-brand-gold text-2xl shadow-gold-glow">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-gold/30 to-brand-goldDark/20 border border-brand-gold flex items-center justify-center mx-auto mb-3 text-brand-gold text-2xl shadow-gold-glow">
                 📲
             </div>
-            <h3 class="font-cinzel text-lg font-bold text-white mb-1" data-i18n="installGuideTitle">Agregar Acceso Directo</h3>
-            <p class="text-xs text-gray-300 mb-4" data-i18n="installGuideDesc">Disfruta de la experiencia completa de Mysterik Net directamente desde la pantalla de inicio de tu celular.</p>
+            <h3 class="font-cinzel text-lg font-bold text-white mb-1" data-i18n="createShortcut">Crear Acceso Directo</h3>
+            <p class="text-xs text-gray-300 mb-4" data-i18n="installGuideDesc">Agrega Mysterik Net al menú o pantalla de inicio de tu celular para abrirlo al instante como una aplicación.</p>
             
-            <div class="bg-[#0a0a0a] border border-brand-gold/30 rounded-2xl p-4 text-left text-xs space-y-3 text-gray-300 mb-4">
-                <div class="flex items-center gap-3">
-                    <span class="w-6 h-6 rounded-full bg-brand-gold/20 text-brand-gold font-bold flex items-center justify-center flex-shrink-0">1</span>
-                    <span data-i18n="installStep1">Toca el botón <strong>Compartir</strong> en la barra de tu navegador.</span>
+            <div class="bg-[#0a0a0a] border border-brand-gold/30 rounded-2xl p-4 text-left text-xs space-y-3.5 text-gray-300 mb-5">
+                <div class="flex items-start gap-3">
+                    <span class="w-6 h-6 rounded-full bg-brand-gold text-black font-extrabold flex items-center justify-center flex-shrink-0 text-xs">1</span>
+                    <div>
+                        <strong class="text-white block">En Android (Chrome):</strong>
+                        <span data-i18n="androidStep">Toca los <strong>tres puntos (⋮)</strong> arriba a la derecha y selecciona <strong>"Agregar a la pantalla principal"</strong> o <strong>"Instalar aplicación"</strong>.</span>
+                    </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <span class="w-6 h-6 rounded-full bg-brand-gold/20 text-brand-gold font-bold flex items-center justify-center flex-shrink-0">2</span>
-                    <span data-i18n="installStep2">Selecciona <strong>"Agregar al Inicio" ➕</strong>.</span>
+                <div class="flex items-start gap-3">
+                    <span class="w-6 h-6 rounded-full bg-brand-gold text-black font-extrabold flex items-center justify-center flex-shrink-0 text-xs">2</span>
+                    <div>
+                        <strong class="text-white block">En iPhone (Safari):</strong>
+                        <span data-i18n="iosStep">Toca el botón <strong>Compartir (⎋)</strong> en la barra inferior y selecciona <strong>"Agregar al Inicio" ➕</strong>.</span>
+                    </div>
                 </div>
             </div>
 
-            <button onclick="closeInstallGuideModal()" class="w-full py-2.5 bg-brand-gold text-black font-bold text-xs rounded-xl hover:brightness-110 transition-all" data-i18n="understoodBtn">
+            <button onclick="closeInstallGuideModal()" class="w-full py-3 bg-gradient-to-r from-brand-gold to-brand-goldDark text-black font-extrabold text-xs uppercase tracking-wider rounded-xl hover:brightness-110 shadow-gold-sm transition-all" data-i18n="understoodBtn">
                 ¡Entendido!
             </button>
-        </div>
-    </div>
-
-    <!-- SUMAR COMERCIO MODAL (B2B) -->
-    <div id="join-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
-        <div class="bg-[#141414] border border-brand-gold/40 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative">
-            <button onclick="closeJoinModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div class="text-center mb-6">
-                <div class="w-12 h-12 rounded-xl bg-brand-gold/20 border border-brand-gold flex items-center justify-center mx-auto mb-3 text-brand-gold text-xl">
-                    <i class="fa-solid fa-handshake"></i>
-                </div>
-                <h3 class="font-cinzel text-xl font-bold text-white" data-i18n="joinTitle">Suma tu Lugar a Mysterik Net</h3>
-                <p class="text-xs text-gray-400 mt-1" data-i18n="joinDesc">Integra tu comercio en el mapa selecto de Mendoza y recibe contactos directos por WhatsApp.</p>
-            </div>
-
-            <div class="space-y-3.5 text-xs">
-                <div>
-                    <label class="block text-gray-300 font-semibold mb-1" data-i18n="joinNameLabel">Nombre del Local</label>
-                    <input type="text" id="b2b-name" placeholder="Ej: Restó / Bar / Bodega" class="w-full bg-[#0a0a0a] border border-brand-gold/30 rounded-xl px-3.5 py-2.5 text-white focus:border-brand-gold focus:outline-none">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-gray-300 font-semibold mb-1" data-i18n="joinZoneLabel">Zona</label>
-                        <input type="text" id="b2b-zone" placeholder="Ej: Arístides / Chacras" class="w-full bg-[#0a0a0a] border border-brand-gold/30 rounded-xl px-3.5 py-2.5 text-white focus:border-brand-gold focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-gray-300 font-semibold mb-1" data-i18n="joinCategoryLabel">Categoría</label>
-                        <select id="b2b-cat" class="w-full bg-[#0a0a0a] border border-brand-gold/30 rounded-xl px-3.5 py-2.5 text-white focus:border-brand-gold focus:outline-none">
-                            <option value="Cocktail / Speakeasy">Cocktail / Speakeasy</option>
-                            <option value="Bodega / Sunset">Bodega / Sunset</option>
-                            <option value="Restó Gourmet">Restó Gourmet</option>
-                            <option value="Nightlife / Club">Nightlife / Club</option>
-                            <option value="Café / Especialidad">Café / Especialidad</option>
-                        </select>
-                    </div>
-                </div>
-
-                <button onclick="submitB2B()" class="w-full mt-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:brightness-110 text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all">
-                    <i class="fa-brands fa-whatsapp text-lg"></i>
-                    <span data-i18n="joinSubmitBtn">Contactar con Mysterik Net</span>
-                </button>
-            </div>
         </div>
     </div>
 
@@ -568,8 +510,8 @@
                 ageBadgeVerified: "+18 Verificado",
                 appSubtitle: "Mendoza Experience Map",
                 searchPlaceholder: "Buscar bares, bodegas, restós, Arístides, Chacras...",
-                installApp: "Instalar App",
-                appInstalled: "App Instalada",
+                createShortcut: "Crear Acceso Directo",
+                appInstalled: "Acceso Creado",
                 viewExplore: "Explorar",
                 viewMap: "Mapa",
                 viewList: "Lugares",
@@ -621,17 +563,10 @@
                 ageModalDesc: "Para acceder a las guías de bodegas, bares y vida nocturna en Mendoza, por favor confirma que eres mayor de edad (+18 años).",
                 ageConfirmBtn: "✅ Soy mayor de 18 años",
                 ageDenyBtn: "Salir / Menor de 18",
-                installGuideTitle: "Agregar Acceso Directo",
-                installGuideDesc: "Disfruta de la experiencia completa de Mysterik Net directamente desde la pantalla de inicio de tu celular.",
-                installStep1: "Toca el botón <strong>Compartir</strong> en la barra de tu navegador.",
-                installStep2: "Selecciona <strong>\"Agregar al Inicio\" ➕</strong>.",
+                installGuideDesc: "Agrega Mysterik Net al menú o pantalla de inicio de tu celular para abrirlo al instante como una aplicación.",
+                androidStep: "Toca los <strong>tres puntos (⋮)</strong> arriba a la derecha y selecciona <strong>\"Agregar a la pantalla principal\"</strong> o <strong>\"Instalar aplicación\"</strong>.",
+                iosStep: "Toca el botón <strong>Compartir (⎋)</strong> en la barra inferior y selecciona <strong>\"Agregar al Inicio\" ➕</strong>.",
                 understoodBtn: "¡Entendido!",
-                joinTitle: "Suma tu Lugar a Mysterik Net",
-                joinDesc: "Integra tu comercio en el mapa selecto de Mendoza y recibe contactos directos por WhatsApp.",
-                joinNameLabel: "Nombre del Local",
-                joinZoneLabel: "Zona",
-                joinCategoryLabel: "Categoría",
-                joinSubmitBtn: "Contactar con Mysterik Net",
                 reviewsCount: "reseñas",
                 rangeLabel: "Rango:"
             },
@@ -642,8 +577,8 @@
                 ageBadgeVerified: "+18 Verified",
                 appSubtitle: "Mendoza Experience Map",
                 searchPlaceholder: "Search bars, wineries, dining, Aristides, Chacras...",
-                installApp: "Install App",
-                appInstalled: "App Installed",
+                createShortcut: "Create Shortcut",
+                appInstalled: "Shortcut Added",
                 viewExplore: "Explore",
                 viewMap: "Map",
                 viewList: "Places",
@@ -695,17 +630,10 @@
                 ageModalDesc: "To access curated wineries, cocktail bars, and nightlife in Mendoza, please confirm you are 18+ years old.",
                 ageConfirmBtn: "✅ I am 18+ years old",
                 ageDenyBtn: "Exit / Under 18",
-                installGuideTitle: "Add Shortcut to Screen",
-                installGuideDesc: "Enjoy the full Mysterik Net experience straight from your mobile home screen.",
-                installStep1: "Tap the <strong>Share</strong> button in your browser toolbar.",
-                installStep2: "Select <strong>\"Add to Home Screen\" ➕</strong>.",
+                installGuideDesc: "Add Mysterik Net to your mobile home screen to access it instantly like a native app.",
+                androidStep: "Tap the <strong>three dots (⋮)</strong> on the top right and select <strong>\"Add to Home Screen\"</strong> or <strong>\"Install App\"</strong>.",
+                iosStep: "Tap the <strong>Share (⎋)</strong> button on the bottom bar and choose <strong>\"Add to Home Screen\" ➕</strong>.",
                 understoodBtn: "Got it!",
-                joinTitle: "Add Your Venue to Mysterik Net",
-                joinDesc: "Join Mendoza's curated experience map and receive verified guest inquiries on WhatsApp.",
-                joinNameLabel: "Venue Name",
-                joinZoneLabel: "Zone / Location",
-                joinCategoryLabel: "Category",
-                joinSubmitBtn: "Contact Mysterik Net Team",
                 reviewsCount: "reviews",
                 rangeLabel: "Price Range:"
             },
@@ -716,8 +644,8 @@
                 ageBadgeVerified: "+18 Verificado",
                 appSubtitle: "Mapa de Experiências Mendoza",
                 searchPlaceholder: "Buscar bares, vinícolas, restôs, Arístides, Chacras...",
-                installApp: "Instalar App",
-                appInstalled: "App Instalado",
+                createShortcut: "Criar Atalho",
+                appInstalled: "Atalho Criado",
                 viewExplore: "Explorar",
                 viewMap: "Mapa",
                 viewList: "Locais",
@@ -769,17 +697,10 @@
                 ageModalDesc: "Para acessar os guias de vinícolas, bares e vida noturna em Mendoza, confirme que você é maior de 18 anos.",
                 ageConfirmBtn: "✅ Tenho mais de 18 anos",
                 ageDenyBtn: "Sair / Menor de 18",
-                installGuideTitle: "Adicionar Atalho na Tela",
-                installGuideDesc: "Aproveite a experiência da Mysterik Net direto na tela inicial do seu celular.",
-                installStep1: "Toque no botão <strong>Compartilhar</strong> no navegador.",
-                installStep2: "Selecione <strong>\"Adicionar à Tela de Início\" ➕</strong>.",
+                installGuideDesc: "Adicione a Mysterik Net à tela inicial do seu celular para abrir instantaneamente como um app.",
+                androidStep: "Toque nos <strong>três pontos (⋮)</strong> no canto superior e selecione <strong>\"Adicionar à tela inicial\"</strong> ou <strong>\"Instalar aplicativo\"</strong>.",
+                iosStep: "Toque no botão <strong>Compartilhar (⎋)</strong> na barra inferior e escolha <strong>\"Adicionar à Tela de Início\" ➕</strong>.",
                 understoodBtn: "Entendido!",
-                joinTitle: "Adicione seu Local na Mysterik Net",
-                joinDesc: "Faça parte do mapa exclusivo de Mendoza e receba reservas diretas por WhatsApp.",
-                joinNameLabel: "Nome do Estabelecimento",
-                joinZoneLabel: "Zona / Bairro",
-                joinCategoryLabel: "Categoria",
-                joinSubmitBtn: "Falar com Equipe Mysterik",
                 reviewsCount: "avaliações",
                 rangeLabel: "Faixa de Preço:"
             }
@@ -791,7 +712,6 @@
 
         /**
          * AUTO CACHE PURGE ON ENTRY
-         * Cleans obsolete caches each time a user opens the app
          */
         function cleanCachesOnEntry() {
             if ('caches' in window) {
@@ -811,7 +731,7 @@
         }
 
         /**
-         * CURATED SPOTS DATA (Gran Mendoza)
+         * SPOTS DATA (Gran Mendoza)
          */
         const SPOTS_DATA = [
             {
@@ -1144,16 +1064,17 @@
         };
 
         /**
-         * Initialize Leaflet Map
+         * Initialize Leaflet Map (Zero API Keys required, High Speed Open Endpoints)
          */
         function initLeafletMap() {
             map = L.map('mendoza-map', {
                 center: [-32.9400, -68.8350],
                 zoom: 12,
-                zoomControl: true,
+                zoomControl: false, // Clean custom controls
                 attributionControl: false
             });
 
+            // Clean Tile Layer without API keys
             setTileStyle('voyager');
 
             markersLayer = L.layerGroup().addTo(map);
@@ -1162,7 +1083,7 @@
 
             setTimeout(() => {
                 if (map) map.invalidateSize();
-            }, 300);
+            }, 350);
 
             window.addEventListener('resize', () => {
                 if (map) map.invalidateSize();
@@ -1170,7 +1091,7 @@
         }
 
         /**
-         * Tile Style Switcher
+         * Tile Style Switcher (100% Free, NO API keys)
          */
         function setTileStyle(theme) {
             currentTileTheme = theme;
@@ -1182,24 +1103,26 @@
             const btnDark = document.getElementById('tile-dark-btn');
 
             if (theme === 'voyager') {
-                activeTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                // Free CARTO Voyager Tiles (Clean OpenStreetMap styling, NO API Key)
+                activeTileLayer = L.tileLayer('https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png', {
                     maxZoom: 19,
                     subdomains: 'abcd'
                 }).addTo(map);
 
                 if (btnVoyager && btnDark) {
-                    btnVoyager.className = 'px-2.5 py-1 text-[10px] sm:text-[11px] rounded-lg font-bold transition-all bg-brand-gold/20 text-brand-goldLight border border-brand-gold/40';
-                    btnDark.className = 'px-2.5 py-1 text-[10px] sm:text-[11px] rounded-lg font-medium text-gray-400 hover:text-white transition-all';
+                    btnVoyager.className = 'px-2.5 py-1.5 text-[10px] sm:text-xs rounded-xl font-bold transition-all bg-brand-gold/25 text-brand-goldLight border border-brand-gold/50 flex items-center gap-1';
+                    btnDark.className = 'px-2.5 py-1.5 text-[10px] sm:text-xs rounded-xl font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1';
                 }
             } else {
-                activeTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png', {
+                // Free CARTO Dark Matter (NO API Key)
+                activeTileLayer = L.tileLayer('https://basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png', {
                     maxZoom: 19,
                     subdomains: 'abcd'
                 }).addTo(map);
 
                 if (btnVoyager && btnDark) {
-                    btnDark.className = 'px-2.5 py-1 text-[10px] sm:text-[11px] rounded-lg font-bold transition-all bg-brand-gold/20 text-brand-goldLight border border-brand-gold/40';
-                    btnVoyager.className = 'px-2.5 py-1 text-[10px] sm:text-[11px] rounded-lg font-medium text-gray-400 hover:text-white transition-all';
+                    btnDark.className = 'px-2.5 py-1.5 text-[10px] sm:text-xs rounded-xl font-bold transition-all bg-brand-gold/25 text-brand-goldLight border border-brand-gold/50 flex items-center gap-1';
+                    btnVoyager.className = 'px-2.5 py-1.5 text-[10px] sm:text-xs rounded-xl font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1';
                 }
             }
         }
@@ -1848,8 +1771,6 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            const btn = document.getElementById('btn-install-app');
-            if (btn) btn.classList.remove('hidden');
         });
 
         function triggerInstallPrompt() {
@@ -1859,12 +1780,11 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
                     if (choiceResult.outcome === 'accepted') {
                         const t = I18N[currentLang];
                         const btn = document.getElementById('btn-install-app');
-                        if (btn) btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> <span class="hidden sm:inline">${t.appInstalled}</span>`;
+                        if (btn) btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> <span>${t.appInstalled}</span>`;
                     }
                     deferredPrompt = null;
                 });
             } else {
-                // If on iOS or standalone is already supported, show visual guide
                 openInstallGuideModal();
             }
         }
@@ -2025,43 +1945,12 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
             }, 300);
         }
 
-        /**
-         * B2B Join Modal
-         */
-        function openJoinModal() {
-            const modal = document.getElementById('join-modal');
-            modal.classList.remove('hidden');
-            setTimeout(() => modal.classList.remove('opacity-0'), 10);
-        }
-
-        function closeJoinModal() {
-            const modal = document.getElementById('join-modal');
-            modal.classList.add('opacity-0');
-            setTimeout(() => modal.classList.add('hidden'), 300);
-        }
-
-        function submitB2B() {
-            const name = document.getElementById('b2b-name').value || 'Comercio Mendoza';
-            const zone = document.getElementById('b2b-zone').value || 'Mendoza';
-            const cat = document.getElementById('b2b-cat').value;
-
-            const msg = `¡Hola Mysterik Net! 👋 Quiero sumar mi comercio a la red de Mendoza:
-🏛️ *Nombre:* ${name}
-📍 *Zona:* ${zone}
-🏷️ *Categoría:* ${cat}`;
-
-            window.open(`https://wa.me/5492617094195?text=${encodeURIComponent(msg)}`, '_blank');
-            closeJoinModal();
-        }
-
         // Close on backdrop click
         window.addEventListener('click', (e) => {
             const detailModal = document.getElementById('detail-modal');
-            const joinModal = document.getElementById('join-modal');
             const ageModal = document.getElementById('age-modal');
             const installModal = document.getElementById('install-guide-modal');
             if (e.target === detailModal) closeDetailModal();
-            if (e.target === joinModal) closeJoinModal();
             if (e.target === ageModal) closeAgeModal();
             if (e.target === installModal) closeInstallGuideModal();
         });
