@@ -12,8 +12,14 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Mysterik Net">
 
+    <!-- Anti-Cache Meta Tags to ensure fresh content -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
     <link rel="apple-touch-icon" href="logomysterik.png">
     <link rel="icon" type="image/png" href="logomysterik.png">
+    <link rel="manifest" href="manifest.json">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -81,7 +87,7 @@
         }
 
         .glass-header {
-            background: rgba(8, 8, 8, 0.92);
+            background: rgba(8, 8, 8, 0.94);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
         }
@@ -92,12 +98,12 @@
             -webkit-backdrop-filter: blur(12px);
         }
 
-        /* Map Container Settings: Always Full Height & 100% Reliable */
+        /* Map Container Settings: Always Full Height & Non-overlapping */
         #map-wrapper {
             position: relative;
             width: 100%;
             height: 100%;
-            min-height: 280px;
+            min-height: 250px;
         }
 
         #mendoza-map {
@@ -134,7 +140,7 @@
         /* Animated Pulsing Map Pin */
         @keyframes pinBounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
+            50% { transform: translateY(-5px); }
         }
 
         .custom-mendoza-pin {
@@ -147,7 +153,7 @@
             animation: pinBounce 3s infinite ease-in-out;
         }
         .custom-mendoza-pin:hover {
-            transform: scale(1.25) translateY(-8px) !important;
+            transform: scale(1.22) translateY(-6px) !important;
             z-index: 999 !important;
         }
 
@@ -180,55 +186,66 @@
             color: #FFF3B0;
             box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
         }
+
+        /* Avoid button overlap on mobile devices */
+        @media (max-width: 640px) {
+            .mobile-safe-bottom {
+                padding-bottom: env(safe-area-inset-bottom, 12px);
+            }
+        }
     </style>
 </head>
 
 <body class="bg-brand-black text-gray-100 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-gold selection:text-black overflow-x-hidden">
 
-    <!-- TOP ANNOUNCEMENT BAR -->
-    <aside class="bg-gradient-to-r from-[#050505] via-[#1a1506] to-[#050505] border-b border-brand-gold/25 py-1.5 px-3 text-center text-[11px] tracking-wider text-brand-goldLight flex items-center justify-between z-50">
-        <div class="hidden sm:flex items-center gap-2 text-brand-gold/80 pl-2">
+    <!-- TOP ANNOUNCEMENT / QUICK BAR -->
+    <aside class="bg-gradient-to-r from-[#050505] via-[#1a1506] to-[#050505] border-b border-brand-gold/25 py-1 px-3 text-center text-[10px] sm:text-[11px] tracking-wider text-brand-goldLight flex items-center justify-between z-50">
+        <div class="hidden sm:flex items-center gap-2 text-brand-gold/80 pl-1">
             <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-            <span class="text-[10px] font-semibold tracking-widest uppercase">Mendoza • Red de Lugares Mysterik Net</span>
+            <span class="font-semibold tracking-widest uppercase" data-i18n="networkLive">Mendoza • Red Mysterik Net</span>
         </div>
-        <div class="flex items-center justify-center gap-2 mx-auto font-medium">
+        
+        <div class="flex items-center justify-center gap-1.5 mx-auto font-medium truncate">
             <i class="fa-solid fa-gem text-brand-gold text-[10px]"></i>
-            <span>Experiencias en Mendoza • Contacta directamente por WhatsApp de parte de <strong class="text-white font-cinzel">Mysterik Net</strong></span>
-            <i class="fa-solid fa-sparkles text-brand-gold text-[10px]"></i>
+            <span data-i18n="topBarText">Experiencias en Mendoza • WhatsApp directo de parte de <strong class="text-white font-cinzel">Mysterik Net</strong></span>
         </div>
-        <div class="hidden md:flex items-center gap-3 pr-2">
-            <button onclick="openJoinModal()" class="text-[10px] uppercase font-bold text-brand-gold hover:text-white transition-colors underline decoration-brand-gold/50">
-                Sumar Lugar
+
+        <div class="flex items-center gap-2 pr-1">
+            <!-- Age badge button -->
+            <button onclick="openAgeModal()" id="top-age-badge" class="px-2 py-0.5 rounded-full bg-amber-500/10 border border-brand-gold/40 text-[10px] font-bold text-brand-gold hover:bg-brand-gold hover:text-black transition-all flex items-center gap-1">
+                <span>🔞</span>
+                <span id="age-badge-text" data-i18n="ageBadge">+18</span>
             </button>
         </div>
     </aside>
 
-    <!-- HEADER / NAVIGATION -->
+    <!-- HEADER / NAVIGATION (Clean & Anti-Overlap) -->
     <header class="sticky top-0 z-40 glass-header border-b border-brand-gold/20 shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-3">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-3">
             
             <!-- BRAND LOGO -->
-            <div class="flex items-center gap-3 cursor-pointer group" onclick="resetFiltersAndCenter()">
-                <div class="relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-brand-gold/30 to-brand-goldDark/10 p-[1.5px] shadow-gold-glow flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+            <div class="flex items-center gap-2.5 cursor-pointer group flex-shrink-0" onclick="resetFiltersAndCenter()">
+                <div class="relative w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-brand-gold/30 to-brand-goldDark/10 p-[1.5px] shadow-gold-glow flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
                     <img src="logomysterik.png" alt="Mysterik Net Logo" class="w-full h-full object-contain rounded-[10px] bg-black/70 p-1" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=100&q=80';">
                 </div>
                 <div>
-                    <div class="flex items-center gap-1.5">
-                        <span class="font-cinzel text-lg sm:text-2xl font-bold tracking-widest text-white group-hover:text-brand-gold transition-colors">MYSTERIK</span>
-                        <span class="text-xs font-bold px-1.5 py-0.5 rounded bg-brand-gold/20 text-brand-goldLight font-mono border border-brand-gold/30">NET</span>
+                    <div class="flex items-center gap-1">
+                        <span class="font-cinzel text-base sm:text-xl font-bold tracking-wider text-white group-hover:text-brand-gold transition-colors">MYSTERIK</span>
+                        <span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-brand-gold/20 text-brand-goldLight font-mono border border-brand-gold/30">NET</span>
                     </div>
-                    <p class="text-[10px] sm:text-xs text-brand-gold/75 tracking-wider uppercase font-medium">Mendoza Experience Map</p>
+                    <p class="text-[9px] sm:text-[11px] text-brand-gold/75 tracking-wider uppercase font-medium" data-i18n="appSubtitle">Mendoza Experience Map</p>
                 </div>
             </div>
 
             <!-- SEARCH BAR (Desktop) -->
-            <div class="hidden md:flex flex-1 max-w-md mx-4 relative">
+            <div class="hidden md:flex flex-1 max-w-md mx-3 relative">
                 <div class="relative w-full">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-gold/60 text-xs"></i>
                     <input 
                         type="text" 
                         id="search-input" 
-                        placeholder="Buscar bares, bodegas, restós, Arístides, Chacras, Maipú..." 
+                        placeholder="Buscar bares, bodegas, restós, Arístides, Chacras..." 
+                        data-i18n-placeholder="searchPlaceholder"
                         oninput="handleSearch(this.value)"
                         class="w-full bg-[#121212]/90 border border-brand-gold/25 rounded-full pl-9 pr-8 py-2 text-xs text-white placeholder-gray-400 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-all"
                     >
@@ -238,18 +255,37 @@
                 </div>
             </div>
 
-            <!-- RIGHT ACTIONS -->
-            <div class="flex items-center gap-2 sm:gap-3">
+            <!-- RIGHT ACTIONS: Language Switcher, Install Shortcut, Views -->
+            <div class="flex items-center gap-1.5 sm:gap-2.5">
                 
+                <!-- LANGUAGE SELECTOR DROPDOWN (ES / EN / PT) -->
+                <div class="relative">
+                    <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-[#151515] border border-brand-gold/40 text-brand-goldLight text-[11px] sm:text-xs font-bold rounded-xl px-2 sm:px-3 py-1.5 focus:outline-none focus:border-brand-gold cursor-pointer transition-all">
+                        <option value="es">🇪🇸 ES</option>
+                        <option value="en">🇺🇸 EN</option>
+                        <option value="pt">🇧🇷 PT</option>
+                    </select>
+                </div>
+
+                <!-- INSTALL PWA SHORTCUT BUTTON -->
+                <button 
+                    id="btn-install-app" 
+                    onclick="triggerInstallPrompt()" 
+                    title="Instalar App / Acceso Directo"
+                    class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-brand-gold/20 via-amber-500/20 to-brand-goldDark/20 border border-brand-gold/50 text-brand-goldLight text-[11px] sm:text-xs font-bold flex items-center gap-1.5 hover:scale-105 active:scale-95 transition-all shadow-gold-glow">
+                    <i class="fa-solid fa-mobile-screen-button text-xs"></i>
+                    <span class="hidden sm:inline" data-i18n="installApp">Instalar App</span>
+                </button>
+
                 <!-- VIEW MODE TOGGLE -->
-                <div class="flex items-center bg-[#141414] p-1 rounded-xl border border-brand-gold/25">
+                <div class="flex items-center bg-[#141414] p-0.5 sm:p-1 rounded-xl border border-brand-gold/25">
                     <button 
                         id="view-split-btn" 
                         onclick="setViewMode('split')" 
-                        title="Vista Mapa + Lista"
+                        title="Explorar (Mapa + Lista)"
                         class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium transition-all nav-tab-active flex items-center gap-1">
                         <i class="fa-solid fa-map-location-dot"></i>
-                        <span class="hidden sm:inline text-[11px]">Explorar</span>
+                        <span class="hidden lg:inline text-[11px]" data-i18n="viewExplore">Explorar</span>
                     </button>
                     <button 
                         id="view-map-btn" 
@@ -257,7 +293,7 @@
                         title="Solo Mapa"
                         class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1">
                         <i class="fa-solid fa-map"></i>
-                        <span class="hidden sm:inline text-[11px]">Mapa</span>
+                        <span class="hidden lg:inline text-[11px]" data-i18n="viewMap">Mapa</span>
                     </button>
                     <button 
                         id="view-cards-btn" 
@@ -265,7 +301,7 @@
                         title="Solo Tarjetas"
                         class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1">
                         <i class="fa-solid fa-grip"></i>
-                        <span class="hidden sm:inline text-[11px]">Lugares</span>
+                        <span class="hidden lg:inline text-[11px]" data-i18n="viewList">Lugares</span>
                     </button>
                 </div>
 
@@ -273,8 +309,8 @@
                 <button 
                     onclick="toggleFavoritesFilter()" 
                     id="btn-favorites-filter"
-                    title="Ver guardados"
-                    class="p-2 sm:px-3 sm:py-2 rounded-full bg-[#161616] border border-brand-gold/30 text-gray-300 hover:text-rose-400 hover:border-rose-400/50 text-xs flex items-center gap-1.5 transition-all">
+                    title="Guardados"
+                    class="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl bg-[#161616] border border-brand-gold/30 text-gray-300 hover:text-rose-400 hover:border-rose-400/50 text-xs flex items-center gap-1 transition-all">
                     <i class="fa-solid fa-heart text-xs" id="fav-icon-counter"></i>
                     <span id="fav-count-badge" class="font-bold text-[11px]">0</span>
                 </button>
@@ -283,50 +319,51 @@
         </div>
 
         <!-- MOBILE SEARCH & FILTERS -->
-        <div class="px-4 pb-3 flex flex-col gap-2.5 max-w-7xl mx-auto">
+        <div class="px-3 pb-2.5 flex flex-col gap-2 max-w-7xl mx-auto">
             <div class="md:hidden relative w-full">
                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-gold/60 text-xs"></i>
                 <input 
                     type="text" 
                     id="search-input-mobile" 
                     placeholder="Buscar en Mendoza..." 
+                    data-i18n-placeholder="searchPlaceholder"
                     oninput="handleSearch(this.value)"
                     class="w-full bg-[#121212] border border-brand-gold/25 rounded-full pl-9 pr-8 py-2 text-xs text-white placeholder-gray-400 focus:outline-none focus:border-brand-gold"
                 >
             </div>
 
-            <!-- FILTER CHIPS -->
+            <!-- FILTER CHIPS (Scrollable with neat gaps) -->
             <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
-                <button onclick="setCategory('all')" class="category-chip px-3 py-1.5 rounded-full border border-brand-gold/40 bg-brand-gold/20 text-brand-goldLight font-bold whitespace-nowrap flex items-center gap-1.5 active-chip shadow-gold-sm" data-cat="all">
-                    <span>✨ Todos</span>
+                <button onclick="setCategory('all')" class="category-chip px-3 py-1.5 rounded-full border border-brand-gold/40 bg-brand-gold/20 text-brand-goldLight font-bold whitespace-nowrap flex items-center gap-1.5 active-chip shadow-gold-sm flex-shrink-0" data-cat="all">
+                    <span data-i18n="catAll">✨ Todos</span>
                 </button>
-                <button onclick="setCategory('cocktail')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5" data-cat="cocktail">
-                    <span>🍸 Cocktails & Speakeasy</span>
+                <button onclick="setCategory('cocktail')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5 flex-shrink-0" data-cat="cocktail">
+                    <span data-i18n="catCocktails">🍸 Cocktails & Speakeasy</span>
                 </button>
-                <button onclick="setCategory('bodega')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5" data-cat="bodega">
-                    <span>🍷 Bodegas & Vistas</span>
+                <button onclick="setCategory('bodega')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5 flex-shrink-0" data-cat="bodega">
+                    <span data-i18n="catWineries">🍷 Bodegas & Vistas</span>
                 </button>
-                <button onclick="setCategory('gourmet')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5" data-cat="gourmet">
-                    <span>🍽️ Restó Gourmet</span>
+                <button onclick="setCategory('gourmet')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5 flex-shrink-0" data-cat="gourmet">
+                    <span data-i18n="catGourmet">🍽️ Restó Gourmet</span>
                 </button>
-                <button onclick="setCategory('nightlife')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5" data-cat="nightlife">
-                    <span>🪩 Nightlife & Club</span>
+                <button onclick="setCategory('nightlife')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5 flex-shrink-0" data-cat="nightlife">
+                    <span data-i18n="catNightlife">🪩 Nightlife & Club</span>
                 </button>
-                <button onclick="setCategory('cafe')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5" data-cat="cafe">
-                    <span>☕ Café & Brunch</span>
+                <button onclick="setCategory('cafe')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5 flex-shrink-0" data-cat="cafe">
+                    <span data-i18n="catCafe">☕ Café & Brunch</span>
                 </button>
 
                 <div class="h-4 w-[1px] bg-brand-gold/30 mx-1 flex-shrink-0"></div>
 
                 <!-- Selector de Zona Mendoza -->
                 <select id="zone-select" onchange="setZone(this.value)" class="bg-[#141414] border border-brand-gold/30 text-brand-goldLight text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-brand-gold font-medium cursor-pointer flex-shrink-0">
-                    <option value="all">📍 Toda Mendoza</option>
-                    <option value="aristides">🏙️ Arístides & Centro</option>
-                    <option value="chacras">🌿 Chacras de Coria</option>
-                    <option value="lujan">🍇 Luján de Cuyo</option>
-                    <option value="maipu">🍷 Maipú Viñedos</option>
-                    <option value="guaymallen">🥩 Guaymallén</option>
-                    <option value="palmares">🍸 Godoy Cruz / Palmares</option>
+                    <option value="all" data-i18n="zoneAll">📍 Toda Mendoza</option>
+                    <option value="aristides" data-i18n="zoneAristides">🏙️ Arístides & Centro</option>
+                    <option value="chacras" data-i18n="zoneChacras">🌿 Chacras de Coria</option>
+                    <option value="lujan" data-i18n="zoneLujan">🍇 Luján de Cuyo</option>
+                    <option value="maipu" data-i18n="zoneMaipu">🍷 Maipú Viñedos</option>
+                    <option value="guaymallen" data-i18n="zoneGuaymallen">🥩 Guaymallén</option>
+                    <option value="palmares" data-i18n="zonePalmares">🍸 Godoy Cruz / Palmares</option>
                 </select>
             </div>
         </div>
@@ -337,69 +374,69 @@
 
         <div id="main-container" class="flex-1 w-full h-full flex flex-col lg:flex-row relative">
 
-            <!-- LEAFLET MAP OF MENDOZA (Detailed geography: Las Heras, Ciudad, Godoy Cruz, Maipú, Chacras, Luján, Río Mendoza) -->
+            <!-- LEAFLET MAP OF MENDOZA -->
             <section id="map-panel" class="w-full lg:w-1/2 xl:w-7/12 h-1/2 lg:h-full relative bg-[#0a0a0a] border-b lg:border-b-0 lg:border-r border-brand-gold/20 order-1 lg:order-1">
                 
                 <div id="map-wrapper">
                     <div id="mendoza-map"></div>
                 </div>
 
-                <!-- Map Floating Overlays -->
-                <!-- Recenter Button -->
-                <button onclick="recenterMap()" title="Centrar Mendoza" class="absolute top-4 right-4 z-[400] bg-[#121212]/95 hover:bg-[#202020] border border-brand-gold/40 text-brand-goldLight p-2.5 px-3 rounded-xl shadow-2xl hover:scale-105 transition-all text-xs flex items-center gap-1.5 backdrop-blur font-semibold">
+                <!-- MAP CONTROLS (Positioned cleanly to prevent any overlap) -->
+                <!-- Top Right: Recenter Button -->
+                <button onclick="recenterMap()" title="Centrar Mendoza" class="absolute top-3 right-3 z-[400] bg-[#121212]/95 hover:bg-[#202020] border border-brand-gold/40 text-brand-goldLight py-1.5 px-3 rounded-xl shadow-2xl hover:scale-105 transition-all text-xs flex items-center gap-1.5 backdrop-blur font-semibold">
                     <i class="fa-solid fa-crosshairs text-brand-gold"></i>
-                    <span>Centrar Mendoza</span>
+                    <span class="hidden sm:inline" data-i18n="recenterMap">Centrar</span>
                 </button>
 
-                <!-- Map Style Toggle (Urbano / Oscuro) -->
-                <div class="absolute top-4 left-4 z-[400] bg-[#121212]/95 border border-brand-gold/30 rounded-xl p-1 flex items-center shadow-xl backdrop-blur">
-                    <button id="tile-voyager-btn" onclick="setTileStyle('voyager')" class="px-2.5 py-1 text-[11px] rounded-lg font-bold transition-all bg-brand-gold/20 text-brand-goldLight border border-brand-gold/40">
-                        🗺️ Urbano
+                <!-- Top Left: Map Style Toggle -->
+                <div class="absolute top-3 left-3 z-[400] bg-[#121212]/95 border border-brand-gold/30 rounded-xl p-0.5 flex items-center shadow-xl backdrop-blur">
+                    <button id="tile-voyager-btn" onclick="setTileStyle('voyager')" class="px-2.5 py-1 text-[10px] sm:text-[11px] rounded-lg font-bold transition-all bg-brand-gold/20 text-brand-goldLight border border-brand-gold/40">
+                        🗺️ <span data-i18n="mapUrban">Urbano</span>
                     </button>
-                    <button id="tile-dark-btn" onclick="setTileStyle('dark')" class="px-2.5 py-1 text-[11px] rounded-lg font-medium text-gray-400 hover:text-white transition-all">
-                        🌙 Oscuro
+                    <button id="tile-dark-btn" onclick="setTileStyle('dark')" class="px-2.5 py-1 text-[10px] sm:text-[11px] rounded-lg font-medium text-gray-400 hover:text-white transition-all">
+                        🌙 <span data-i18n="mapDark">Oscuro</span>
                     </button>
                 </div>
 
-                <!-- Bottom Status Pill -->
-                <div class="absolute bottom-4 left-4 z-[400] bg-[#111111]/95 border border-brand-gold/30 rounded-2xl p-2 px-3.5 shadow-2xl backdrop-blur hidden sm:flex items-center gap-2.5">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                <!-- Bottom Left Status -->
+                <div class="absolute bottom-3 left-3 z-[400] bg-[#111111]/95 border border-brand-gold/30 rounded-2xl p-1.5 px-3 shadow-2xl backdrop-blur hidden sm:flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                     <span class="text-xs font-bold text-white">Mendoza, Argentina</span>
-                    <span class="text-[11px] text-brand-goldLight/80">• Puntos interactivos con ubicación exacta</span>
+                    <span class="text-[10px] text-brand-goldLight/80">• GPS Real</span>
                 </div>
 
             </section>
 
-            <!-- SPOTS LIST / CARDS FEED (Right on desktop, Bottom on mobile) -->
+            <!-- SPOTS LIST / CARDS FEED (Order 2) -->
             <section id="feed-panel" class="w-full lg:w-1/2 xl:w-5/12 h-1/2 lg:h-full flex flex-col bg-[#0c0c0c] z-20 order-2 lg:order-2">
                 
                 <!-- Feed Header -->
-                <div class="px-4 py-3 bg-[#121212] border-b border-brand-gold/15 flex items-center justify-between text-xs">
-                    <div class="flex items-center gap-2">
+                <div class="px-3.5 py-2.5 bg-[#121212] border-b border-brand-gold/15 flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-1.5">
                         <span id="results-count" class="font-bold text-brand-gold font-mono">11</span>
-                        <span class="text-gray-400">lugares destacados en Mendoza</span>
+                        <span class="text-gray-400" data-i18n="spotsCountLabel">lugares destacados en Mendoza</span>
                     </div>
                     <div class="flex items-center gap-1 text-[11px] text-gray-400">
-                        <span>Ordenar:</span>
+                        <span data-i18n="sortBy">Ordenar:</span>
                         <select id="sort-select" onchange="handleSort(this.value)" class="bg-transparent text-brand-gold font-medium focus:outline-none cursor-pointer">
-                            <option value="recommended" class="bg-black text-white">⭐ Recomendados</option>
-                            <option value="rating" class="bg-black text-white">🔥 Mayor Calificación</option>
-                            <option value="name" class="bg-black text-white">🔤 Nombre A-Z</option>
+                            <option value="recommended" class="bg-black text-white" data-i18n="sortRecommended">⭐ Recomendados</option>
+                            <option value="rating" class="bg-black text-white" data-i18n="sortRating">🔥 Calificación</option>
+                            <option value="name" class="bg-black text-white" data-i18n="sortName">🔤 Nombre A-Z</option>
                         </select>
                     </div>
                 </div>
 
                 <!-- Scrollable Cards Container -->
-                <div id="spots-list" class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3.5">
+                <div id="spots-list" class="flex-1 overflow-y-auto p-3 space-y-3">
                     <!-- Cards injected via JS -->
                 </div>
 
-                <!-- Direct WhatsApp Link Footer -->
-                <div class="p-3 bg-[#080808] border-t border-brand-gold/15 text-center text-xs flex items-center justify-between px-4">
-                    <span class="text-gray-400 text-[11px]">¿Buscas una mesa o coordinar tu salida?</span>
-                    <button onclick="openGeneralConcierge()" class="text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1.5 transition-colors text-xs">
+                <!-- Footer Concierge Bar -->
+                <div class="p-2.5 bg-[#080808] border-t border-brand-gold/15 text-center text-xs flex items-center justify-between px-3.5">
+                    <span class="text-gray-400 text-[11px]" data-i18n="footerQuestion">¿Buscas una mesa especial?</span>
+                    <button onclick="openGeneralConcierge()" class="text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1 transition-colors text-xs">
                         <i class="fa-brands fa-whatsapp text-sm"></i>
-                        <span>Asistente Mysterik</span>
+                        <span data-i18n="assistantMysterik">Asistente Mysterik</span>
                     </button>
                 </div>
             </section>
@@ -424,6 +461,56 @@
         </div>
     </div>
 
+    <!-- AGE VERIFICATION MODAL (+18 Check) -->
+    <div id="age-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <div class="bg-[#141414] border border-brand-gold rounded-3xl max-w-md w-full p-6 sm:p-8 text-center shadow-gold-lg relative">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-gold/30 to-black border border-brand-gold/60 text-2xl mb-4 shadow-gold-glow flex items-center justify-center mx-auto">
+                🔞
+            </div>
+            <h3 class="font-cinzel text-xl sm:text-2xl font-bold text-white mb-2" data-i18n="ageModalTitle">Verificación de Edad</h3>
+            <p class="text-xs text-gray-300 leading-relaxed mb-6" data-i18n="ageModalDesc">
+                Para acceder a las guías de bodegas, bares y vida nocturna en Mendoza, por favor confirma que eres mayor de edad (+18 años).
+            </p>
+            <div class="flex flex-col gap-2.5">
+                <button onclick="confirmAge(true)" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-gold via-amber-400 to-brand-goldDark text-black font-extrabold text-xs uppercase tracking-wider shadow-gold-glow hover:brightness-110 transition-all" data-i18n="ageConfirmBtn">
+                    ✅ Soy mayor de 18 años
+                </button>
+                <button onclick="confirmAge(false)" class="w-full py-2.5 rounded-xl bg-[#1d1d1d] hover:bg-[#252525] text-gray-400 hover:text-white text-xs transition-all" data-i18n="ageDenyBtn">
+                    Salir / Menor de 18
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PWA INSTALL INSTRUCTIONS MODAL (For iOS Safari or fallback) -->
+    <div id="install-guide-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <div class="bg-[#141414] border border-brand-gold/40 rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl relative">
+            <button onclick="closeInstallGuideModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="w-14 h-14 rounded-2xl bg-brand-gold/20 border border-brand-gold flex items-center justify-center mx-auto mb-3 text-brand-gold text-2xl shadow-gold-glow">
+                📲
+            </div>
+            <h3 class="font-cinzel text-lg font-bold text-white mb-1" data-i18n="installGuideTitle">Agregar Acceso Directo</h3>
+            <p class="text-xs text-gray-300 mb-4" data-i18n="installGuideDesc">Disfruta de la experiencia completa de Mysterik Net directamente desde la pantalla de inicio de tu celular.</p>
+            
+            <div class="bg-[#0a0a0a] border border-brand-gold/30 rounded-2xl p-4 text-left text-xs space-y-3 text-gray-300 mb-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-6 h-6 rounded-full bg-brand-gold/20 text-brand-gold font-bold flex items-center justify-center flex-shrink-0">1</span>
+                    <span data-i18n="installStep1">Toca el botón <strong>Compartir</strong> en la barra de tu navegador.</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="w-6 h-6 rounded-full bg-brand-gold/20 text-brand-gold font-bold flex items-center justify-center flex-shrink-0">2</span>
+                    <span data-i18n="installStep2">Selecciona <strong>"Agregar al Inicio" ➕</strong>.</span>
+                </div>
+            </div>
+
+            <button onclick="closeInstallGuideModal()" class="w-full py-2.5 bg-brand-gold text-black font-bold text-xs rounded-xl hover:brightness-110 transition-all" data-i18n="understoodBtn">
+                ¡Entendido!
+            </button>
+        </div>
+    </div>
+
     <!-- SUMAR COMERCIO MODAL (B2B) -->
     <div id="join-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
         <div class="bg-[#141414] border border-brand-gold/40 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative">
@@ -434,22 +521,22 @@
                 <div class="w-12 h-12 rounded-xl bg-brand-gold/20 border border-brand-gold flex items-center justify-center mx-auto mb-3 text-brand-gold text-xl">
                     <i class="fa-solid fa-handshake"></i>
                 </div>
-                <h3 class="font-cinzel text-xl font-bold text-white">Suma tu Lugar a Mysterik Net</h3>
-                <p class="text-xs text-gray-400 mt-1">Integra tu comercio en el mapa selecto de Mendoza y recibe contactos directos por WhatsApp.</p>
+                <h3 class="font-cinzel text-xl font-bold text-white" data-i18n="joinTitle">Suma tu Lugar a Mysterik Net</h3>
+                <p class="text-xs text-gray-400 mt-1" data-i18n="joinDesc">Integra tu comercio en el mapa selecto de Mendoza y recibe contactos directos por WhatsApp.</p>
             </div>
 
             <div class="space-y-3.5 text-xs">
                 <div>
-                    <label class="block text-gray-300 font-semibold mb-1">Nombre del Local</label>
+                    <label class="block text-gray-300 font-semibold mb-1" data-i18n="joinNameLabel">Nombre del Local</label>
                     <input type="text" id="b2b-name" placeholder="Ej: Restó / Bar / Bodega" class="w-full bg-[#0a0a0a] border border-brand-gold/30 rounded-xl px-3.5 py-2.5 text-white focus:border-brand-gold focus:outline-none">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-gray-300 font-semibold mb-1">Zona</label>
+                        <label class="block text-gray-300 font-semibold mb-1" data-i18n="joinZoneLabel">Zona</label>
                         <input type="text" id="b2b-zone" placeholder="Ej: Arístides / Chacras" class="w-full bg-[#0a0a0a] border border-brand-gold/30 rounded-xl px-3.5 py-2.5 text-white focus:border-brand-gold focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-gray-300 font-semibold mb-1">Categoría</label>
+                        <label class="block text-gray-300 font-semibold mb-1" data-i18n="joinCategoryLabel">Categoría</label>
                         <select id="b2b-cat" class="w-full bg-[#0a0a0a] border border-brand-gold/30 rounded-xl px-3.5 py-2.5 text-white focus:border-brand-gold focus:outline-none">
                             <option value="Cocktail / Speakeasy">Cocktail / Speakeasy</option>
                             <option value="Bodega / Sunset">Bodega / Sunset</option>
@@ -462,17 +549,269 @@
 
                 <button onclick="submitB2B()" class="w-full mt-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:brightness-110 text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all">
                     <i class="fa-brands fa-whatsapp text-lg"></i>
-                    <span>Contactar con Mysterik Net</span>
+                    <span data-i18n="joinSubmitBtn">Contactar con Mysterik Net</span>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- JAVASCRIPT APPLICATION LOGIC -->
+    <!-- JAVASCRIPT APPLICATION CORE -->
     <script>
         /**
-         * MYSTERIK NET • MENDOZA EXPERIENCE MAP
-         * Real Curated Spots in Gran Mendoza with Real GPS Coordinates & Google Maps Navigation
+         * I18N TRANSLATIONS DICTIONARY (ES, EN, PT)
+         */
+        const I18N = {
+            es: {
+                networkLive: "Mendoza • Red Mysterik Net",
+                topBarText: "Experiencias en Mendoza • WhatsApp directo de parte de Mysterik Net",
+                ageBadge: "+18",
+                ageBadgeVerified: "+18 Verificado",
+                appSubtitle: "Mendoza Experience Map",
+                searchPlaceholder: "Buscar bares, bodegas, restós, Arístides, Chacras...",
+                installApp: "Instalar App",
+                appInstalled: "App Instalada",
+                viewExplore: "Explorar",
+                viewMap: "Mapa",
+                viewList: "Lugares",
+                catAll: "✨ Todos",
+                catCocktails: "🍸 Cocktails & Speakeasy",
+                catWineries: "🍷 Bodegas & Vistas",
+                catGourmet: "🍽️ Restó Gourmet",
+                catNightlife: "🪩 Nightlife & Club",
+                catCafe: "☕ Café & Brunch",
+                zoneAll: "📍 Toda Mendoza",
+                zoneAristides: "🏙️ Arístides & Centro",
+                zoneChacras: "🌿 Chacras de Coria",
+                zoneLujan: "🍇 Luján de Cuyo",
+                zoneMaipu: "🍷 Maipú Viñedos",
+                zoneGuaymallen: "🥩 Guaymallén",
+                zonePalmares: "🍸 Godoy Cruz / Palmares",
+                recenterMap: "Centrar",
+                mapUrban: "Urbano",
+                mapDark: "Oscuro",
+                spotsCountLabel: "lugares destacados en Mendoza",
+                sortBy: "Ordenar:",
+                sortRecommended: "⭐ Recomendados",
+                sortRating: "🔥 Calificación",
+                sortName: "🔤 Nombre A-Z",
+                footerQuestion: "¿Buscas una mesa especial?",
+                assistantMysterik: "Asistente Mysterik",
+                viewCardAndBook: "Ver Ficha & Reservar",
+                openInMaps: "Abrir en Google Maps",
+                aboutPlace: "Acerca del Lugar",
+                atmosphereStyle: "Ambiente & Estilo",
+                menuHighlights: "Destacados de la Carta",
+                whatsappCoordinatorTitle: "Coordinar Experiencia Especial por WhatsApp",
+                whatsappCoordinatorSubtitle: "Arma un mensaje personalizado de parte de Mysterik Net.",
+                numberOfGuests: "Número de Personas",
+                personsLabel: "personas",
+                momentEstimated: "Momento / Fecha estimada",
+                momentTonight: "🌙 Hoy por la noche",
+                momentTomorrow: "✨ Mañana por la noche",
+                momentWeekend: "🎉 Este fin de semana",
+                momentAfternoon: "🌅 Almuerzo / Tarde",
+                momentGeneral: "📅 Consultar fecha puntual",
+                planType: "Tipo de Plan",
+                planDinnerDrinks: "🍽️ Cena / Tragos",
+                planSunsetWine: "🌅 Sunset / Vinos",
+                planVipParty: "🪩 Mesa / Fiesta",
+                generatedMessageLabel: "Mensaje generado:",
+                sendWhatsappBtn: "Enviar Mensaje de parte de Mysterik Net",
+                ageModalTitle: "Verificación de Edad",
+                ageModalDesc: "Para acceder a las guías de bodegas, bares y vida nocturna en Mendoza, por favor confirma que eres mayor de edad (+18 años).",
+                ageConfirmBtn: "✅ Soy mayor de 18 años",
+                ageDenyBtn: "Salir / Menor de 18",
+                installGuideTitle: "Agregar Acceso Directo",
+                installGuideDesc: "Disfruta de la experiencia completa de Mysterik Net directamente desde la pantalla de inicio de tu celular.",
+                installStep1: "Toca el botón <strong>Compartir</strong> en la barra de tu navegador.",
+                installStep2: "Selecciona <strong>\"Agregar al Inicio\" ➕</strong>.",
+                understoodBtn: "¡Entendido!",
+                joinTitle: "Suma tu Lugar a Mysterik Net",
+                joinDesc: "Integra tu comercio en el mapa selecto de Mendoza y recibe contactos directos por WhatsApp.",
+                joinNameLabel: "Nombre del Local",
+                joinZoneLabel: "Zona",
+                joinCategoryLabel: "Categoría",
+                joinSubmitBtn: "Contactar con Mysterik Net",
+                reviewsCount: "reseñas",
+                rangeLabel: "Rango:"
+            },
+            en: {
+                networkLive: "Mendoza • Mysterik Net Live",
+                topBarText: "Curated Mendoza Experiences • Direct WhatsApp via Mysterik Net",
+                ageBadge: "+18",
+                ageBadgeVerified: "+18 Verified",
+                appSubtitle: "Mendoza Experience Map",
+                searchPlaceholder: "Search bars, wineries, dining, Aristides, Chacras...",
+                installApp: "Install App",
+                appInstalled: "App Installed",
+                viewExplore: "Explore",
+                viewMap: "Map",
+                viewList: "Places",
+                catAll: "✨ All Places",
+                catCocktails: "🍸 Cocktails & Speakeasy",
+                catWineries: "🍷 Wineries & Views",
+                catGourmet: "🍽️ Gourmet Dining",
+                catNightlife: "🪩 Nightlife & Clubs",
+                catCafe: "☕ Specialty Coffee",
+                zoneAll: "📍 All Mendoza",
+                zoneAristides: "🏙️ Aristides & Downtown",
+                zoneChacras: "🌿 Chacras de Coria",
+                zoneLujan: "🍇 Lujan de Cuyo",
+                zoneMaipu: "🍷 Maipu Vineyards",
+                zoneGuaymallen: "🥩 Guaymallen",
+                zonePalmares: "🍸 Godoy Cruz / Palmares",
+                recenterMap: "Recenter",
+                mapUrban: "Urban",
+                mapDark: "Dark",
+                spotsCountLabel: "curated hotspots in Mendoza",
+                sortBy: "Sort:",
+                sortRecommended: "⭐ Recommended",
+                sortRating: "🔥 Top Rated",
+                sortName: "🔤 Name A-Z",
+                footerQuestion: "Looking for a VIP table?",
+                assistantMysterik: "Mysterik Concierge",
+                viewCardAndBook: "View & Book VIP",
+                openInMaps: "Open in Google Maps",
+                aboutPlace: "About This Spot",
+                atmosphereStyle: "Atmosphere & Vibe",
+                menuHighlights: "Menu Highlights",
+                whatsappCoordinatorTitle: "Coordinate Special Experience via WhatsApp",
+                whatsappCoordinatorSubtitle: "Custom message crafted on behalf of Mysterik Net.",
+                numberOfGuests: "Number of Guests",
+                personsLabel: "guests",
+                momentEstimated: "Date / Time Frame",
+                momentTonight: "🌙 Tonight",
+                momentTomorrow: "✨ Tomorrow night",
+                momentWeekend: "🎉 This weekend",
+                momentAfternoon: "🌅 Lunch / Sunset",
+                momentGeneral: "📅 Check specific date",
+                planType: "Experience Plan",
+                planDinnerDrinks: "🍽️ Dinner & Drinks",
+                planSunsetWine: "🌅 Sunset & Wine",
+                planVipParty: "🪩 VIP Table / Party",
+                generatedMessageLabel: "Generated message:",
+                sendWhatsappBtn: "Send Message via Mysterik Net",
+                ageModalTitle: "Age Verification",
+                ageModalDesc: "To access curated wineries, cocktail bars, and nightlife in Mendoza, please confirm you are 18+ years old.",
+                ageConfirmBtn: "✅ I am 18+ years old",
+                ageDenyBtn: "Exit / Under 18",
+                installGuideTitle: "Add Shortcut to Screen",
+                installGuideDesc: "Enjoy the full Mysterik Net experience straight from your mobile home screen.",
+                installStep1: "Tap the <strong>Share</strong> button in your browser toolbar.",
+                installStep2: "Select <strong>\"Add to Home Screen\" ➕</strong>.",
+                understoodBtn: "Got it!",
+                joinTitle: "Add Your Venue to Mysterik Net",
+                joinDesc: "Join Mendoza's curated experience map and receive verified guest inquiries on WhatsApp.",
+                joinNameLabel: "Venue Name",
+                joinZoneLabel: "Zone / Location",
+                joinCategoryLabel: "Category",
+                joinSubmitBtn: "Contact Mysterik Net Team",
+                reviewsCount: "reviews",
+                rangeLabel: "Price Range:"
+            },
+            pt: {
+                networkLive: "Mendoza • Rede Mysterik Net",
+                topBarText: "Experiências em Mendoza • WhatsApp direto por Mysterik Net",
+                ageBadge: "+18",
+                ageBadgeVerified: "+18 Verificado",
+                appSubtitle: "Mapa de Experiências Mendoza",
+                searchPlaceholder: "Buscar bares, vinícolas, restôs, Arístides, Chacras...",
+                installApp: "Instalar App",
+                appInstalled: "App Instalado",
+                viewExplore: "Explorar",
+                viewMap: "Mapa",
+                viewList: "Locais",
+                catAll: "✨ Todos",
+                catCocktails: "🍸 Cocktails & Speakeasy",
+                catWineries: "🍷 Vinícolas & Vistas",
+                catGourmet: "🍽️ Restô Gourmet",
+                catNightlife: "🪩 Baladas & Clubs",
+                catCafe: "☕ Café & Brunch",
+                zoneAll: "📍 Toda Mendoza",
+                zoneAristides: "🏙️ Arístides & Centro",
+                zoneChacras: "🌿 Chacras de Coria",
+                zoneLujan: "🍇 Luján de Cuyo",
+                zoneMaipu: "🍷 Maipú Vinhedos",
+                zoneGuaymallen: "🥩 Guaymallén",
+                zonePalmares: "🍸 Godoy Cruz / Palmares",
+                recenterMap: "Centralizar",
+                mapUrban: "Urbano",
+                mapDark: "Escuro",
+                spotsCountLabel: "locais selecionados em Mendoza",
+                sortBy: "Ordenar:",
+                sortRecommended: "⭐ Recomendados",
+                sortRating: "🔥 Melhor Avaliação",
+                sortName: "🔤 Nome A-Z",
+                footerQuestion: "Procura uma mesa especial?",
+                assistantMysterik: "Concierge Mysterik",
+                viewCardAndBook: "Ver Detalhes & Reservar",
+                openInMaps: "Abrir no Google Maps",
+                aboutPlace: "Sobre o Local",
+                atmosphereStyle: "Ambiente & Estilo",
+                menuHighlights: "Destaques do Cardápio",
+                whatsappCoordinatorTitle: "Coordenar Experiência por WhatsApp",
+                whatsappCoordinatorSubtitle: "Mensagem personalizada em nome da Mysterik Net.",
+                numberOfGuests: "Número de Pessoas",
+                personsLabel: "pessoas",
+                momentEstimated: "Momento / Data estimada",
+                momentTonight: "🌙 Hoje à noite",
+                momentTomorrow: "✨ Amanhã à noite",
+                momentWeekend: "🎉 Neste fim de semana",
+                momentAfternoon: "🌅 Almoço / Sunset",
+                momentGeneral: "📅 Consultar data específica",
+                planType: "Tipo de Plano",
+                planDinnerDrinks: "🍽️ Jantar / Drinks",
+                planSunsetWine: "🌅 Sunset / Vinhos",
+                planVipParty: "🪩 Mesa VIP / Festa",
+                generatedMessageLabel: "Mensagem gerada:",
+                sendWhatsappBtn: "Enviar Mensagem por Mysterik Net",
+                ageModalTitle: "Verificação de Idade",
+                ageModalDesc: "Para acessar os guias de vinícolas, bares e vida noturna em Mendoza, confirme que você é maior de 18 anos.",
+                ageConfirmBtn: "✅ Tenho mais de 18 anos",
+                ageDenyBtn: "Sair / Menor de 18",
+                installGuideTitle: "Adicionar Atalho na Tela",
+                installGuideDesc: "Aproveite a experiência da Mysterik Net direto na tela inicial do seu celular.",
+                installStep1: "Toque no botão <strong>Compartilhar</strong> no navegador.",
+                installStep2: "Selecione <strong>\"Adicionar à Tela de Início\" ➕</strong>.",
+                understoodBtn: "Entendido!",
+                joinTitle: "Adicione seu Local na Mysterik Net",
+                joinDesc: "Faça parte do mapa exclusivo de Mendoza e receba reservas diretas por WhatsApp.",
+                joinNameLabel: "Nome do Estabelecimento",
+                joinZoneLabel: "Zona / Bairro",
+                joinCategoryLabel: "Categoria",
+                joinSubmitBtn: "Falar com Equipe Mysterik",
+                reviewsCount: "avaliações",
+                rangeLabel: "Faixa de Preço:"
+            }
+        };
+
+        let currentLang = localStorage.getItem('mysterik_lang') || 'es';
+        let deferredPrompt = null;
+        let isAgeVerified = localStorage.getItem('mysterik_age_verified') === 'true';
+
+        /**
+         * AUTO CACHE PURGE ON ENTRY
+         * Cleans obsolete caches each time a user opens the app
+         */
+        function cleanCachesOnEntry() {
+            if ('caches' in window) {
+                caches.keys().then(cacheNames => {
+                    cacheNames.forEach(cacheName => {
+                        caches.delete(cacheName);
+                    });
+                });
+            }
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(registrations => {
+                    for (let registration of registrations) {
+                        registration.update();
+                    }
+                });
+            }
+        }
+
+        /**
+         * CURATED SPOTS DATA (Gran Mendoza)
          */
         const SPOTS_DATA = [
             {
@@ -805,10 +1144,9 @@
         };
 
         /**
-         * Initialize Leaflet Map with Real Mendoza Geography
+         * Initialize Leaflet Map
          */
         function initLeafletMap() {
-            // Mendoza Center (covers Las Heras, Ciudad, Godoy Cruz, Maipú, Chacras, Luján)
             map = L.map('mendoza-map', {
                 center: [-32.9400, -68.8350],
                 zoom: 12,
@@ -816,15 +1154,12 @@
                 attributionControl: false
             });
 
-            // Map Tile Layers
             setTileStyle('voyager');
 
             markersLayer = L.layerGroup().addTo(map);
 
-            // Render pins
             renderMapPins();
 
-            // Invalidate size on load to guarantee 100% full render without grey bars
             setTimeout(() => {
                 if (map) map.invalidateSize();
             }, 300);
@@ -835,7 +1170,7 @@
         }
 
         /**
-         * Switch Map Styles (Urbano / Oscuro)
+         * Tile Style Switcher
          */
         function setTileStyle(theme) {
             currentTileTheme = theme;
@@ -847,26 +1182,24 @@
             const btnDark = document.getElementById('tile-dark-btn');
 
             if (theme === 'voyager') {
-                // CartoDB Voyager / OpenStreetMap (clean Google Maps-like palette)
                 activeTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
                     maxZoom: 19,
                     subdomains: 'abcd'
                 }).addTo(map);
 
                 if (btnVoyager && btnDark) {
-                    btnVoyager.className = 'px-2.5 py-1 text-[11px] rounded-lg font-bold transition-all bg-brand-gold/20 text-brand-goldLight border border-brand-gold/40';
-                    btnDark.className = 'px-2.5 py-1 text-[11px] rounded-lg font-medium text-gray-400 hover:text-white transition-all';
+                    btnVoyager.className = 'px-2.5 py-1 text-[10px] sm:text-[11px] rounded-lg font-bold transition-all bg-brand-gold/20 text-brand-goldLight border border-brand-gold/40';
+                    btnDark.className = 'px-2.5 py-1 text-[10px] sm:text-[11px] rounded-lg font-medium text-gray-400 hover:text-white transition-all';
                 }
             } else {
-                // CartoDB Dark Matter
                 activeTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png', {
                     maxZoom: 19,
                     subdomains: 'abcd'
                 }).addTo(map);
 
                 if (btnVoyager && btnDark) {
-                    btnDark.className = 'px-2.5 py-1 text-[11px] rounded-lg font-bold transition-all bg-brand-gold/20 text-brand-goldLight border border-brand-gold/40';
-                    btnVoyager.className = 'px-2.5 py-1 text-[11px] rounded-lg font-medium text-gray-400 hover:text-white transition-all';
+                    btnDark.className = 'px-2.5 py-1 text-[10px] sm:text-[11px] rounded-lg font-bold transition-all bg-brand-gold/20 text-brand-goldLight border border-brand-gold/40';
+                    btnVoyager.className = 'px-2.5 py-1 text-[10px] sm:text-[11px] rounded-lg font-medium text-gray-400 hover:text-white transition-all';
                 }
             }
         }
@@ -896,20 +1229,20 @@
         }
 
         /**
-         * Render Map Pins on Leaflet
+         * Render Pins
          */
         function renderMapPins() {
             if (!map || !markersLayer) return;
             markersLayer.clearLayers();
 
             const filtered = getFilteredSpots();
+            const t = I18N[currentLang];
 
             filtered.forEach(spot => {
                 const marker = L.marker([spot.lat, spot.lng], {
                     icon: createPinIcon(spot)
                 });
 
-                // Custom Popup
                 const popupHtml = `
                     <div class="p-3 w-64 bg-[#111111] text-gray-100 rounded-2xl overflow-hidden font-sans">
                         <div class="relative h-28 -mx-3 -mt-3 mb-2.5 overflow-hidden rounded-t-xl">
@@ -927,7 +1260,7 @@
                         <div class="grid grid-cols-2 gap-1.5 pt-1">
                             <button onclick="openDetailModal('${spot.id}')" class="py-1.5 px-2 bg-gradient-to-r from-brand-gold to-brand-goldDark text-black text-xs font-bold rounded-lg hover:brightness-110 transition-all flex items-center justify-center gap-1">
                                 <i class="fa-brands fa-whatsapp text-emerald-950 text-xs"></i>
-                                <span>Ver Ficha</span>
+                                <span>${t.viewCardAndBook}</span>
                             </button>
                             <a href="${spot.mapsUrl}" target="_blank" rel="noopener noreferrer" class="py-1.5 px-2 bg-[#1f1f1f] text-gray-200 text-xs font-semibold rounded-lg hover:text-white border border-gray-700 flex items-center justify-center gap-1">
                                 <i class="fa-solid fa-location-arrow text-brand-gold text-[10px]"></i>
@@ -951,7 +1284,7 @@
         }
 
         /**
-         * Get Filtered Spots
+         * Filter spots
          */
         function getFilteredSpots() {
             let list = [...SPOTS_DATA];
@@ -989,12 +1322,13 @@
         }
 
         /**
-         * Render Spots List in Feed Panel
+         * Render Cards List
          */
         function renderSpotsList() {
             const listContainer = document.getElementById('spots-list');
             const countEl = document.getElementById('results-count');
             const filtered = getFilteredSpots();
+            const t = I18N[currentLang];
 
             countEl.textContent = filtered.length;
 
@@ -1019,14 +1353,14 @@
                 return `
                     <article 
                         id="card-${spot.id}" 
-                        class="glass-card gold-border-glow rounded-2xl p-3.5 sm:p-4 cursor-pointer transition-all duration-300 hover:scale-[1.01] hover:bg-[#191919] relative group"
+                        class="glass-card gold-border-glow rounded-2xl p-3 sm:p-4 cursor-pointer transition-all duration-300 hover:scale-[1.01] hover:bg-[#191919] relative group"
                         onclick="onSpotCardClick('${spot.id}')">
                         
-                        <div class="flex gap-3.5">
+                        <div class="flex gap-3 sm:gap-3.5">
                             <!-- Thumbnail -->
-                            <div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden flex-shrink-0 bg-black/60">
+                            <div class="relative w-20 h-20 sm:w-28 sm:h-28 rounded-xl overflow-hidden flex-shrink-0 bg-black/60">
                                 <img src="${spot.image}" alt="${spot.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                                <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-black/80 text-[10px] text-brand-gold font-bold backdrop-blur border border-brand-gold/30">
+                                <span class="absolute top-1 left-1 px-1.5 py-0.5 rounded bg-black/80 text-[9px] sm:text-[10px] text-brand-gold font-bold backdrop-blur border border-brand-gold/30">
                                     ${spot.icon}
                                 </span>
                             </div>
@@ -1034,8 +1368,8 @@
                             <!-- Info -->
                             <div class="flex-1 min-w-0 flex flex-col justify-between">
                                 <div>
-                                    <div class="flex items-start justify-between gap-1 mb-1">
-                                        <h3 class="font-cinzel font-bold text-sm sm:text-base text-white group-hover:text-brand-gold transition-colors truncate">
+                                    <div class="flex items-start justify-between gap-1 mb-0.5">
+                                        <h3 class="font-cinzel font-bold text-xs sm:text-base text-white group-hover:text-brand-gold transition-colors truncate">
                                             ${spot.name}
                                         </h3>
                                         <button 
@@ -1046,30 +1380,30 @@
                                         </button>
                                     </div>
 
-                                    <div class="flex items-center gap-2 text-[11px] text-gray-400 mb-1.5">
-                                        <span class="text-brand-gold/90 font-medium flex items-center gap-1">
-                                            <i class="fa-solid fa-location-dot text-[10px]"></i> ${spot.zoneLabel.split(',')[0]}
+                                    <div class="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-[11px] text-gray-400 mb-1">
+                                        <span class="text-brand-gold/90 font-medium flex items-center gap-1 truncate">
+                                            <i class="fa-solid fa-location-dot text-[9px]"></i> ${spot.zoneLabel.split(',')[0]}
                                         </span>
                                         <span>•</span>
-                                        <span class="flex items-center gap-1 text-amber-400 font-bold">
-                                            <i class="fa-solid fa-star text-[10px]"></i> ${spot.rating}
+                                        <span class="flex items-center gap-0.5 text-amber-400 font-bold">
+                                            <i class="fa-solid fa-star text-[9px]"></i> ${spot.rating}
                                         </span>
                                         <span>•</span>
                                         <span class="text-gray-300 font-mono text-[10px]">${spot.priceRange}</span>
                                     </div>
 
-                                    <p class="text-xs text-gray-300 line-clamp-2 leading-relaxed mb-2">
+                                    <p class="text-[11px] sm:text-xs text-gray-300 line-clamp-2 leading-snug sm:leading-relaxed mb-2">
                                         ${spot.experienceHighlight}
                                     </p>
                                 </div>
 
-                                <!-- Action Buttons: Expand & Maps -->
-                                <div class="flex items-center gap-2 pt-1">
+                                <!-- Actions: Non-overlapping responsive buttons -->
+                                <div class="flex items-center gap-1.5 pt-1">
                                     <button 
                                         onclick="event.stopPropagation(); openDetailModal('${spot.id}')" 
-                                        class="flex-1 py-1.5 px-2.5 rounded-lg bg-brand-gold/15 hover:bg-brand-gold hover:text-black text-brand-goldLight text-[11px] font-bold border border-brand-gold/40 transition-all flex items-center justify-center gap-1.5">
+                                        class="flex-1 py-1.5 px-2 rounded-lg bg-brand-gold/15 hover:bg-brand-gold hover:text-black text-brand-goldLight text-[10px] sm:text-[11px] font-bold border border-brand-gold/40 transition-all flex items-center justify-center gap-1 truncate">
                                         <i class="fa-brands fa-whatsapp text-emerald-400 text-xs"></i>
-                                        <span>Ver Ficha & Reservar</span>
+                                        <span>${t.viewCardAndBook}</span>
                                     </button>
 
                                     <a 
@@ -1078,9 +1412,9 @@
                                         rel="noopener noreferrer" 
                                         onclick="event.stopPropagation();" 
                                         title="Abrir en Google Maps" 
-                                        class="py-1.5 px-2.5 rounded-lg bg-[#1a1a1a] hover:bg-[#252525] text-gray-300 hover:text-white text-[11px] font-medium border border-gray-700 flex items-center gap-1 transition-all">
+                                        class="py-1.5 px-2.5 rounded-lg bg-[#1a1a1a] hover:bg-[#252525] text-gray-300 hover:text-white text-[10px] sm:text-[11px] font-medium border border-gray-700 flex items-center gap-1 transition-all flex-shrink-0">
                                         <i class="fa-solid fa-location-arrow text-brand-gold text-[10px]"></i>
-                                        <span class="hidden sm:inline">Maps</span>
+                                        <span>Maps</span>
                                     </a>
                                 </div>
                             </div>
@@ -1092,7 +1426,7 @@
         }
 
         /**
-         * Handle Spot Click from Pin or Card
+         * Handle Spot Click
          */
         function onSpotCardClick(spotId) {
             const spot = SPOTS_DATA.find(s => s.id === spotId);
@@ -1122,16 +1456,17 @@
         }
 
         /**
-         * Open Detail Modal with Person Selector & WhatsApp Contact
+         * Open Detail Modal
          */
         function openDetailModal(spotId) {
             const spot = SPOTS_DATA.find(s => s.id === spotId);
             if (!spot) return;
 
             currentSelectedSpot = spot;
+            const t = I18N[currentLang];
             bookingState.guests = 2;
-            bookingState.moment = 'Hoy por la noche';
-            bookingState.experienceType = 'Cena & Tragos';
+            bookingState.moment = t.momentTonight;
+            bookingState.experienceType = t.planDinnerDrinks;
 
             const modal = document.getElementById('detail-modal');
             const card = document.getElementById('detail-modal-card');
@@ -1139,12 +1474,12 @@
 
             container.innerHTML = `
                 <!-- Main Image Banner -->
-                <div class="relative h-60 sm:h-72 w-full bg-black overflow-hidden">
+                <div class="relative h-56 sm:h-72 w-full bg-black overflow-hidden">
                     <img id="detail-main-img" src="${spot.image}" alt="${spot.name}" class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-[#121212] via-black/40 to-transparent"></div>
                     
                     <!-- Floating Tags -->
-                    <div class="absolute top-4 left-4 flex flex-wrap gap-2">
+                    <div class="absolute top-4 left-4 flex flex-wrap gap-2 pr-10">
                         <span class="px-3 py-1 rounded-full bg-black/80 backdrop-blur border border-brand-gold/50 text-xs font-bold text-brand-gold flex items-center gap-1.5 shadow-lg">
                             <span>${spot.icon}</span>
                             <span>${spot.categoryLabel}</span>
@@ -1155,12 +1490,12 @@
                     </div>
 
                     <!-- Title & Rating -->
-                    <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+                    <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-2">
                         <div>
                             <h2 class="font-cinzel text-xl sm:text-3xl font-bold text-white leading-tight drop-shadow-md">
                                 ${spot.name}
                             </h2>
-                            <p class="text-xs sm:text-sm text-brand-goldLight flex items-center gap-2 mt-1">
+                            <p class="text-xs sm:text-sm text-brand-goldLight flex items-center gap-1.5 mt-1">
                                 <i class="fa-solid fa-location-dot text-brand-gold"></i>
                                 <span>${spot.address}</span>
                             </p>
@@ -1169,14 +1504,14 @@
                             <div class="text-amber-400 font-bold text-sm sm:text-base flex items-center gap-1">
                                 <i class="fa-solid fa-star"></i> ${spot.rating}
                             </div>
-                            <div class="text-[9px] text-gray-400">${spot.reviewsCount} reseñas</div>
+                            <div class="text-[9px] text-gray-400">${spot.reviewsCount} ${t.reviewsCount}</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Gallery Thumbnails -->
                 ${spot.gallery && spot.gallery.length > 1 ? `
-                    <div class="flex gap-2 px-6 pt-3 overflow-x-auto no-scrollbar">
+                    <div class="flex gap-2 px-5 pt-3 overflow-x-auto no-scrollbar">
                         ${spot.gallery.map((img) => `
                             <button onclick="document.getElementById('detail-main-img').src='${img}'" class="w-16 h-12 rounded-lg overflow-hidden border border-brand-gold/30 hover:border-brand-gold flex-shrink-0 transition-all">
                                 <img src="${img}" class="w-full h-full object-cover">
@@ -1186,16 +1521,16 @@
                 ` : ''}
 
                 <!-- Modal Body Content -->
-                <div class="p-6 space-y-6">
+                <div class="p-4 sm:p-6 space-y-5">
                     
                     <!-- Direct Google Maps Navigation Card -->
-                    <div class="bg-[#181818] border border-brand-gold/30 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md">
+                    <div class="bg-[#181818] border border-brand-gold/30 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-xl bg-brand-gold/20 text-brand-gold flex items-center justify-center text-lg flex-shrink-0">
                                 <i class="fa-solid fa-map-location-dot"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-white text-xs sm:text-sm">Ubicación en Mendoza</h4>
+                                <h4 class="font-bold text-white text-xs sm:text-sm">Mendoza, Argentina</h4>
                                 <p class="text-[11px] text-gray-400">${spot.address}</p>
                             </div>
                         </div>
@@ -1205,25 +1540,25 @@
                             rel="noopener noreferrer" 
                             class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-gold to-brand-goldDark text-black text-xs font-bold hover:brightness-110 flex items-center justify-center gap-2 shadow-gold-sm transition-all">
                             <i class="fa-solid fa-location-arrow"></i>
-                            <span>Abrir en Google Maps</span>
+                            <span>${t.openInMaps}</span>
                         </a>
                     </div>
 
                     <!-- Description & Hours -->
                     <div>
-                        <h4 class="font-cinzel font-bold text-sm text-brand-gold uppercase tracking-wider mb-2">Acerca del Lugar</h4>
+                        <h4 class="font-cinzel font-bold text-sm text-brand-gold uppercase tracking-wider mb-2">${t.aboutPlace}</h4>
                         <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
                             ${spot.description}
                         </p>
                         <div class="mt-3 flex flex-wrap gap-4 text-xs text-gray-400">
                             <span class="flex items-center gap-1.5"><i class="fa-regular fa-clock text-brand-gold"></i> ${spot.hours}</span>
-                            <span class="flex items-center gap-1.5"><i class="fa-solid fa-wallet text-brand-gold"></i> Rango: <strong class="text-white font-mono">${spot.priceRange}</strong></span>
+                            <span class="flex items-center gap-1.5"><i class="fa-solid fa-wallet text-brand-gold"></i> ${t.rangeLabel} <strong class="text-white font-mono">${spot.priceRange}</strong></span>
                         </div>
                     </div>
 
                     <!-- Atmosphere / Vibes Tags -->
                     <div>
-                        <h4 class="font-cinzel font-bold text-xs text-brand-gold uppercase tracking-wider mb-2">Ambiente & Estilo</h4>
+                        <h4 class="font-cinzel font-bold text-xs text-brand-gold uppercase tracking-wider mb-2">${t.atmosphereStyle}</h4>
                         <div class="flex flex-wrap gap-2">
                             ${spot.vibes.map(vibe => `
                                 <span class="px-3 py-1 rounded-full bg-[#1b1b1b] border border-brand-gold/20 text-xs text-gray-200">
@@ -1233,10 +1568,10 @@
                         </div>
                     </div>
 
-                    <!-- Especialidades -->
+                    <!-- Menu Specialties -->
                     ${spot.specialties ? `
                         <div>
-                            <h4 class="font-cinzel font-bold text-xs text-brand-gold uppercase tracking-wider mb-2">Destacados de la Carta</h4>
+                            <h4 class="font-cinzel font-bold text-xs text-brand-gold uppercase tracking-wider mb-2">${t.menuHighlights}</h4>
                             <ul class="space-y-1.5 text-xs text-gray-300">
                                 ${spot.specialties.map(spec => `
                                     <li class="flex items-center gap-2">
@@ -1248,29 +1583,29 @@
                         </div>
                     ` : ''}
 
-                    <div class="border-t border-brand-gold/20 pt-4"></div>
+                    <div class="border-t border-brand-gold/20 pt-3"></div>
 
-                    <!-- WHATSAPP CONCIERGE (Simple & direct message generator) -->
-                    <div class="bg-[#0e0e0e] border border-brand-gold/40 rounded-2xl p-5 space-y-4 shadow-xl">
+                    <!-- WHATSAPP CONCIERGE GENERATOR -->
+                    <div class="bg-[#0e0e0e] border border-brand-gold/40 rounded-2xl p-4 sm:p-5 space-y-3.5 shadow-xl">
                         <div>
-                            <h3 class="font-cinzel font-bold text-base text-white flex items-center gap-2">
+                            <h3 class="font-cinzel font-bold text-sm sm:text-base text-white flex items-center gap-2">
                                 <i class="fa-brands fa-whatsapp text-emerald-400 text-lg"></i>
-                                <span>Coordinar Experiencia Especial por WhatsApp</span>
+                                <span>${t.whatsappCoordinatorTitle}</span>
                             </h3>
-                            <p class="text-[11px] text-gray-400">Arma un mensaje personalizado de parte de Mysterik Net.</p>
+                            <p class="text-[11px] text-gray-400">${t.whatsappCoordinatorSubtitle}</p>
                         </div>
 
                         <!-- Selector Personas & Momento -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-gray-300 mb-1.5">Número de Personas</label>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1">${t.numberOfGuests}</label>
                                 <div class="flex items-center bg-[#181818] border border-brand-gold/30 rounded-xl p-1 justify-between">
                                     <button onclick="updateGuests(-1)" class="w-9 h-9 rounded-lg bg-[#242424] hover:bg-brand-gold hover:text-black text-brand-gold font-bold text-sm transition-all flex items-center justify-center">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                     <div class="text-center">
                                         <span id="booking-guests-count" class="font-bold text-sm text-white font-mono">2</span>
-                                        <span class="text-[10px] text-gray-400 block -mt-1">personas</span>
+                                        <span class="text-[10px] text-gray-400 block -mt-1">${t.personsLabel}</span>
                                     </div>
                                     <button onclick="updateGuests(1)" class="w-9 h-9 rounded-lg bg-[#242424] hover:bg-brand-gold hover:text-black text-brand-gold font-bold text-sm transition-all flex items-center justify-center">
                                         <i class="fa-solid fa-plus"></i>
@@ -1279,45 +1614,45 @@
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold text-gray-300 mb-1.5">Momento / Fecha estimada</label>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1">${t.momentEstimated}</label>
                                 <select id="booking-moment" onchange="bookingState.moment = this.value; updateWhatsAppPreview();" class="w-full h-11 bg-[#181818] border border-brand-gold/30 rounded-xl px-3 text-xs text-white focus:outline-none focus:border-brand-gold font-medium cursor-pointer">
-                                    <option value="Hoy por la noche">🌙 Hoy por la noche</option>
-                                    <option value="Mañana por la noche">✨ Mañana por la noche</option>
-                                    <option value="Este fin de semana">🎉 Este fin de semana</option>
-                                    <option value="Almuerzo / Tarde">🌅 Almuerzo / Tarde</option>
-                                    <option value="Consultar disponibilidad">📅 Consultar fecha puntual</option>
+                                    <option value="${t.momentTonight}">${t.momentTonight}</option>
+                                    <option value="${t.momentTomorrow}">${t.momentTomorrow}</option>
+                                    <option value="${t.momentWeekend}">${t.momentWeekend}</option>
+                                    <option value="${t.momentAfternoon}">${t.momentAfternoon}</option>
+                                    <option value="${t.momentGeneral}">${t.momentGeneral}</option>
                                 </select>
                             </div>
                         </div>
 
                         <!-- Selector Tipo de Plan -->
                         <div>
-                            <label class="block text-xs font-semibold text-gray-300 mb-1.5">Tipo de Plan</label>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">${t.planType}</label>
                             <div class="grid grid-cols-3 gap-2">
-                                <button onclick="setExperienceType('Cena & Tragos', this)" class="exp-type-btn px-2.5 py-2 rounded-xl border border-brand-gold bg-brand-gold/20 text-brand-goldLight text-[11px] font-bold text-center transition-all">
-                                    🍽️ Cena / Tragos
+                                <button onclick="setExperienceType('${t.planDinnerDrinks}', this)" class="exp-type-btn px-2 py-2 rounded-xl border border-brand-gold bg-brand-gold/20 text-brand-goldLight text-[10px] sm:text-[11px] font-bold text-center transition-all truncate">
+                                    ${t.planDinnerDrinks}
                                 </button>
-                                <button onclick="setExperienceType('Sunset & Vinos', this)" class="exp-type-btn px-2.5 py-2 rounded-xl border border-gray-800 bg-[#161616] text-gray-300 hover:text-white hover:border-brand-gold/40 text-[11px] font-medium text-center transition-all">
-                                    🌅 Sunset / Vinos
+                                <button onclick="setExperienceType('${t.planSunsetWine}', this)" class="exp-type-btn px-2 py-2 rounded-xl border border-gray-800 bg-[#161616] text-gray-300 hover:text-white hover:border-brand-gold/40 text-[10px] sm:text-[11px] font-medium text-center transition-all truncate">
+                                    ${t.planSunsetWine}
                                 </button>
-                                <button onclick="setExperienceType('Mesa VIP / Salida', this)" class="exp-type-btn px-2.5 py-2 rounded-xl border border-gray-800 bg-[#161616] text-gray-300 hover:text-white hover:border-brand-gold/40 text-[11px] font-medium text-center transition-all">
-                                    🪩 Mesa / Fiesta
+                                <button onclick="setExperienceType('${t.planVipParty}', this)" class="exp-type-btn px-2 py-2 rounded-xl border border-gray-800 bg-[#161616] text-gray-300 hover:text-white hover:border-brand-gold/40 text-[10px] sm:text-[11px] font-medium text-center transition-all truncate">
+                                    ${t.planVipParty}
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Preview -->
+                        <!-- Preview Message -->
                         <div class="bg-black/70 border border-brand-gold/20 rounded-xl p-3 text-[11px] text-gray-300 font-mono">
-                            <span class="text-[9px] uppercase tracking-widest text-brand-gold/70 block mb-1 font-sans">Mensaje generado:</span>
+                            <span class="text-[9px] uppercase tracking-widest text-brand-gold/70 block mb-1 font-sans">${t.generatedMessageLabel}</span>
                             <p id="whatsapp-message-preview" class="italic text-gray-400 whitespace-pre-line"></p>
                         </div>
 
                         <!-- Big WhatsApp CTA -->
                         <button 
                             onclick="sendWhatsAppBooking()" 
-                            class="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-700 hover:brightness-110 active:scale-[0.99] text-white font-extrabold text-sm tracking-wide shadow-xl flex items-center justify-center gap-2.5 transition-all">
-                            <i class="fa-brands fa-whatsapp text-xl"></i>
-                            <span>Enviar Mensaje de parte de Mysterik Net</span>
+                            class="w-full py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-700 hover:brightness-110 active:scale-[0.99] text-white font-extrabold text-xs sm:text-sm tracking-wide shadow-xl flex items-center justify-center gap-2 transition-all">
+                            <i class="fa-brands fa-whatsapp text-lg sm:text-xl"></i>
+                            <span>${t.sendWhatsappBtn}</span>
                         </button>
 
                     </div>
@@ -1351,19 +1686,41 @@
         function setExperienceType(type, btn) {
             bookingState.experienceType = type;
             document.querySelectorAll('.exp-type-btn').forEach(b => {
-                b.className = 'exp-type-btn px-2.5 py-2 rounded-xl border border-gray-800 bg-[#161616] text-gray-300 hover:text-white hover:border-brand-gold/40 text-[11px] font-medium text-center transition-all';
+                b.className = 'exp-type-btn px-2 py-2 rounded-xl border border-gray-800 bg-[#161616] text-gray-300 hover:text-white hover:border-brand-gold/40 text-[10px] sm:text-[11px] font-medium text-center transition-all truncate';
             });
-            btn.className = 'exp-type-btn px-2.5 py-2 rounded-xl border border-brand-gold bg-brand-gold/20 text-brand-goldLight text-[11px] font-bold text-center transition-all';
+            btn.className = 'exp-type-btn px-2 py-2 rounded-xl border border-brand-gold bg-brand-gold/20 text-brand-goldLight text-[10px] sm:text-[11px] font-bold text-center transition-all truncate';
             updateWhatsAppPreview();
         }
 
         /**
-         * WhatsApp Message Construction
+         * WhatsApp Message Construction in Active Language
          */
         function generateWhatsAppMessage() {
             if (!currentSelectedSpot) return '';
             const spot = currentSelectedSpot;
-            return `¡Hola ${spot.name}! 👋
+            
+            if (currentLang === 'en') {
+                return `Hello ${spot.name}! 👋
+I'm reaching out on behalf of ✨ *Mysterik Net* ✨ to coordinate a special visit.
+
+📍 *Venue:* ${spot.name} (${spot.zoneLabel.split(',')[0]})
+👥 *Number of Guests:* ${bookingState.guests}
+📅 *Estimated Timing:* ${bookingState.moment}
+🍸 *Plan:* ${bookingState.experienceType}
+
+Could you please confirm availability and table reservation? Thank you very much!`;
+            } else if (currentLang === 'pt') {
+                return `Olá ${spot.name}! 👋
+Estou entrando em contato em nome da ✨ *Mysterik Net* ✨ para coordenar uma visita especial.
+
+📍 *Local:* ${spot.name} (${spot.zoneLabel.split(',')[0]})
+👥 *Número de Pessoas:* ${bookingState.guests}
+📅 *Momento estimado:* ${bookingState.moment}
+🍸 *Plano:* ${bookingState.experienceType}
+
+Poderiam confirmar a disponibilidade para nossa reserva? Muito obrigado!`;
+            } else {
+                return `¡Hola ${spot.name}! 👋
 Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia especial.
 
 📍 *Lugar:* ${spot.name} (${spot.zoneLabel.split(',')[0]})
@@ -1372,6 +1729,7 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
 🍸 *Plan:* ${bookingState.experienceType}
 
 ¿Tienen disponibilidad y nos podrían confirmar para coordinar la mesa/visita? ¡Muchas gracias!`;
+            }
         }
 
         function updateWhatsAppPreview() {
@@ -1390,7 +1748,9 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
         }
 
         function openGeneralConcierge() {
-            const msg = `¡Hola Mysterik Net! 👋 Busco recomendaciones y coordinación para una salida especial en Mendoza.`;
+            let msg = `¡Hola Mysterik Net! 👋 Busco recomendaciones y coordinación para una salida especial en Mendoza.`;
+            if (currentLang === 'en') msg = `Hello Mysterik Net! 👋 I'm looking for special recommendations and reservations in Mendoza.`;
+            if (currentLang === 'pt') msg = `Olá Mysterik Net! 👋 Gostaria de recomendações e reservas especiais em Mendoza.`;
             window.open(`https://wa.me/5492617094195?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
@@ -1406,15 +1766,131 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
         }
 
         /**
+         * LANGUAGE SWITCHING ENGINE
+         */
+        function changeLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('mysterik_lang', lang);
+            
+            const langSelect = document.getElementById('lang-select');
+            if (langSelect) langSelect.value = lang;
+
+            applyTranslations();
+            renderSpotsList();
+            renderMapPins();
+            updateWhatsAppPreview();
+        }
+
+        function applyTranslations() {
+            const t = I18N[currentLang];
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) {
+                    el.innerHTML = t[key];
+                }
+            });
+
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (t[key]) {
+                    el.placeholder = t[key];
+                }
+            });
+
+            // Update Age Badge text
+            const ageBadge = document.getElementById('age-badge-text');
+            if (ageBadge) {
+                ageBadge.textContent = isAgeVerified ? t.ageBadgeVerified : t.ageBadge;
+            }
+        }
+
+        /**
+         * AGE VERIFICATION (+18 Gate)
+         */
+        function checkAgeGate() {
+            if (!isAgeVerified) {
+                setTimeout(() => {
+                    openAgeModal();
+                }, 1000);
+            }
+        }
+
+        function openAgeModal() {
+            const modal = document.getElementById('age-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeAgeModal() {
+            const modal = document.getElementById('age-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        function confirmAge(isAdult) {
+            if (isAdult) {
+                isAgeVerified = true;
+                localStorage.setItem('mysterik_age_verified', 'true');
+                const t = I18N[currentLang];
+                const badge = document.getElementById('age-badge-text');
+                if (badge) badge.textContent = t.ageBadgeVerified;
+                closeAgeModal();
+            } else {
+                alert('Mysterik Net contiene información de bares y bodegas destinada a mayores de 18 años.');
+                window.location.href = 'https://www.google.com';
+            }
+        }
+
+        /**
+         * PWA SHORTCUT / INSTALLATION PROMPT
+         */
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const btn = document.getElementById('btn-install-app');
+            if (btn) btn.classList.remove('hidden');
+        });
+
+        function triggerInstallPrompt() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        const t = I18N[currentLang];
+                        const btn = document.getElementById('btn-install-app');
+                        if (btn) btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> <span class="hidden sm:inline">${t.appInstalled}</span>`;
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                // If on iOS or standalone is already supported, show visual guide
+                openInstallGuideModal();
+            }
+        }
+
+        function openInstallGuideModal() {
+            const modal = document.getElementById('install-guide-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeInstallGuideModal() {
+            const modal = document.getElementById('install-guide-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        /**
          * Filtering Logic
          */
         function setCategory(cat) {
             currentFilter.category = cat;
             document.querySelectorAll('.category-chip').forEach(c => {
                 if (c.dataset.cat === cat) {
-                    c.className = 'category-chip px-3 py-1.5 rounded-full border border-brand-gold/40 bg-brand-gold/20 text-brand-goldLight font-bold whitespace-nowrap flex items-center gap-1.5 active-chip shadow-gold-sm';
+                    c.className = 'category-chip px-3 py-1.5 rounded-full border border-brand-gold/40 bg-brand-gold/20 text-brand-goldLight font-bold whitespace-nowrap flex items-center gap-1.5 active-chip shadow-gold-sm flex-shrink-0';
                 } else {
-                    c.className = 'category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5';
+                    c.className = 'category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5 flex-shrink-0';
                 }
             });
             renderSpotsList();
@@ -1428,7 +1904,6 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
             renderSpotsList();
             renderMapPins();
 
-            // Pan map to zone
             if (map) {
                 const zoneCoordinates = {
                     'all': [-32.9400, -68.8350, 12],
@@ -1583,15 +2058,22 @@ Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia es
         window.addEventListener('click', (e) => {
             const detailModal = document.getElementById('detail-modal');
             const joinModal = document.getElementById('join-modal');
+            const ageModal = document.getElementById('age-modal');
+            const installModal = document.getElementById('install-guide-modal');
             if (e.target === detailModal) closeDetailModal();
             if (e.target === joinModal) closeJoinModal();
+            if (e.target === ageModal) closeAgeModal();
+            if (e.target === installModal) closeInstallGuideModal();
         });
 
-        // Initialize
+        // Initialize on DOM load
         document.addEventListener('DOMContentLoaded', () => {
+            cleanCachesOnEntry();
             initLeafletMap();
+            applyTranslations();
             renderSpotsList();
             updateFavCount();
+            checkAgeGate();
         });
     </script>
 </body>

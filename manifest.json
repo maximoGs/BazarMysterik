@@ -1,0 +1,21 @@
+{
+  "name": "Mysterik Net • Mendoza Experience Map",
+  "short_name": "Mysterik Net",
+  "description": "Mapa interactivo y guía de experiencias en Mendoza con WhatsApp directo de parte de Mysterik Net.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#070707",
+  "theme_color": "#070707",
+  "icons": [
+    {
+      "src": "logomysterik.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logomysterik.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
