@@ -3,28 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mysterix • Bazar Místico & Crónicas</title>
+    <title>Mysterik Net • Mendoza Experience Map & VIP Pass</title>
     
-    <!-- Meta SEO & Open Graph -->
-    <meta name="description" content="Mysterix: Bazar exclusivo de talismanes, cristales sagrados, alquimia y foro ceremonial.">
-    <meta name="theme-color" content="#050505">
-
-    <!-- PWA & Apple Meta Tags -->
+    <!-- Meta SEO & Social Graph -->
+    <meta name="description" content="Descubre los comercios adheridos a Mysterik Net en Mendoza: bares speakeasy, bodegas exclusivas, sunsets, restós de alta gama y boliches con beneficios y reserva por WhatsApp.">
+    <meta name="theme-color" content="#070707">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Mysterix">
+    <meta name="apple-mobile-web-app-title" content="Mysterik Net">
+
     <link rel="apple-touch-icon" href="logomysterik.png">
-    <link rel="icon" type="image/png" href="logomysterik.png" id="dynamic-favicon">
+    <link rel="icon" type="image/png" href="logomysterik.png">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
 
-    <!-- FontAwesome 6 (CDN) -->
+    <!-- FontAwesome 6 CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Tailwind CSS (CDN) -->
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -33,14 +35,16 @@
                 extend: {
                     colors: {
                         brand: {
-                            black: '#050505',
-                            dark: '#0c0c0c',
-                            card: '#131313',
-                            surface: '#181818',
-                            border: '#282214',
+                            black: '#070707',
+                            dark: '#0e0e0e',
+                            card: '#141414',
+                            surface: '#1c1c1c',
+                            border: '#2a2415',
+                            borderHover: '#d4af37',
                             gold: '#D4AF37',
                             goldLight: '#FFF3B0',
-                            goldDark: '#AA771C'
+                            goldDark: '#AA771C',
+                            neon: '#e5b83b'
                         }
                     },
                     fontFamily: {
@@ -48,1362 +52,1744 @@
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                         serif: ['"Playfair Display"', 'serif']
                     },
-                    backgroundImage: {
-                        'gold-gradient': 'linear-gradient(135deg, #FFF3B0 0%, #D4AF37 50%, #AA771C 100%)',
-                        'gold-gradient-hover': 'linear-gradient(135deg, #FFFFFF 0%, #FFF3B0 40%, #D4AF37 100%)'
-                    },
                     boxShadow: {
-                        'gold-sm': '0 0 15px rgba(212, 175, 55, 0.25)',
-                        'gold-md': '0 0 25px rgba(212, 175, 55, 0.35)'
+                        'gold-glow': '0 0 25px rgba(212, 175, 55, 0.28)',
+                        'gold-lg': '0 10px 40px -10px rgba(212, 175, 55, 0.35)',
+                        'neon-pin': '0 0 15px #D4AF37, 0 0 30px rgba(212, 175, 55, 0.5)'
                     }
                 }
             }
         }
     </script>
 
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
     <style>
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #080808; }
-        ::-webkit-scrollbar-thumb { background: #3d3316; border-radius: 4px; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #2f2714; border-radius: 9999px; }
         ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
-        
-        .gold-text-gradient {
-            background: linear-gradient(135deg, #FFF3B0 0%, #D4AF37 50%, #AA771C 100%);
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFFFFF 0%, #FFF3B0 30%, #D4AF37 70%, #AA771C 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .glass-panel {
-            background: rgba(10, 10, 10, 0.92);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+        .gold-border-glow {
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .gold-border-glow:hover {
+            border-color: #D4AF37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
         }
 
-        #cart-drawer {
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        .glass-header {
+            background: rgba(8, 8, 8, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
         }
-        #cart-drawer.open { transform: translateX(0); }
-        #cart-drawer.closed { transform: translateX(100%); }
+
+        .glass-card {
+            background: rgba(18, 18, 18, 0.82);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        /* Leaflet Custom Tile and Map Settings */
+        #mendoza-map {
+            width: 100%;
+            height: 100%;
+            background: #090909;
+        }
+        .leaflet-container {
+            background-color: #070707 !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+        }
+        .leaflet-bar {
+            border: 1px solid rgba(212, 175, 55, 0.3) !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8) !important;
+            border-radius: 10px !important;
+            overflow: hidden;
+        }
+        .leaflet-bar a {
+            background-color: #141414 !important;
+            color: #D4AF37 !important;
+            border-bottom: 1px solid #2a2415 !important;
+            transition: all 0.2s ease;
+        }
+        .leaflet-bar a:hover {
+            background-color: #242014 !important;
+            color: #FFF3B0 !important;
+        }
+
+        /* Pulse animation for markers */
+        @keyframes pinPulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(212, 175, 55, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+
+        .custom-map-marker {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .custom-map-marker:hover {
+            transform: scale(1.22) translateY(-4px);
+            z-index: 999 !important;
+        }
+        .marker-pulse-active {
+            animation: pinPulse 2s infinite;
+        }
+
+        /* Custom Leaflet Popup */
+        .leaflet-popup-content-wrapper {
+            background: #111111 !important;
+            color: #fff !important;
+            border: 1px solid rgba(212, 175, 55, 0.4) !important;
+            border-radius: 16px !important;
+            padding: 0 !important;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.2) !important;
+        }
+        .leaflet-popup-content {
+            margin: 0 !important;
+            line-height: 1.4 !important;
+        }
+        .leaflet-popup-tip {
+            background: #111111 !important;
+            border: 1px solid rgba(212, 175, 55, 0.4) !important;
+        }
+        .leaflet-container a.leaflet-popup-close-button {
+            color: #D4AF37 !important;
+            padding: 8px 12px !important;
+            font-size: 18px !important;
+        }
+
+        /* Roulette Glow Spin */
+        @keyframes rouletteGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .roulette-spinning {
+            animation: rouletteGlow 0.4s linear infinite;
+        }
+
+        /* Floating Nav Active indicator */
+        .nav-tab-active {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(170, 119, 28, 0.3) 100%);
+            border-color: #D4AF37;
+            color: #FFF3B0;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+        }
     </style>
 </head>
 
-<body class="bg-brand-black text-gray-200 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-gold selection:text-black">
+<body class="bg-brand-black text-gray-100 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-gold selection:text-black overflow-x-hidden">
 
-    <!-- ANNOUNCEMENT BAR -->
-    <aside class="bg-gradient-to-r from-[#050505] via-[#1a1506] to-[#050505] border-b border-brand-gold/20 py-1.5 px-4 text-center text-xs tracking-wider text-brand-goldLight flex items-center justify-center gap-2">
-        <i class="fa-solid fa-moon text-brand-gold text-[10px]"></i>
-        <span id="txt-announcement">Envíos a todo el país • Atención Personalizada por WhatsApp</span>
-        <i class="fa-solid fa-sparkles text-brand-gold text-[10px]"></i>
+    <!-- TOP TICKER BAR -->
+    <aside class="bg-gradient-to-r from-[#050505] via-[#1a1506] to-[#050505] border-b border-brand-gold/25 py-1.5 px-3 text-center text-[11px] tracking-wider text-brand-goldLight flex items-center justify-between z-50">
+        <div class="hidden sm:flex items-center gap-2 text-brand-gold/80 pl-2">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span class="text-[10px] font-semibold tracking-widest uppercase">Mendoza Live Vibe Network</span>
+        </div>
+        <div class="flex items-center justify-center gap-2 mx-auto font-medium">
+            <i class="fa-solid fa-gem text-brand-gold text-[10px] animate-bounce"></i>
+            <span>Pase Especial <strong class="text-white font-cinzel">Mysterik Net</strong>: Desbloquea beneficios VIP al contactar por WhatsApp</span>
+            <i class="fa-solid fa-sparkles text-brand-gold text-[10px]"></i>
+        </div>
+        <div class="hidden md:flex items-center gap-3 pr-2">
+            <button onclick="openJoinModal()" class="text-[10px] uppercase font-bold text-brand-gold hover:text-white transition-colors underline decoration-brand-gold/50">
+                Sumar mi Comercio
+            </button>
+        </div>
     </aside>
 
-    <!-- HEADER / NAVBAR -->
-    <header class="sticky top-0 z-40 glass-panel border-b border-brand-gold/20">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-4">
+    <!-- HEADER / NAVIGATION -->
+    <header class="sticky top-0 z-40 glass-header border-b border-brand-gold/20 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-3">
             
-            <!-- BRANDING / LOGO (CORREGIDO: FONDO OSCURO LIMPIO CON BORDE DORADO) -->
-            <a href="#" class="flex items-center gap-3 group focus:outline-none" aria-label="Mysterix">
-                <div class="relative w-12 h-12 rounded-full bg-brand-dark border border-brand-gold/60 p-1 flex items-center justify-center shadow-gold-sm group-hover:border-brand-gold group-hover:scale-105 transition-all">
-                    <img src="logomysterik.png" alt="Mysterix Logo" class="w-full h-full object-contain filter drop-shadow" 
-                         onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'46\' fill=\'%230c0c0c\' stroke=\'%23D4AF37\' stroke-width=\'3\'/><path d=\'M38 35 L50 20 L62 35 Z M42 35 L42 22 L58 22 L58 35 Z\' fill=\'%23D4AF37\'/><circle cx=\'50\' cy=\'58\' r=\'24\' fill=\'none\' stroke=\'%23FFF3B0\' stroke-width=\'2\'/><polygon points=\'50,45 60,65 50,62 40,65\' fill=\'%23D4AF37\'/></svg>'">
+            <!-- LOGO & BRAND -->
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="resetFiltersAndCenter()">
+                <div class="relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-brand-gold/30 to-brand-goldDark/10 p-[1.5px] shadow-gold-glow flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+                    <img src="logomysterik.png" alt="Mysterik Net Logo" class="w-full h-full object-contain rounded-[10px] bg-black/70 p-1" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=100&q=80';">
                 </div>
                 <div>
-                    <span class="font-cinzel text-2xl font-bold tracking-widest gold-text-gradient block leading-none">MYSTERIX</span>
-                    <span class="text-[9px] tracking-[0.25em] text-gray-400 uppercase block font-sans mt-0.5">Bazar & Foro Místico</span>
+                    <div class="flex items-center gap-1.5">
+                        <span class="font-cinzel text-lg sm:text-2xl font-bold tracking-widest text-white group-hover:text-brand-gold transition-colors">MYSTERIK</span>
+                        <span class="text-xs font-bold px-1.5 py-0.5 rounded bg-brand-gold/20 text-brand-goldLight font-mono border border-brand-gold/30">NET</span>
+                    </div>
+                    <p class="text-[10px] sm:text-xs text-brand-gold/75 tracking-wider uppercase font-medium">Mendoza Curated Experience Map</p>
                 </div>
-            </a>
-
-            <!-- NAVIGATION -->
-            <nav class="hidden sm:flex items-center gap-6 text-xs font-medium">
-                <a href="#catalogo" class="text-gray-300 hover:text-brand-gold transition flex items-center gap-1.5" id="nav-catalog">
-                    <i class="fa-solid fa-gem text-brand-gold text-[11px]"></i> <span>Catálogo</span>
-                </a>
-                <a href="#foro" class="text-gray-300 hover:text-brand-gold transition flex items-center gap-1.5" id="nav-forum">
-                    <i class="fa-solid fa-comments text-brand-gold text-[11px]"></i> <span>Foro & Crónicas</span>
-                </a>
-            </nav>
-
-            <!-- CONTROLS: IDIOMAS & CARRITO -->
-            <div class="flex items-center gap-2 sm:gap-3">
-                
-                <!-- Language Selector -->
-                <div class="flex items-center bg-brand-surface border border-brand-gold/30 rounded-xl p-1 text-[11px] font-bold text-gray-400">
-                    <button onclick="setLanguage('es')" id="btn-lang-es" class="px-2 py-1 rounded-lg transition" title="Español">ES</button>
-                    <button onclick="setLanguage('en')" id="btn-lang-en" class="px-2 py-1 rounded-lg transition" title="English">EN</button>
-                    <button onclick="setLanguage('pt')" id="btn-lang-pt" class="px-2 py-1 rounded-lg transition" title="Português">PT</button>
-                </div>
-
-                <!-- PWA Install Button -->
-                <button id="pwa-install-btn" class="hidden items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-gold/15 text-brand-gold border border-brand-gold/40 hover:bg-brand-gold hover:text-black transition">
-                    <i class="fa-solid fa-download text-xs"></i>
-                    <span class="hidden md:inline" id="txt-install">Instalar</span>
-                </button>
-
-                <!-- Cart Button -->
-                <button id="cart-toggle-btn" class="relative p-2.5 px-3.5 rounded-xl bg-brand-card hover:bg-brand-surface border border-brand-gold/40 text-brand-gold transition flex items-center gap-2 shadow-gold-sm" aria-label="Carrito">
-                    <i class="fa-solid fa-bag-shopping text-base"></i>
-                    <span id="cart-count" class="bg-brand-gold text-black text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center">0</span>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- HERO SECTION -->
-    <section class="relative overflow-hidden bg-brand-black py-12 sm:py-16 border-b border-brand-gold/15">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(212,175,55,0.1),transparent_60%)] pointer-events-none"></div>
-
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-5 relative z-10">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/30 text-brand-goldLight text-xs tracking-wider uppercase font-semibold">
-                <i class="fa-solid fa-sparkles text-brand-gold text-xs"></i>
-                <span id="hero-badge">Artefactos de Alta Vibración & Círculo Arcano</span>
             </div>
 
-            <h1 class="font-cinzel text-3xl sm:text-5xl font-bold leading-tight text-white">
-                <span class="gold-text-gradient" id="hero-title">Conecta con lo Místico</span>
-            </h1>
-
-            <p class="text-gray-300 text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed" id="hero-subtitle">
-                Talismanes consagrados, gemas auténticas y un espacio de intercambio arcano para elevar tu energía.
-            </p>
-
-            <div class="pt-2 flex flex-wrap gap-3 justify-center">
-                <a href="#catalogo" class="px-6 py-2.5 rounded-xl bg-gold-gradient text-black font-cinzel font-bold text-xs tracking-wider shadow-sm hover:brightness-110 transition flex items-center gap-2" id="hero-btn-shop">
-                    <i class="fa-solid fa-compass"></i> <span>Ver Catálogo</span>
-                </a>
-                <a href="#foro" class="px-5 py-2.5 rounded-xl bg-brand-card hover:bg-brand-surface text-brand-goldLight border border-brand-gold/40 text-xs font-semibold tracking-wider transition flex items-center gap-2" id="hero-btn-forum">
-                    <i class="fa-solid fa-comments text-brand-gold"></i> <span>Entrar al Foro</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- MAIN CONTENT -->
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-10 flex-grow space-y-16 w-full">
-
-        <!-- ==================== SECCIÓN 1: CATÁLOGO BAZAR ==================== -->
-        <section id="catalogo" class="scroll-mt-24 space-y-6">
-            
-            <div class="text-center space-y-2 max-w-lg mx-auto">
-                <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-white" id="cat-title">
-                    Catálogo de Bazar
-                </h2>
-                <div class="w-16 h-0.5 bg-gold-gradient mx-auto rounded-full"></div>
-            </div>
-
-            <!-- CONTROLES DEL CATÁLOGO -->
-            <div class="flex flex-col sm:flex-row gap-3 items-center justify-between bg-brand-card/90 border border-brand-gold/25 rounded-2xl p-3.5">
-                <!-- Category Pills -->
-                <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0" id="category-filters-container">
-                    <!-- Dynamic -->
-                </div>
-
-                <!-- Search Input -->
-                <div class="relative w-full sm:w-64">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
-                    <input type="text" id="search-input" placeholder="Buscar..." class="w-full bg-brand-surface text-gray-200 text-xs pl-8 pr-7 py-2 rounded-xl border border-brand-gold/20 focus:border-brand-gold focus:outline-none transition">
-                    <button id="clear-search-btn" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-gold text-xs">
+            <!-- SEARCH BAR (Center Desktop) -->
+            <div class="hidden md:flex flex-1 max-w-md mx-4 relative">
+                <div class="relative w-full">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-gold/60 text-xs"></i>
+                    <input 
+                        type="text" 
+                        id="search-input" 
+                        placeholder="Buscar por bar, bodega, Arístides, Chacras, vino..." 
+                        oninput="handleSearch(this.value)"
+                        class="w-full bg-[#121212]/90 border border-brand-gold/25 rounded-full pl-9 pr-8 py-2 text-xs text-white placeholder-gray-400 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-all"
+                    >
+                    <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white text-xs">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Product Grid -->
-            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Injected via JS -->
-            </div>
-
-            <!-- Empty State -->
-            <div id="empty-catalog" class="hidden py-12 text-center space-y-3 bg-brand-card/40 rounded-2xl border border-brand-gold/10">
-                <i class="fa-solid fa-crystal-ball text-2xl text-brand-gold"></i>
-                <h3 class="font-cinzel text-sm text-white font-semibold" id="empty-title">Sin resultados</h3>
-                <button onclick="resetFilters()" class="px-3.5 py-1.5 bg-brand-surface text-brand-gold border border-brand-gold/30 rounded-xl text-xs font-semibold" id="empty-btn">
-                    Restablecer
+            <!-- RIGHT ACTIONS -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                
+                <!-- ORACULO / ROULETTE GAMIFIED BUTTON -->
+                <button 
+                    onclick="openRouletteModal()" 
+                    title="¿Qué pinta hoy? Gira el Oráculo de Mendoza"
+                    class="relative group px-3 sm:px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/20 via-brand-gold/30 to-amber-700/20 border border-brand-gold/60 text-brand-goldLight text-xs font-bold tracking-wide flex items-center gap-1.5 shadow-gold-glow hover:shadow-gold-lg hover:border-brand-gold hover:scale-105 transition-all duration-300">
+                    <span class="text-sm animate-pulse">🔮</span>
+                    <span class="hidden sm:inline">Oráculo Mysterik</span>
+                    <span class="sm:hidden">Sortear</span>
+                    <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-brand-gold rounded-full animate-ping"></span>
                 </button>
-            </div>
 
-        </section>
-
-
-        <!-- ==================== SECCIÓN 2: FORO MÍSTICO & CRÓNICAS SECCIONADAS ==================== -->
-        <section id="foro" class="scroll-mt-24 space-y-6 pt-6 border-t border-brand-gold/15">
-            
-            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                <div>
-                    <span class="text-brand-gold text-[11px] font-semibold tracking-widest uppercase" id="forum-badge">Comunidad & Conocimiento</span>
-                    <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-white mt-0.5" id="forum-title">
-                        Foro Arcano & Crónicas
-                    </h2>
-                </div>
-                <button onclick="openAskModal()" class="px-4 py-2 rounded-xl bg-brand-surface hover:bg-brand-card text-brand-gold border border-brand-gold/40 text-xs font-semibold flex items-center gap-2 self-start sm:self-auto transition">
-                    <i class="fa-solid fa-feather-pointed"></i>
-                    <span id="forum-btn-ask">Hacer una Consulta Mística</span>
+                <!-- GEOLOCATION NEAR ME BUTTON -->
+                <button 
+                    onclick="locateUser()" 
+                    id="btn-geolocate"
+                    title="Cerca de mí en Mendoza"
+                    class="p-2 sm:px-3 sm:py-2 rounded-full bg-[#161616] border border-brand-gold/30 text-gray-300 hover:text-brand-goldLight hover:border-brand-gold text-xs flex items-center gap-1.5 transition-all">
+                    <i class="fa-solid fa-location-crosshairs text-brand-gold text-sm"></i>
+                    <span class="hidden lg:inline">Cerca de mí</span>
                 </button>
-            </div>
 
-            <!-- TABS DE SECCIONES DEL FORO -->
-            <div class="flex items-center gap-2 overflow-x-auto pb-1 border-b border-brand-gold/20" id="forum-sections-tabs">
-                <!-- Injected dynamically via JS -->
-            </div>
-
-            <!-- FORUM FEED GRID -->
-            <div id="forum-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Injected via JS -->
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- FOOTER -->
-    <footer class="bg-brand-dark border-t border-brand-gold/20 py-8 text-gray-400 text-xs">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-brand-card border border-brand-gold/60 p-0.5 overflow-hidden flex items-center justify-center">
-                    <img src="logomysterik.png" alt="Mysterix" class="w-full h-full object-contain">
+                <!-- VIEW MODE TOGGLE (Desktop / Mobile) -->
+                <div class="flex items-center bg-[#141414] p-1 rounded-xl border border-brand-gold/25">
+                    <button 
+                        id="view-split-btn" 
+                        onclick="setViewMode('split')" 
+                        title="Vista Dividida (Mapa + Lista)"
+                        class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium transition-all nav-tab-active flex items-center gap-1">
+                        <i class="fa-solid fa-columns"></i>
+                        <span class="hidden xl:inline text-[11px]">Explorar</span>
+                    </button>
+                    <button 
+                        id="view-map-btn" 
+                        onclick="setViewMode('map')" 
+                        title="Solo Mapa"
+                        class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        <span class="hidden xl:inline text-[11px]">Mapa</span>
+                    </button>
+                    <button 
+                        id="view-cards-btn" 
+                        onclick="setViewMode('cards')" 
+                        title="Solo Tarjetas"
+                        class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1">
+                        <i class="fa-solid fa-grip"></i>
+                        <span class="hidden xl:inline text-[11px]">Cards</span>
+                    </button>
                 </div>
-                <span class="font-cinzel text-sm font-bold gold-text-gradient">MYSTERIX STORE</span>
+
+                <!-- FAVORITES BUTTON -->
+                <button 
+                    onclick="toggleFavoritesFilter()" 
+                    id="btn-favorites-filter"
+                    title="Ver guardados"
+                    class="p-2 sm:px-3 sm:py-2 rounded-full bg-[#161616] border border-brand-gold/30 text-gray-300 hover:text-rose-400 hover:border-rose-400/50 text-xs flex items-center gap-1.5 transition-all">
+                    <i class="fa-solid fa-heart text-xs" id="fav-icon-counter"></i>
+                    <span id="fav-count-badge" class="font-bold text-[11px]">0</span>
+                </button>
+
             </div>
-            
-            <div class="flex items-center gap-4 text-[11px]">
-                <a href="https://wa.me/5492617094195" target="_blank" rel="noopener noreferrer" class="hover:text-brand-gold transition flex items-center gap-1">
-                    <i class="fa-brands fa-whatsapp text-green-500"></i> +54 9 261 709-4195
-                </a>
-            </div>
-
-            <p class="text-[10px] text-gray-500">© <span id="current-year">2026</span> Mysterix. Todos los derechos reservados.</p>
-        </div>
-    </footer>
-
-
-    <!-- ==================== CARRITO SLIDEOUT ==================== -->
-    <div id="cart-overlay" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300" onclick="toggleCart(false)"></div>
-
-    <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[380px] max-w-full bg-brand-dark border-l border-brand-gold/30 z-50 closed shadow-2xl flex flex-col justify-between" aria-label="Carrito">
-        <div class="p-4 border-b border-brand-gold/20 flex items-center justify-between bg-black/60">
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-bag-shopping text-brand-gold"></i>
-                <h3 class="font-cinzel text-sm font-bold text-brand-goldLight" id="cart-title">Tu Canasta</h3>
-                <span id="cart-items-total-badge" class="text-xs text-gray-400">(0)</span>
-            </div>
-            <button onclick="toggleCart(false)" class="p-1.5 text-gray-400 hover:text-brand-gold rounded-full" aria-label="Cerrar">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
         </div>
 
-        <div id="cart-items-container" class="flex-grow overflow-y-auto p-4 space-y-3 divide-y divide-brand-border/40"></div>
-
-        <div id="cart-empty-view" class="flex flex-col items-center justify-center p-6 text-center space-y-3 my-auto">
-            <i class="fa-solid fa-bag-shopping text-3xl text-brand-gold/40"></i>
-            <p class="text-xs text-gray-400" id="cart-empty-msg">Tu carrito está vacío.</p>
-        </div>
-
-        <div id="cart-footer" class="p-4 border-t border-brand-gold/20 bg-black/80 space-y-3">
-            <div>
-                <label for="cart-note" class="text-[11px] text-gray-400 block mb-1" id="cart-note-label">Nombre / Notas:</label>
-                <input type="text" id="cart-note" placeholder="..." class="w-full bg-brand-surface text-gray-200 text-xs px-3 py-1.5 rounded-lg border border-brand-gold/20 focus:border-brand-gold focus:outline-none">
+        <!-- MOBILE SEARCH & FILTERS BAR -->
+        <div class="px-4 pb-3 flex flex-col gap-2.5 max-w-7xl mx-auto">
+            <!-- Mobile Search Input -->
+            <div class="md:hidden relative w-full">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-gold/60 text-xs"></i>
+                <input 
+                    type="text" 
+                    id="search-input-mobile" 
+                    placeholder="Buscar bares, bodegas, boliches, Arístides..." 
+                    oninput="handleSearch(this.value)"
+                    class="w-full bg-[#121212] border border-brand-gold/25 rounded-full pl-9 pr-8 py-2 text-xs text-white placeholder-gray-400 focus:outline-none focus:border-brand-gold"
+                >
             </div>
 
-            <div class="flex justify-between items-center text-sm font-bold pt-1 border-t border-brand-gold/20">
-                <span class="font-cinzel text-brand-gold" id="cart-total-label">Total</span>
-                <span id="cart-total-price" class="gold-text-gradient font-mono text-base">$0</span>
-            </div>
+            <!-- FILTER CHIPS: CATEGORIES & ZONES -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
+                
+                <!-- Categorías -->
+                <button onclick="setCategory('all')" class="category-chip px-3 py-1.5 rounded-full border border-brand-gold/30 bg-brand-gold/15 text-brand-goldLight font-semibold whitespace-nowrap flex items-center gap-1.5 active-chip" data-cat="all">
+                    <span>✨ Todos</span>
+                </button>
+                <button onclick="setCategory('cocktail')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5" data-cat="cocktail">
+                    <span>🍸 Cocktails & Speakeasy</span>
+                </button>
+                <button onclick="setCategory('bodega')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5" data-cat="bodega">
+                    <span>🍷 Bodegas & Sunsets</span>
+                </button>
+                <button onclick="setCategory('gourmet')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5" data-cat="gourmet">
+                    <span>🍽️ Restó Gourmet</span>
+                </button>
+                <button onclick="setCategory('nightlife')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5" data-cat="nightlife">
+                    <span>🪩 Clubs & Boliches</span>
+                </button>
+                <button onclick="setCategory('cafe')" class="category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5" data-cat="cafe">
+                    <span>☕ Café & Brunch</span>
+                </button>
 
-            <button id="checkout-whatsapp-btn" onclick="checkoutWhatsApp()" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:brightness-110 text-white font-cinzel font-bold text-xs tracking-wider flex items-center justify-center gap-2 shadow-lg transition active:scale-[0.99]">
-                <i class="fa-brands fa-whatsapp text-base"></i>
-                <span id="cart-btn-checkout">Finalizar Pedido</span>
-            </button>
+                <!-- Separador -->
+                <div class="h-4 w-[1px] bg-brand-gold/30 mx-1 flex-shrink-0"></div>
 
-            <button onclick="clearCart()" class="w-full text-center text-[10px] text-red-400/80 hover:text-red-400 transition" id="cart-btn-clear">
-                Vaciar Carrito
-            </button>
-        </div>
-    </aside>
-
-
-    <!-- ==================== MODAL: LECTURA DE NOTICIA / FORO ==================== -->
-    <div id="news-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-        <div class="bg-brand-dark border border-brand-gold/40 rounded-2xl max-w-xl w-full max-h-[85vh] overflow-y-auto shadow-2xl relative p-6 space-y-4" onclick="event.stopPropagation()">
-            <button onclick="closeNewsModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/70 text-white hover:text-brand-gold flex items-center justify-center" aria-label="Cerrar">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
-            <span id="modal-news-tag" class="px-2 py-0.5 rounded bg-brand-gold text-black text-[10px] font-bold uppercase font-cinzel"></span>
-            <h3 id="modal-news-title" class="font-cinzel text-xl font-bold text-white"></h3>
-            <p id="modal-news-date" class="text-xs text-brand-goldLight"></p>
-
-            <div id="modal-news-content" class="text-gray-300 text-xs sm:text-sm leading-relaxed space-y-2 pt-2 border-t border-brand-gold/20 font-serif"></div>
-        </div>
-    </div>
-
-
-    <!-- ==================== MODAL: FORMULARIO DE CONSULTA MÍSTICA (FORO) ==================== -->
-    <div id="ask-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-        <div class="bg-brand-dark border border-brand-gold/40 rounded-2xl max-w-md w-full shadow-2xl relative p-6 space-y-4" onclick="event.stopPropagation()">
-            <button onclick="closeAskModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/70 text-white hover:text-brand-gold flex items-center justify-center">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
-            <div class="space-y-1">
-                <h3 class="font-cinzel text-lg font-bold text-white" id="ask-modal-title">Consulta al Círculo Arcano</h3>
-                <p class="text-xs text-gray-400" id="ask-modal-desc">Envía tu duda o aporte ceremonial para ser respondido por los guardianes de Mysterix.</p>
-            </div>
-
-            <div class="space-y-3 text-xs">
-                <div>
-                    <label class="text-gray-400 block mb-1" id="ask-lbl-name">Tu Nombre / Apodo:</label>
-                    <input type="text" id="ask-name" class="w-full bg-brand-surface text-gray-200 px-3 py-2 rounded-xl border border-brand-gold/20 focus:border-brand-gold focus:outline-none">
-                </div>
-                <div>
-                    <label class="text-gray-400 block mb-1" id="ask-lbl-section">Sección del Foro:</label>
-                    <select id="ask-section" class="w-full bg-brand-surface text-gray-200 px-3 py-2 rounded-xl border border-brand-gold/20 focus:border-brand-gold focus:outline-none cursor-pointer">
-                        <option value="rituals">Rituales & Ceremonias</option>
-                        <option value="gems">Gemas & Minerales</option>
-                        <option value="alchemy">Alquimia & Astrología</option>
-                        <option value="community">Comunidad Mística</option>
+                <!-- Selector de Zona Mendoza -->
+                <div class="flex items-center gap-1.5 flex-shrink-0">
+                    <select id="zone-select" onchange="setZone(this.value)" class="bg-[#141414] border border-brand-gold/30 text-brand-goldLight text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-brand-gold font-medium cursor-pointer">
+                        <option value="all">📍 Toda Mendoza</option>
+                        <option value="aristides">🏙️ Arístides & Centro</option>
+                        <option value="chacras">🌿 Chacras & Luján</option>
+                        <option value="bodegas">🍇 Ruta del Vino & Maipú</option>
+                        <option value="palmares">🍸 Godoy Cruz / Palmares</option>
+                        <option value="uco">🏔️ Valle de Uco</option>
                     </select>
                 </div>
-                <div>
-                    <label class="text-gray-400 block mb-1" id="ask-lbl-text">Tu Consulta o Reflexión:</label>
-                    <textarea id="ask-text" rows="3" class="w-full bg-brand-surface text-gray-200 px-3 py-2 rounded-xl border border-brand-gold/20 focus:border-brand-gold focus:outline-none"></textarea>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN INTERFACE LAYOUT -->
+    <main class="flex-1 flex flex-col relative overflow-hidden" style="height: calc(100vh - 128px);">
+
+        <!-- SPLIT CONTAINER -->
+        <div id="main-container" class="flex-1 w-full h-full flex flex-col lg:flex-row relative">
+
+            <!-- LEFT/BOTTOM FEED PANEL (Cards Feed) -->
+            <section id="feed-panel" class="w-full lg:w-[480px] xl:w-[540px] h-1/2 lg:h-full flex flex-col bg-[#0b0b0b] border-t lg:border-t-0 lg:border-r border-brand-gold/20 z-20 transition-all duration-300 order-2 lg:order-1">
+                
+                <!-- Feed Header with Count & Sort -->
+                <div class="px-4 py-3 bg-[#111111]/90 backdrop-blur border-b border-brand-gold/15 flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-2">
+                        <span id="results-count" class="font-bold text-brand-gold font-mono">14</span>
+                        <span class="text-gray-400">spots exclusivos adheridos</span>
+                    </div>
+                    <div class="flex items-center gap-1 text-[11px] text-gray-400">
+                        <span>Ordenar:</span>
+                        <select id="sort-select" onchange="handleSort(this.value)" class="bg-transparent text-brand-gold font-medium focus:outline-none cursor-pointer">
+                            <option value="recommended" class="bg-black text-white">⭐ Recomendados VIP</option>
+                            <option value="rating" class="bg-black text-white">🔥 Mayor Rating</option>
+                            <option value="name" class="bg-black text-white">🔤 Nombre A-Z</option>
+                        </select>
+                    </div>
                 </div>
-                <button onclick="submitForumQuestion()" class="w-full py-2.5 rounded-xl bg-gold-gradient text-black font-cinzel font-bold text-xs tracking-wider transition">
-                    <i class="fa-brands fa-whatsapp mr-1"></i> <span id="ask-btn-submit">Enviar Consulta por WhatsApp</span>
+
+                <!-- Spot Cards Scrollable Container -->
+                <div id="spots-list" class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3.5 divide-y divide-transparent">
+                    <!-- Dynamic cards injected via JS -->
+                </div>
+
+                <!-- Footer info in Feed -->
+                <div class="p-3 bg-[#080808] border-t border-brand-gold/10 text-center text-[11px] text-gray-500 flex items-center justify-around">
+                    <span class="flex items-center gap-1"><i class="fa-solid fa-shield-halved text-brand-gold/70"></i> Comercios Verificados</span>
+                    <span class="flex items-center gap-1"><i class="fa-brands fa-whatsapp text-emerald-400"></i> WhatsApp Directo</span>
+                    <span class="flex items-center gap-1"><i class="fa-solid fa-star text-amber-400"></i> Beneficio Mysterik</span>
+                </div>
+            </section>
+
+            <!-- RIGHT/TOP MAP CONTAINER -->
+            <section id="map-panel" class="w-full lg:flex-1 h-1/2 lg:h-full relative bg-[#070707] order-1 lg:order-2">
+                <!-- Mendoza Leaflet Map -->
+                <div id="mendoza-map"></div>
+
+                <!-- MAP FLOATING OVERLAYS -->
+                <!-- Recenter Map Button -->
+                <button onclick="recenterMap()" title="Centrar Mendoza" class="absolute top-4 right-4 z-[400] bg-[#141414]/90 hover:bg-[#202020] border border-brand-gold/40 text-brand-goldLight p-2.5 rounded-xl shadow-lg hover:scale-105 transition-all text-xs flex items-center gap-1.5 backdrop-blur">
+                    <i class="fa-solid fa-crosshairs text-brand-gold"></i>
+                    <span class="hidden sm:inline font-semibold">Centrar Mapa</span>
+                </button>
+
+                <!-- Floating Live Alert Tag -->
+                <div class="absolute bottom-4 left-4 z-[400] bg-[#111111]/90 border border-brand-gold/30 rounded-2xl p-2.5 px-3.5 shadow-2xl backdrop-blur max-w-xs hidden sm:flex items-center gap-3">
+                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></div>
+                    <div>
+                        <p class="text-[11px] font-bold text-white leading-tight">Red Mysterik Net Activa</p>
+                        <p class="text-[10px] text-brand-gold/80 leading-tight">Mendoza, Argentina • Beneficios listos para canjear</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- EXPANDABLE SPOT DETAIL MODAL / BOTTOM SHEET -->
+    <div id="detail-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+        <div id="detail-modal-card" class="bg-[#121212] border border-brand-gold/40 rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300 relative my-auto">
+            
+            <!-- Close button -->
+            <button onclick="closeDetailModal()" class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-black/70 hover:bg-black text-brand-gold border border-brand-gold/30 flex items-center justify-center text-sm transition-all hover:scale-110">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Scrollable Modal Body -->
+            <div class="overflow-y-auto flex-1 p-0 custom-modal-scroll" id="modal-content-container">
+                <!-- Dynamic Content injected by openDetailModal(spotId) -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ROULETTE / ORACULO MYSTERIK MODAL -->
+    <div id="roulette-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-lg hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <div class="bg-[#131313] border border-brand-gold rounded-3xl max-w-md w-full p-6 sm:p-8 text-center shadow-gold-lg relative overflow-hidden">
+            
+            <!-- Background Aura -->
+            <div class="absolute -top-24 -left-24 w-48 h-48 bg-brand-gold/15 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-amber-600/15 rounded-full blur-3xl"></div>
+
+            <button onclick="closeRouletteModal()" class="absolute top-4 right-4 text-gray-400 hover:text-brand-gold text-lg transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-gold/30 to-black border border-brand-gold/60 text-2xl mb-4 shadow-gold-glow">
+                🔮
+            </div>
+
+            <h3 class="font-cinzel text-xl sm:text-2xl font-bold text-white mb-1">Oráculo Mysterik</h3>
+            <p class="text-xs text-brand-goldLight/80 mb-6">¿Indeciso para salir? Deja que la noche de Mendoza elija tu destino y te otorgue un beneficio exclusivo.</p>
+
+            <!-- Roulette Animated Stage -->
+            <div id="roulette-stage" class="bg-[#0a0a0a] border border-brand-gold/30 rounded-2xl p-5 mb-6 min-h-[140px] flex flex-col items-center justify-center relative shadow-inner">
+                <div id="roulette-spinner-icon" class="text-4xl mb-2 text-brand-gold transition-all duration-300">
+                    🎲
+                </div>
+                <div id="roulette-result-title" class="font-cinzel text-lg font-bold text-white">
+                    Toca "Girar Oráculo"
+                </div>
+                <div id="roulette-result-subtitle" class="text-xs text-gray-400 mt-1">
+                    Seleccionando entre los mejores spots de Mendoza...
+                </div>
+                <div id="roulette-result-benefit" class="hidden mt-3 px-3 py-1 rounded-full bg-brand-gold/20 border border-brand-gold/50 text-[11px] text-brand-goldLight font-bold">
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col gap-2.5">
+                <button 
+                    id="btn-spin-roulette" 
+                    onclick="spinRoulette()" 
+                    class="w-full py-3.5 rounded-xl bg-gradient-to-r from-brand-gold via-amber-400 to-brand-goldDark text-black font-extrabold text-sm tracking-wider uppercase shadow-gold-glow hover:brightness-110 active:scale-95 transition-all">
+                    ✨ Girar Oráculo Ahora ✨
+                </button>
+                <button 
+                    id="btn-view-roulette-spot" 
+                    onclick="viewRouletteWinner()" 
+                    class="hidden w-full py-2.5 rounded-xl bg-[#1d1d1d] hover:bg-[#252525] text-brand-gold border border-brand-gold/40 text-xs font-bold transition-all flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-emerald-400"></i>
+                    <span>Abrir Ficha & Reservar WhatsApp</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL "SUMAR MI COMERCIO" (B2B) -->
+    <div id="join-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <div class="bg-[#141414] border border-brand-gold/40 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative">
+            <button onclick="closeJoinModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 rounded-xl bg-brand-gold/20 border border-brand-gold flex items-center justify-center mx-auto mb-3 text-brand-gold text-xl">
+                    <i class="fa-solid fa-handshake"></i>
+                </div>
+                <h3 class="font-cinzel text-xl font-bold text-white">Suma tu Comercio a Mysterik Net</h3>
+                <p class="text-xs text-gray-400 mt-1">Conecta con clientes selectos de Mendoza y atrae reservas de forma directa por WhatsApp con beneficios exclusivos.</p>
+            </div>
+
+            <div class="space-y-3.5 text-xs">
+                <div>
+                    <label class="block text-gray-300 font-semibold mb-1">Nombre del Comercio / Local</label>
+                    <input type="text" id="b2b-name" placeholder="Ej: Bar Speakeasy / Bodega X" class="w-full bg-[#0a0a0a] border border-brand-gold/30 rounded-xl px-3.5 py-2.5 text-white focus:border-brand-gold focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-gray-300 font-semibold mb-1">Zona / Ubicación</label>
+                        <input type="text" id="b2b-zone" placeholder="Ej: Arístides / Chacras" class="w-full bg-[#0a0a0a] border border-brand-gold/30 rounded-xl px-3.5 py-2.5 text-white focus:border-brand-gold focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 font-semibold mb-1">Categoría</label>
+                        <select id="b2b-cat" class="w-full bg-[#0a0a0a] border border-brand-gold/30 rounded-xl px-3.5 py-2.5 text-white focus:border-brand-gold focus:outline-none">
+                            <option value="Cocktail / Bar">Cocktail / Bar</option>
+                            <option value="Bodega / Sunset">Bodega / Sunset</option>
+                            <option value="Restaurante / Gourmet">Restaurante / Gourmet</option>
+                            <option value="Club / Boliche">Club / Boliche</option>
+                            <option value="Café / Especialidad">Café / Especialidad</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-gray-300 font-semibold mb-1">Propuesta de Beneficio Mysterik (Opcional)</label>
+                    <input type="text" id="b2b-perk" placeholder="Ej: Trago de bienvenida, 15% off, pase VIP..." class="w-full bg-[#0a0a0a] border border-brand-gold/30 rounded-xl px-3.5 py-2.5 text-white focus:border-brand-gold focus:outline-none">
+                </div>
+
+                <button onclick="submitB2B()" class="w-full mt-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:brightness-110 text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Contactar Equipo Mysterik Net</span>
                 </button>
             </div>
         </div>
     </div>
 
-
-    <!-- ==================== MODAL: VISTA RÁPIDA PRODUCTO ==================== -->
-    <div id="product-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-        <div class="bg-brand-dark border border-brand-gold/40 rounded-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto shadow-2xl relative p-6 space-y-4" onclick="event.stopPropagation()">
-            <button onclick="closeProductModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/70 text-white hover:text-brand-gold flex items-center justify-center">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
-            <div class="relative aspect-video rounded-xl overflow-hidden bg-black border border-brand-gold/20">
-                <img id="modal-product-img" src="" alt="" class="w-full h-full object-cover">
-            </div>
-
-            <div class="space-y-2">
-                <span id="modal-product-category" class="text-brand-gold text-[10px] font-semibold uppercase"></span>
-                <h3 id="modal-product-name" class="font-cinzel text-xl font-bold text-white"></h3>
-                <p id="modal-product-price" class="font-mono text-xl font-bold gold-text-gradient"></p>
-                <p id="modal-product-desc" class="text-xs text-gray-300 leading-relaxed"></p>
-            </div>
-
-            <button id="modal-add-cart-btn" class="w-full py-2.5 rounded-xl bg-gold-gradient text-black font-cinzel font-bold text-xs tracking-wider transition">
-                <i class="fa-solid fa-cart-plus mr-1.5"></i> <span id="modal-btn-add">Añadir al Carrito</span>
-            </button>
-        </div>
-    </div>
-
-
-    <!-- TOAST NOTIFICATION -->
-    <div id="toast" class="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-brand-card border border-brand-gold/60 text-white px-4 py-3 rounded-xl shadow-gold-sm translate-y-24 opacity-0 transition-all duration-300 pointer-events-none text-xs">
-        <i class="fa-solid fa-check text-brand-gold"></i>
-        <span id="toast-msg"></span>
-    </div>
-
-
-    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+    <!-- JAVASCRIPT APPLICATION CORE -->
     <script>
-        /* ==================== 1. MULTI-IDIOMA (ES, EN, PT) ==================== */
-        let currentLang = localStorage.getItem("mysterix_lang") || "es";
-        let selectedForumSection = "all";
-
-        const i18n = {
-            es: {
-                announcement: "Envíos a todo el país • Atención Personalizada por WhatsApp",
-                navCatalog: "Catálogo",
-                navForum: "Foro & Crónicas",
-                install: "Instalar",
-                heroBadge: "Artefactos de Alta Vibración & Círculo Arcano",
-                heroTitle: "Conecta con lo Místico",
-                heroSubtitle: "Talismanes consagrados, gemas auténticas y un espacio de intercambio arcano para elevar tu energía.",
-                heroBtnShop: "Ver Catálogo",
-                heroBtnForum: "Entrar al Foro",
-                catTitle: "Catálogo de Bazar",
-                searchPlaceholder: "Buscar artefacto...",
-                emptyTitle: "Sin resultados para tu búsqueda",
-                emptyBtn: "Restablecer Filtros",
-                forumBadge: "Comunidad & Conocimiento",
-                forumTitle: "Foro Arcano & Crónicas",
-                forumBtnAsk: "Hacer una Consulta",
-                readMore: "Leer artículo",
-                cartTitle: "Tu Canasta",
-                cartEmpty: "Tu carrito está vacío.",
-                cartNoteLabel: "Nombre / Notas opcionales:",
-                cartTotalLabel: "Total Estimado",
-                cartBtnCheckout: "Finalizar Pedido por WhatsApp",
-                cartBtnClear: "Vaciar Carrito",
-                modalBtnAdd: "Añadir a la Canasta",
-                toastAdded: "añadido a tu canasta.",
-                toastRemoved: "Artefacto eliminado del carrito.",
-                toastCleared: "Se vació la canasta.",
-                waHeader: "✨ *NUEVO PEDIDO - MYSTERIX STORE* ✨",
-                waDate: "🗓️ *Fecha:*",
-                waClient: "👤 *Cliente / Notas:*",
-                waDetail: "🛍️ *DETALLE DE PRODUCTOS:*",
-                waTotal: "💰 *TOTAL FINAL:*",
-                waFooter: "🔮 _Deseo coordinar el pago y envío de este pedido._",
-                askTitle: "Consulta al Círculo Arcano",
-                askDesc: "Envía tu duda o aporte ceremonial para ser respondido por los guardianes de Mysterix.",
-                askLblName: "Tu Nombre / Apodo:",
-                askLblSection: "Sección del Foro:",
-                askLblText: "Tu Consulta o Reflexión:",
-                askBtnSubmit: "Enviar Consulta por WhatsApp",
-                cats: {
-                    all: "Todos",
-                    talismans: "Talismanes",
-                    crystals: "Cristales",
-                    rituals: "Rituales"
-                },
-                forumSections: {
-                    all: "Todas las Secciones",
-                    rituals: "Rituales & Fases",
-                    gems: "Gemas & Minerales",
-                    alchemy: "Alquimia & Velas",
-                    community: "Comunidad & FAQ"
-                }
-            },
-            en: {
-                announcement: "Worldwide Shipping • Personalized WhatsApp Support",
-                navCatalog: "Catalog",
-                navForum: "Forum & Chronicles",
-                install: "Install",
-                heroBadge: "High Frequency Artifacts & Arcane Circle",
-                heroTitle: "Connect with the Arcane",
-                heroSubtitle: "Consecrated talismans, authentic crystals, and an arcane community to elevate your energy.",
-                heroBtnShop: "Explore Catalog",
-                heroBtnForum: "Enter Forum",
-                catTitle: "Bazaar Catalog",
-                searchPlaceholder: "Search artifact...",
-                emptyTitle: "No artifacts found",
-                emptyBtn: "Reset Filters",
-                forumBadge: "Community & Wisdom",
-                forumTitle: "Arcane Forum & Chronicles",
-                forumBtnAsk: "Ask a Question",
-                readMore: "Read article",
-                cartTitle: "Your Basket",
-                cartEmpty: "Your basket is currently empty.",
-                cartNoteLabel: "Name / Optional notes:",
-                cartTotalLabel: "Estimated Total",
-                cartBtnCheckout: "Complete Order via WhatsApp",
-                cartBtnClear: "Empty Basket",
-                modalBtnAdd: "Add to Basket",
-                toastAdded: "added to your basket.",
-                toastRemoved: "Item removed from basket.",
-                toastCleared: "Basket cleared.",
-                waHeader: "✨ *NEW ORDER - MYSTERIX STORE* ✨",
-                waDate: "🗓️ *Date:*",
-                waClient: "👤 *Customer / Notes:*",
-                waDetail: "🛍️ *ORDER BREAKDOWN:*",
-                waTotal: "💰 *FINAL TOTAL:*",
-                waFooter: "🔮 _I would like to arrange payment and delivery for this order._",
-                askTitle: "Ask the Arcane Circle",
-                askDesc: "Send your ceremonial question or thought to receive guidance from Mysterix guardians.",
-                askLblName: "Your Name / Nickname:",
-                askLblSection: "Forum Section:",
-                askLblText: "Your Question or Thought:",
-                askBtnSubmit: "Send Question via WhatsApp",
-                cats: {
-                    all: "All",
-                    talismans: "Talismans",
-                    crystals: "Crystals",
-                    rituals: "Rituals"
-                },
-                forumSections: {
-                    all: "All Sections",
-                    rituals: "Rituals & Moon",
-                    gems: "Gems & Minerals",
-                    alchemy: "Alchemy & Candles",
-                    community: "Community & FAQ"
-                }
-            },
-            pt: {
-                announcement: "Envios para todo o país • Atendimento Personalizado por WhatsApp",
-                navCatalog: "Catálogo",
-                navForum: "Fórum & Crônicas",
-                install: "Instalar",
-                heroBadge: "Artefatos de Alta Vibração & Círculo Arcano",
-                heroTitle: "Conecte-se com o Oculto",
-                heroSubtitle: "Talismãs consagrados, cristais autênticos e um espaço de troca para elevar sua energia.",
-                heroBtnShop: "Ver Catálogo",
-                heroBtnForum: "Entrar no Fórum",
-                catTitle: "Catálogo do Bazar",
-                searchPlaceholder: "Buscar artefato...",
-                emptyTitle: "Nenhum resultado encontrado",
-                emptyBtn: "Redefinir Filtros",
-                forumBadge: "Comunidade & Conhecimento",
-                forumTitle: "Fórum Arcano & Crônicas",
-                forumBtnAsk: "Fazer uma Consulta",
-                readMore: "Ler artigo",
-                cartTitle: "Sua Cesta",
-                cartEmpty: "Sua cesta está vazia.",
-                cartNoteLabel: "Nome / Notas opcionais:",
-                cartTotalLabel: "Total Estimado",
-                cartBtnCheckout: "Finalizar Pedido via WhatsApp",
-                cartBtnClear: "Esvaziar Cesta",
-                modalBtnAdd: "Adicionar à Cesta",
-                toastAdded: "adicionado à sua cesta.",
-                toastRemoved: "Artefato removido da cesta.",
-                toastCleared: "Cesta esvaziada.",
-                waHeader: "✨ *NOVO PEDIDO - MYSTERIX STORE* ✨",
-                waDate: "🗓️ *Data:*",
-                waClient: "👤 *Cliente / Notas:*",
-                waDetail: "🛍️ *DETALHE DOS PRODUTOS:*",
-                waTotal: "💰 *TOTAL FINAL:*",
-                waFooter: "🔮 _Desejo coordenar o pagamento e envio deste pedido._",
-                askTitle: "Consulta ao Círculo Arcano",
-                askDesc: "Envie sua dúvida cerimonial para ser respondida pelos guardiões da Mysterix.",
-                askLblName: "Seu Nome / Apelido:",
-                askLblSection: "Seção do Fórum:",
-                askLblText: "Sua Pergunta ou Reflexão:",
-                askBtnSubmit: "Enviar Pergunta por WhatsApp",
-                cats: {
-                    all: "Todos",
-                    talismans: "Talismãs",
-                    crystals: "Cristais",
-                    rituals: "Rituais"
-                },
-                forumSections: {
-                    all: "Todas as Seções",
-                    rituals: "Rituais & Fases",
-                    gems: "Gemas & Minerais",
-                    alchemy: "Alquimia & Velas",
-                    community: "Comunidade & FAQ"
-                }
-            }
-        };
-
-
-        /* ==================== 2. DATOS DE PRODUCTOS Y FORO SECCIONADO ==================== */
-        const products = [
+        /**
+         * MYSTERIK NET • MENDOZA EXPERIENCE MAP & VIP PASS
+         * Database of Affiliated Spots in Mendoza, Argentina
+         */
+        const SPOTS_DATA = [
             {
-                id: "prod-1",
-                categoryKey: "talismans",
-                precio: 18500,
-                imagen: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=700&q=80",
-                nombre: {
-                    es: "Pentagrama Áureo de Salomón",
-                    en: "Golden Solomon Pentagram",
-                    pt: "Pentagrama Áureo de Salomão"
-                },
-                descripcion: {
-                    es: "Colgante tallado con baño de oro 24k para protección astral y consagración.",
-                    en: "Hand-carved pendant with 24k gold plating for astral protection.",
-                    pt: "Pingente entalhado com banho de ouro 24k para proteção astral."
-                },
-                badge: { es: "Exclusivo", en: "Exclusive", pt: "Exclusivo" }
+                id: 'gingell-co',
+                name: 'Gingell Co. Speakeasy',
+                category: 'cocktail',
+                categoryLabel: 'Cocktail Bar & Speakeasy',
+                icon: '🍸',
+                zone: 'aristides',
+                zoneLabel: 'Arístides Villanueva, Mendoza',
+                address: 'Arístides Villanueva 241, Ciudad de Mendoza',
+                lat: -32.8942,
+                lng: -68.8558,
+                phone: '5492615551001',
+                rating: 4.9,
+                reviewsCount: 312,
+                priceRange: '$$$',
+                hours: 'Mié a Dom: 20:00 a 03:30 hs',
+                badge: '🔥 Speakeasy Destacado',
+                description: 'El speakeasy más exclusivo de la Quinta Sección. Coctelería de autor inspirada en la era de la prohibición, ambiente íntimo a la luz de las velas y una carta secreta de destilados importados.',
+                image: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['Speakeasy Oculto', 'Cocktails de Autor', 'Música Jazz & Deep House', 'Ideal Parejas'],
+                mysterikPerk: '🍸 Cocktail Signature de cortesía con la primera ronda + Acceso prioritario sin espera.',
+                specialties: ['Old Fashioned Ahumado con madera de roble', 'Penicillin Andino', 'Tapas de mollejas crocantes al torrontés']
             },
             {
-                id: "prod-2",
-                categoryKey: "rituals",
-                precio: 14200,
-                imagen: "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=700&q=80",
-                nombre: {
-                    es: "Set Alquímico de Velas de Soja",
-                    en: "Alchemical Soy Candle Set",
-                    pt: "Conjunto Alquímico de Velas de Soja"
-                },
-                descripcion: {
-                    es: "Velas aromatizadas con Copal, Mirra y láminas de oro para purificación.",
-                    en: "Scented candles with Copal, Myrrh and gold flakes for purification.",
-                    pt: "Velas aromatizadas com Copal, Mirra e folhas de ouro para purificação."
-                },
-                badge: { es: "Popular", en: "Popular", pt: "Popular" }
+                id: 'vistalba-sunset',
+                name: 'Bodega Vistalba • Sunset Lounge',
+                category: 'bodega',
+                categoryLabel: 'Bodega & Sunset Experience',
+                icon: '🍷',
+                zone: 'chacras',
+                zoneLabel: 'Vistalba, Luján de Cuyo',
+                address: 'Roque Sáenz Peña 3531, Vistalba, Luján de Cuyo',
+                lat: -33.0118,
+                lng: -68.8895,
+                phone: '5492615552002',
+                rating: 5.0,
+                reviewsCount: 520,
+                priceRange: '$$$$',
+                hours: 'Jue a Dom: 17:30 a 01:00 hs',
+                badge: '🌅 Mejor Sunset 2026',
+                description: 'Disfruta de la caída del sol sobre la majestuosa Cordillera de los Andes rodeado de viñedos centenarios. Vinos de alta gama Tomero y Vistalba, cocina a los fuegos y sets de live acoustics y DJs.',
+                image: 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['Vista a la Cordillera', 'Fogones al Atardecer', 'Live DJ Sets', 'Vinos Ícono'],
+                mysterikPerk: '🍷 Living VIP frente al viñedo + Copa de Espumante Tomero de bienvenida para todo el grupo.',
+                specialties: ['Corte Vistalba Corte A', 'Tablas de quesos artesanales y charcuterie mendocina', 'Costillar braseado al Malbec']
             },
             {
-                id: "prod-3",
-                categoryKey: "crystals",
-                precio: 28900,
-                imagen: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=700&q=80",
-                nombre: {
-                    es: "Geoda de Amatista Cristalina",
-                    en: "Crystalline Amethyst Geode",
-                    pt: "Geodo de Ametista Cristalina"
-                },
-                descripcion: {
-                    es: "Pieza natural seleccionada para transmutación energética y meditación.",
-                    en: "Hand-selected natural specimen for energetic transmutation.",
-                    pt: "Peça natural selecionada para transmutação energética e meditação."
-                },
-                badge: { es: "Auténtico", en: "Authentic", pt: "Autêntico" }
+                id: 'abrasado-toneles',
+                name: 'Abrasado • Bodega Los Toneles',
+                category: 'gourmet',
+                categoryLabel: 'Restó Gourmet & Carnes Maduradas',
+                icon: '🍽️',
+                zone: 'bodegas',
+                zoneLabel: 'Guaymallén / Gran Mendoza',
+                address: 'Av. Acceso Este 1360, Guaymallén, Mendoza',
+                lat: -32.9015,
+                lng: -68.8152,
+                phone: '5492615553003',
+                rating: 4.9,
+                reviewsCount: 680,
+                priceRange: '$$$$',
+                hours: 'Mar a Sáb: 12:30 a 15:30 / 20:30 a 00:00 hs',
+                badge: '⭐ Galardonado Michelin / Best Of',
+                description: 'Pioneros en la maduración en seco (Dry Aged) de carnes de pastura propia y aceites de oliva premiados. Una experiencia sensorial dentro de una bodega histórica declarada patrimonio cultural.',
+                image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['Alta Gastronomía', 'Carnes Dry Aged', 'Cava Histórica', 'Servicio Sommelier'],
+                mysterikPerk: '🥩 Degustación de empanadas de carne madurada 45 días + Copa de bienvenida Mosquita Muerta Wines.',
+                specialties: ['Ojo de bife Dry Aged 60 días', 'Risotto de hongos de pino y trufa', 'Volcán de dulce de leche con helado de Malbec']
             },
             {
-                id: "prod-4",
-                categoryKey: "rituals",
-                precio: 22400,
-                imagen: "https://images.unsplash.com/photo-1632516643720-e7f5d7d6ecc9?auto=format&fit=crop&w=700&q=80",
-                nombre: {
-                    es: "Tarot Arcano de Marsella Dorado",
-                    en: "Golden Marseille Arcana Tarot",
-                    pt: "Tarô Arcano de Marselha Dourado"
-                },
-                descripcion: {
-                    es: "Edición con cantos dorados y guía de interpretación simbólica.",
-                    en: "Collector edition with gilded edges and full guidebook.",
-                    pt: "Edição com bordas douradas e guia de interpretação simbólica."
-                },
-                badge: { es: "Colección", en: "Collection", pt: "Coleção" }
+                id: 'grita-silencio',
+                name: 'Grita Silencio Club',
+                category: 'nightlife',
+                categoryLabel: 'Club Nocturno & Open Air',
+                icon: '🪩',
+                zone: 'chacras',
+                zoneLabel: 'Ruta Panamericana, Chacras de Coria',
+                address: 'Ruta Panamericana 7010, Chacras de Coria',
+                lat: -33.0012,
+                lng: -68.8950,
+                phone: '5492615554004',
+                rating: 4.8,
+                reviewsCount: 940,
+                priceRange: '$$$',
+                hours: 'Viernes, Sábados y Vísperas: 23:30 a 06:00 hs',
+                badge: '⚡ Top Nightclub Mendoza',
+                description: 'El epicentro de la fiesta mendocina. Múltiples pistas, sector Open Air bajo las estrellas, sonido Funktion-One y los mejores DJs de cachengue, house y techno internacional.',
+                image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1574391884720-bbc3740c59d1?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['Sector VIP', 'Sonido High-End', 'Open Air', 'Fiesta Hasta el Amanecer'],
+                mysterikPerk: '🎟️ Acceso VIP Free Pass sin fila hasta las 02:00 hs + 15% off en servicio de botellas en mesa.',
+                specialties: ['Coctelería en jarras premium', 'Mesas Ultra VIP con vista a cabina DJ', 'Show de luces robóticas y lásers']
             },
             {
-                id: "prod-5",
-                categoryKey: "crystals",
-                precio: 21000,
-                imagen: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=700&q=80",
-                nombre: {
-                    es: "Esfera de Obsidiana Negra",
-                    en: "Black Obsidian Scrying Sphere",
-                    pt: "Esfera de Obsidiana Negra"
-                },
-                descripcion: {
-                    es: "Espejo volcánico pulido para bloqueo de energías densas y videncia.",
-                    en: "Polished volcanic glass for energetic shielding and scrying.",
-                    pt: "Espelho vulcânico polido para bloqueio de energias densas."
-                },
-                badge: { es: "Protección", en: "Protection", pt: "Proteção" }
+                id: 'chachingo-aristides',
+                name: 'Chachingo Craft Beer & Wine',
+                category: 'cocktail',
+                categoryLabel: 'Craft Beer, Vinos de Autor & Tapas',
+                icon: '🍺',
+                zone: 'aristides',
+                zoneLabel: 'Arístides Villanueva, Mendoza',
+                address: 'Arístides Villanueva 383, Ciudad de Mendoza',
+                lat: -32.8948,
+                lng: -68.8582,
+                phone: '5492615555005',
+                rating: 4.8,
+                reviewsCount: 810,
+                priceRange: '$$',
+                hours: 'Todos los días: 18:00 a 03:00 hs',
+                badge: '🌟 Creación Alejandro Vigil',
+                description: 'La mística del enólogo Alejandro Vigil en pleno corazón de calle Arístides. Una combinación única de cervezas artesanales galardonadas, vinos extremos de autor y gastronomía callejera gourmet.',
+                image: 'https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1584225064785-c62a8b43d148?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['Patio Urbano', 'Vinos de Culto', 'Cervezas Extremas', 'After Office'],
+                mysterikPerk: '🍺 2x1 en Cervezas Artesanales Chachingo durante la primera hora + Degustación de vino El Enemigo.',
+                specialties: ['Cerveza IPA Lupulada Extrema', 'Hamburguesa Chachingo con provoleta y panceta crocante', 'Vino El Enemigo Cabernet Franc']
             },
             {
-                id: "prod-6",
-                categoryKey: "talismans",
-                precio: 16800,
-                imagen: "https://images.unsplash.com/photo-1506806732259-39c2d0268443?auto=format&fit=crop&w=700&q=80",
-                nombre: {
-                    es: "Incensario Litúrgico de Latón",
-                    en: "Brass Liturgical Incense Burner",
-                    pt: "Incensário Litúrgico de Latão"
-                },
-                descripcion: {
-                    es: "Diseño colgante con cadenas reforzadas y calado para sahúmos.",
-                    en: "Hanging brass censer with reinforced chains for rituals.",
-                    pt: "Design suspenso com correntes reforçadas para defumação."
-                },
-                badge: { es: "Ceremonial", en: "Ceremonial", pt: "Cerimonial" }
-            }
-        ];
-
-        // FORO SECCIONADO: RITUALES, GEMAS, ALQUIMIA, COMUNIDAD
-        const forumPosts = [
-            {
-                id: "post-1",
-                sectionKey: "rituals",
-                fecha: "24 Ago 2026",
-                autor: "Maestra Evelyn",
-                respuestas: 14,
-                titulo: {
-                    es: "Consagración y Carga de Cuarzos en Luna Llena",
-                    en: "Consecration & Charging of Quartz on Full Moon",
-                    pt: "Consagração e Carga de Quartzos na Lua Cheia"
-                },
-                extracto: {
-                    es: "Pasos fundamentales para purificar y magnetizar tus herramientas rituales con luz cenital.",
-                    en: "Essential steps to purify and magnetize your ritual tools with zenith moonlight.",
-                    pt: "Passos essenciais para purificar e magnetizar suas ferramentas rituais com o luar."
-                },
-                contenido: {
-                    es: "<p>Durante el plenilunio, la vibración planetaria permite una recarga profunda. Coloca tus cristales sobre lino negro y vocaliza tu propósito en gratitud.</p>",
-                    en: "<p>During full moon peaks, planetary vibration allows deep recharging. Place your crystals on black linen and voice your clear intent.</p>",
-                    pt: "<p>Durante o plenilúnio, a vibração permite recarga profunda. Coloque seus cristais sobre linho escuro e vocalize seu propósito.</p>"
-                }
+                id: 'anna-bistro',
+                name: 'Anna Bistró • Secret Garden',
+                category: 'gourmet',
+                categoryLabel: 'Cocina Mediterránea & Jardín Secreto',
+                icon: '🌿',
+                zone: 'aristides',
+                zoneLabel: 'Quinta Sección, Mendoza',
+                address: 'Av. Juan B. Justo 161, Ciudad de Mendoza',
+                lat: -32.8902,
+                lng: -68.8540,
+                phone: '5492615556006',
+                rating: 4.8,
+                reviewsCount: 750,
+                priceRange: '$$$',
+                hours: 'Lunes a Domingo: 08:00 a 01:00 hs',
+                badge: '🍃 Oasis Gastronómico',
+                description: 'Un jardín escondido en plena Ciudad de Mendoza. Desayunos europeos, almuerzos al aire libre y cenas románticas con iluminación tenue y una de las cavas de vinos más ricas de la región.',
+                image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['Jardín Botánico Secreto', 'Cocina Francesa & Criolla', 'Desayunos & Cenas', 'Música Chillout'],
+                mysterikPerk: '☕ Café de especialidad y Petit Four de autor sin cargo con tu reserva de almuerzo o cena.',
+                specialties: ['Lomo al Malbec con papas rústicas', 'Crepes franceses de salmón ahumado', 'Tarte Tatin tibia con helado de vainilla']
             },
             {
-                id: "post-2",
-                sectionKey: "gems",
-                fecha: "18 Ago 2026",
-                autor: "David M.",
-                respuestas: 9,
-                titulo: {
-                    es: "El Misterio de la Obsidiana y el Escudo Áurico",
-                    en: "The Mystery of Obsidian & the Auric Shield",
-                    pt: "O Mistério da Obsidiana e o Escudo Áurico"
-                },
-                extracto: {
-                    es: "Cómo actúa este vidrio volcánico para disolver bloqueos y repeler negatividad ambiental.",
-                    en: "How this natural volcanic glass dissolves energetic density and repels negativity.",
-                    pt: "Como este vidro vulcânico dissolve bloqueios e repele energias densas."
-                },
-                contenido: {
-                    es: "<p>La obsidiana es el cortafuegos mineral por excelencia. Úsala en meditaciones de sombra y descárgala en tierra fértil.</p>",
-                    en: "<p>Obsidian is the primary psychic firewall. Use it during grounding meditation and discharge it on natural soil.</p>",
-                    pt: "<p>A obsidiana é o escudo psíquico supremo. Use-a em meditações e descarregue-a diretamente na terra.</p>"
-                }
+                id: 'riccitelli-bistro',
+                name: 'Matías Riccitelli Wines & Bistro',
+                category: 'bodega',
+                categoryLabel: 'Bodega de Vanguardia & Biodinámica',
+                icon: '🍇',
+                zone: 'chacras',
+                zoneLabel: 'Las Compuertas, Luján de Cuyo',
+                address: 'Callejón de la Reta 750, Las Compuertas',
+                lat: -33.0289,
+                lng: -68.9421,
+                phone: '5492615557007',
+                rating: 4.9,
+                reviewsCount: 410,
+                priceRange: '$$$$',
+                hours: 'Mié a Dom: 12:00 a 18:00 hs (Almuerzos & Sunsets)',
+                badge: '🎨 Innovación & Alta Gama',
+                description: 'Una de las bodegas más rupturistas e innovadoras del mundo vitivinícola. Vinos de parcelas únicas, cocina basada en huerta orgánica propia y arte contemporáneo en cada rincón.',
+                image: 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['Huerta Biodinámica', 'Vinos de Parcela', 'Cocina de Estación', 'Paisaje de Montaña'],
+                mysterikPerk: '✨ Copa de degustación de Riccitelli The Apple Doesn\'t Fall Far From The Tree + Tour express a cava.',
+                specialties: ['Menú de 6 pasos maridado', 'Trucha curada con hierbas de la huerta', 'Riccitelli Republica del Malbec']
             },
             {
-                id: "post-3",
-                sectionKey: "alchemy",
-                fecha: "10 Ago 2026",
-                autor: "Orden Mysterix",
-                respuestas: 21,
-                titulo: {
-                    es: "Ceromancia: Qué Revela la Llama y la Cera",
-                    en: "Ceromancy: Signs in the Flame & Candle Wax",
-                    pt: "Ceromancia: Sinais na Chama e na Cera"
-                },
-                extracto: {
-                    es: "Aprende a decodificar las respuestas del fuego elemental en tus intenciones.",
-                    en: "Learn to decode the subtle messages of elemental fire during ceremonies.",
-                    pt: "Aprenda a decifrar os sinais do fogo sagrado durante suas orações."
-                },
-                contenido: {
-                    es: "<p>Una llama alta y brillante confirma caminos abiertos; un chisporroteo revela limpieza activa de obstáculos.</p>",
-                    en: "<p>A bright high flame signals an open path; crackling indicates active clearing of subtle blockages.</p>",
-                    pt: "<p>Uma chama alta e brilhante confirma caminhos abertos; estalos indicam limpeza de energias densas.</p>"
-                }
+                id: 'brader-hops',
+                name: 'Brader Hops • Craft & Beer Garden',
+                category: 'cocktail',
+                categoryLabel: 'Craft Brewery & Street Food',
+                icon: '🍻',
+                zone: 'aristides',
+                zoneLabel: 'Av. Belgrano / Centro, Mendoza',
+                address: 'Belgrano 1437, Ciudad de Mendoza',
+                lat: -32.8912,
+                lng: -68.8495,
+                phone: '5492615558008',
+                rating: 4.7,
+                reviewsCount: 590,
+                priceRange: '$$',
+                hours: 'Mar a Dom: 19:00 a 03:00 hs',
+                badge: '🎸 Terraza & Rock Vibes',
+                description: 'Terraza cervecera y coctelera con espíritu rebelde. Más de 20 canillas de microcervecerías artesanales de todo el país, cócteles tirados y hamburguesas smash con pan casero.',
+                image: 'https://images.unsplash.com/photo-1538488881522-4321453a9923?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1538488881522-4321453a9923?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1584225064785-c62a8b43d148?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['Terraza al Aire Libre', 'Smash Burgers', '20+ Canillas Craft', 'Buena Música'],
+                mysterikPerk: '🍟 Papas Brader con cheddar fundido y panceta de regalo con tu mesa de 4 o más personas.',
+                specialties: ['Smash Burger Triple Bacon', 'Cerveza Neipa Tropical', 'Gin Tonic infusionado en frutos rojos de la Patagonia']
             },
             {
-                id: "post-4",
-                sectionKey: "community",
-                fecha: "04 Ago 2026",
-                autor: "Adeptos Mysterix",
-                respuestas: 32,
-                titulo: {
-                    es: "¿Cómo armonizar un espacio antes de una sesión de Tarot?",
-                    en: "How to harmonize a sacred space before a Tarot reading?",
-                    pt: "Como harmonizar um espaço antes de uma leitura de Tarô?"
-                },
-                extracto: {
-                    es: "Recomendaciones de sahúmos de Copal, campanas tibetanas y sal negra para abrir círculo.",
-                    en: "Recommended copal resins, singing bells, and black salt to open a clean reading circle.",
-                    pt: "Dicas de defumação com copal, sinos tibetanos e sal negro para abrir o círculo."
-                },
-                contenido: {
-                    es: "<p>Recomendamos encender incienso de copal en el cuadrante este y trazar un círculo mental de luz dorada antes de mezclar los arcanos.</p>",
-                    en: "<p>We recommend lighting copal resin in the eastern quadrant and visualizing a golden circle of light before shuffling cards.</p>",
-                    pt: "<p>Recomendamos acender incenso de copal no quadrante leste e traçar um círculo de luz dourada antes de ler as cartas.</p>"
-                }
+                id: 'queen-disco',
+                name: 'Queen Disco Mendoza',
+                category: 'nightlife',
+                categoryLabel: 'Discoteca, Pop & Show',
+                icon: '👑',
+                zone: 'bodegas',
+                zoneLabel: 'Dorrego, Guaymallén',
+                address: '25 de Mayo 318, Dorrego, Guaymallén',
+                lat: -32.8988,
+                lng: -68.8350,
+                phone: '5492615559009',
+                rating: 4.8,
+                reviewsCount: 780,
+                priceRange: '$$',
+                hours: 'Viernes y Sábados: 00:00 a 06:30 hs',
+                badge: '🌈 Templo Pop & Diversidad',
+                description: 'Legendaria discoteca ícono de Mendoza. Una puesta en escena impactante con drags, bailarines, pop internacional, hits retro y la fiesta más vibrante y libre del oeste argentino.',
+                image: 'https://images.unsplash.com/photo-1545128485-c400e7702796?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1545128485-c400e7702796?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['Shows en Vivo', 'Mega Pista Pop & Cachengue', 'Full Diversidad', 'Clásicos'],
+                mysterikPerk: '🍹 2x1 en barra de cócteles hasta las 02:00 hs + Ingreso express por fila Mysterik VIP.',
+                specialties: ['Shows Drag Queen de nivel internacional', 'Tragos gigantes para compartir', 'Pista electrónica sector mezzanine']
+            },
+            {
+                id: 'shelter-coffee',
+                name: 'Shelter Coffee • Specialty Roasters',
+                category: 'cafe',
+                categoryLabel: 'Café de Especialidad & Pastelería',
+                icon: '☕',
+                zone: 'aristides',
+                zoneLabel: 'Av. Belgrano, Mendoza',
+                address: 'Av. Belgrano 1184, Ciudad de Mendoza',
+                lat: -32.8925,
+                lng: -68.8505,
+                phone: '5492615551010',
+                rating: 4.9,
+                reviewsCount: 430,
+                priceRange: '$$',
+                hours: 'Lunes a Sábado: 08:30 a 20:30 hs',
+                badge: '☕ Tostaduría de Autor',
+                description: 'El templo del café de especialidad en Mendoza. Granos tostados en el lugar, métodos de filtrado Chemex, V60 y Aeropress, junto con croissants de pistacho y medialunas de manteca hojaldradas.',
+                image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['Especialidad 100% Arábica', 'Espacio Coworking & Relax', 'Pastelería Francesa'],
+                mysterikPerk: '🥐 20% OFF en combo Desayuno/Merienda Especialidad + Degustación de Cold Brew.',
+                specialties: ['Flat White con leche vaporizada sedosa', 'Croissant relleno de pistacho y chocolate blanco', 'Tostón de palta, huevo poché y semillas tostadas']
+            },
+            {
+                id: 'palmares-the-garnish',
+                name: 'The Garnish Bar • Cocktail Lounge',
+                category: 'cocktail',
+                categoryLabel: 'Coctelería Clásica & High-End',
+                icon: '🍸',
+                zone: 'palmares',
+                zoneLabel: 'Palmares Open Mall / Godoy Cruz',
+                address: 'Av. San Martín Sur 2875, Godoy Cruz, Mendoza',
+                lat: -32.9515,
+                lng: -68.8610,
+                phone: '5492615551011',
+                rating: 4.9,
+                reviewsCount: 380,
+                priceRange: '$$$',
+                hours: 'Mar a Dom: 19:30 a 02:30 hs',
+                badge: '💎 Barra Premium',
+                description: 'Alta coctelería creada por bartenders premiados internacionalmente. Más de 120 etiquetas de whiskies, rones y gins de todo el mundo acompañados de tapas gourmet y sushi fusión.',
+                image: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['High-End Bar', 'Coctelería Molecular', 'Música Soul & Nu-Disco', 'Terraza'],
+                mysterikPerk: '🍸 Shot de bienvenida de licor artesanal botánico + 10% de descuento en el total de la mesa.',
+                specialties: ['Smoked Negroni en campana de cristal', 'Rolls de salmón flambeado al pisco', 'Gin Tonic Garnish con botánicos mendocinos']
+            },
+            {
+                id: 'dantesco-chacras',
+                name: 'Dantesco • Casona & Fuegos',
+                category: 'gourmet',
+                categoryLabel: 'Asador Contemporáneo & Casona',
+                icon: '🥩',
+                zone: 'chacras',
+                zoneLabel: 'Chacras de Coria, Luján de Cuyo',
+                address: 'Italia 5829, Chacras de Coria, Mendoza',
+                lat: -32.9980,
+                lng: -68.8805,
+                phone: '5492615551012',
+                rating: 4.8,
+                reviewsCount: 460,
+                priceRange: '$$$',
+                hours: 'Mar a Dom: 12:30 a 16:00 / 20:30 a 00:30 hs',
+                badge: '🏡 Casona Tradicional',
+                description: 'Una majestuosa casona arbolada en el corazón de Chacras de Coria. Carnes a las brasas de quebracho, pastas caseras rellenas y una amplia galería para noches cálidas mendocinas.',
+                image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
+                gallery: [
+                    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80'
+                ],
+                vibes: ['Galería & Parque Arbolado', 'Fuegos & Parrilla', 'Ideal Familias & Amigos', 'Cava'],
+                mysterikPerk: '🍷 Botella de vino de cortesía por mesa en consumos superiores a $40.000.',
+                specialties: ['Bife de chorizo al quebracho con chimichurri fresco', 'Sorrentinos de calabaza asada y queso brie', 'Flan casero con dulce de leche de campo']
             }
         ];
 
-
-        /* ==================== 3. ESTADO & IDIOMA ==================== */
-        const STORAGE_KEY = "mysterix_cart_data_v1";
-        let cart = [];
-        let selectedCategoryKey = "all";
-        let searchQuery = "";
-
-        const formatMoney = (amount) => {
-            return new Intl.NumberFormat('es-AR', {
-                style: 'currency',
-                currency: 'ARS',
-                maximumFractionDigits: 0
-            }).format(amount);
+        // App State
+        let currentFilter = {
+            category: 'all',
+            zone: 'all',
+            search: '',
+            onlyFavorites: false,
+            sort: 'recommended'
         };
 
-        function setLanguage(lang) {
-            if (!i18n[lang]) return;
-            currentLang = lang;
-            localStorage.setItem("mysterix_lang", lang);
-            updateLanguageUI();
-            renderCategoryFilters();
-            renderProducts();
-            renderForumSectionTabs();
-            renderForumGrid();
-            updateCartUI();
-        }
+        let favorites = JSON.parse(localStorage.getItem('mysterik_favorites') || '[]');
+        let map = null;
+        let markersGroup = null;
+        let currentSelectedSpot = null;
+        let userLocationMarker = null;
 
-        function updateLanguageUI() {
-            const t = i18n[currentLang];
+        // Custom Reservation State
+        let bookingState = {
+            guests: 2,
+            moment: 'Hoy por la noche',
+            experienceType: 'Cena & Tragos VIP'
+        };
 
-            ['es', 'en', 'pt'].forEach(l => {
-                const btn = document.getElementById(`btn-lang-${l}`);
-                if (btn) {
-                    btn.className = (l === currentLang)
-                        ? "px-2 py-1 rounded-lg bg-brand-gold text-black font-bold shadow-sm"
-                        : "px-2 py-1 rounded-lg text-gray-400 hover:text-white transition";
-                }
+        /**
+         * Initialize Leaflet Map
+         */
+        function initMap() {
+            // Mendoza coordinates: lat: -32.8908, lng: -68.8272
+            map = L.map('mendoza-map', {
+                center: [-32.9300, -68.8650],
+                zoom: 12,
+                zoomControl: true,
+                attributionControl: false
             });
 
-            document.getElementById("txt-announcement").textContent = t.announcement;
-            document.getElementById("nav-catalog").querySelector("span").textContent = t.navCatalog;
-            document.getElementById("nav-forum").querySelector("span").textContent = t.navForum;
-            document.getElementById("txt-install").textContent = t.install;
-            document.getElementById("hero-badge").textContent = t.heroBadge;
-            document.getElementById("hero-title").textContent = t.heroTitle;
-            document.getElementById("hero-subtitle").textContent = t.heroSubtitle;
-            document.getElementById("hero-btn-shop").querySelector("span").textContent = t.heroBtnShop;
-            document.getElementById("hero-btn-forum").querySelector("span").textContent = t.heroBtnForum;
-            document.getElementById("cat-title").textContent = t.catTitle;
-            document.getElementById("search-input").placeholder = t.searchPlaceholder;
-            document.getElementById("empty-title").textContent = t.emptyTitle;
-            document.getElementById("empty-btn").textContent = t.emptyBtn;
-            document.getElementById("forum-badge").textContent = t.forumBadge;
-            document.getElementById("forum-title").textContent = t.forumTitle;
-            document.getElementById("forum-btn-ask").textContent = t.forumBtnAsk;
-            document.getElementById("cart-title").textContent = t.cartTitle;
-            document.getElementById("cart-empty-msg").textContent = t.cartEmpty;
-            document.getElementById("cart-note-label").textContent = t.cartNoteLabel;
-            document.getElementById("cart-total-label").textContent = t.cartTotalLabel;
-            document.getElementById("cart-btn-checkout").textContent = t.cartBtnCheckout;
-            document.getElementById("cart-btn-clear").textContent = t.cartBtnClear;
-            document.getElementById("modal-btn-add").textContent = t.modalBtnAdd;
+            // CartoDB Dark Matter Tiles (High contrast, dark luxury style)
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19,
+                subdomains: 'abcd'
+            }).addTo(map);
 
-            // Modal Ask texts
-            document.getElementById("ask-modal-title").textContent = t.askTitle;
-            document.getElementById("ask-modal-desc").textContent = t.askDesc;
-            document.getElementById("ask-lbl-name").textContent = t.askLblName;
-            document.getElementById("ask-lbl-section").textContent = t.askLblSection;
-            document.getElementById("ask-lbl-text").textContent = t.askLblText;
-            document.getElementById("ask-btn-submit").textContent = t.askBtnSubmit;
+            markersGroup = L.layerGroup().addTo(map);
+
+            // Render spots on map
+            renderMapMarkers();
         }
 
+        /**
+         * Create custom HTML marker icons with pulse glow
+         */
+        function createCustomMarkerIcon(spot, isHighlighted = false) {
+            const size = isHighlighted ? 46 : 38;
+            const bgClass = isHighlighted 
+                ? 'bg-gradient-to-br from-brand-gold via-amber-300 to-brand-goldDark text-black scale-110 shadow-neon-pin' 
+                : 'bg-black/90 text-brand-goldLight border border-brand-gold/70 shadow-gold-glow';
 
-        /* ==================== 4. CATÁLOGO & FILTROS ==================== */
-        function renderCategoryFilters() {
-            const container = document.getElementById("category-filters-container");
-            const t = i18n[currentLang];
-            const categories = ["all", "talismans", "crystals", "rituals"];
+            const pulseClass = isHighlighted ? 'marker-pulse-active' : '';
 
-            container.innerHTML = categories.map(catKey => {
-                const isActive = catKey === selectedCategoryKey;
-                const label = t.cats[catKey] || catKey;
-                return `
-                    <button onclick="setCategory('${catKey}')" 
-                        class="px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
-                            isActive 
-                            ? 'bg-gold-gradient text-black font-bold shadow-sm scale-[1.02]' 
-                            : 'bg-brand-surface text-gray-300 hover:text-brand-gold border border-brand-gold/20'
-                        }">
-                        ${label}
-                    </button>
+            const html = `
+                <div class="custom-map-marker ${pulseClass} ${bgClass}" style="width: ${size}px; height: ${size}px; font-size: ${size * 0.44}px; box-shadow: 0 0 15px rgba(212,175,55,0.45); border-radius: 50%;">
+                    <span>${spot.icon}</span>
+                </div>
+            `;
+
+            return L.divIcon({
+                html: html,
+                className: 'custom-leaflet-icon',
+                iconSize: [size, size],
+                iconAnchor: [size / 2, size / 2],
+                popupAnchor: [0, -size / 2]
+            });
+        }
+
+        /**
+         * Render/Update Markers on Leaflet Map
+         */
+        function renderMapMarkers() {
+            if (!map || !markersGroup) return;
+            markersGroup.clearLayers();
+
+            const filtered = getFilteredSpots();
+
+            filtered.forEach(spot => {
+                const marker = L.marker([spot.lat, spot.lng], {
+                    icon: createCustomMarkerIcon(spot)
+                });
+
+                // Custom Popup Content
+                const popupContent = `
+                    <div class="p-3 w-64 bg-[#111111] text-gray-100 rounded-2xl overflow-hidden font-sans">
+                        <div class="relative h-28 -mx-3 -mt-3 mb-2.5 overflow-hidden rounded-t-xl">
+                            <img src="${spot.image}" class="w-full h-full object-cover" alt="${spot.name}">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                            <span class="absolute bottom-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded bg-black/80 text-brand-gold border border-brand-gold/40">
+                                ${spot.icon} ${spot.categoryLabel}
+                            </span>
+                        </div>
+                        <h4 class="font-cinzel font-bold text-sm text-white leading-tight mb-1">${spot.name}</h4>
+                        <p class="text-[11px] text-brand-gold/80 mb-2 flex items-center gap-1">
+                            <i class="fa-solid fa-location-dot text-[10px]"></i> ${spot.zoneLabel}
+                        </p>
+                        <div class="p-1.5 rounded-lg bg-brand-gold/10 border border-brand-gold/25 mb-2.5 text-[10px] text-brand-goldLight font-medium">
+                            ✨ <strong>Beneficio:</strong> ${spot.mysterikPerk.substring(0, 55)}...
+                        </div>
+                        <button onclick="openDetailModal('${spot.id}')" class="w-full py-1.5 bg-gradient-to-r from-brand-gold to-brand-goldDark text-black text-xs font-bold rounded-lg hover:brightness-110 transition-all flex items-center justify-center gap-1.5 shadow-gold-sm">
+                            <span>Ver Ficha & Reservar</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
                 `;
-            }).join("");
-        }
 
-        function setCategory(catKey) {
-            selectedCategoryKey = catKey;
-            renderCategoryFilters();
-            renderProducts();
-        }
+                marker.bindPopup(popupContent, {
+                    maxWidth: 280,
+                    className: 'mysterik-leaflet-popup'
+                });
 
-        function resetFilters() {
-            selectedCategoryKey = "all";
-            searchQuery = "";
-            document.getElementById("search-input").value = "";
-            document.getElementById("clear-search-btn").classList.add("hidden");
-            renderCategoryFilters();
-            renderProducts();
-        }
+                marker.on('click', () => {
+                    highlightSpotCard(spot.id);
+                });
 
-        function renderProducts() {
-            const grid = document.getElementById("products-grid");
-            const emptyState = document.getElementById("empty-catalog");
-            const t = i18n[currentLang];
-
-            let filtered = products.filter(item => {
-                const matchesCategory = (selectedCategoryKey === "all") || (item.categoryKey === selectedCategoryKey);
-                const query = searchQuery.toLowerCase().trim();
-                const nameStr = (item.nombre[currentLang] || item.nombre.es).toLowerCase();
-                const descStr = (item.descripcion[currentLang] || item.descripcion.es).toLowerCase();
-                return matchesCategory && (!query || nameStr.includes(query) || descStr.includes(query));
+                markersGroup.addLayer(marker);
             });
+        }
+
+        /**
+         * Get filtered and sorted list of spots
+         */
+        function getFilteredSpots() {
+            let list = [...SPOTS_DATA];
+
+            // Category filter
+            if (currentFilter.category !== 'all') {
+                list = list.filter(s => s.category === currentFilter.category);
+            }
+
+            // Zone filter
+            if (currentFilter.zone !== 'all') {
+                list = list.filter(s => s.zone === currentFilter.zone);
+            }
+
+            // Search filter
+            if (currentFilter.search.trim() !== '') {
+                const q = currentFilter.search.toLowerCase();
+                list = list.filter(s => 
+                    s.name.toLowerCase().includes(q) ||
+                    s.zoneLabel.toLowerCase().includes(q) ||
+                    s.description.toLowerCase().includes(q) ||
+                    s.categoryLabel.toLowerCase().includes(q) ||
+                    s.vibes.some(v => v.toLowerCase().includes(q))
+                );
+            }
+
+            // Favorites filter
+            if (currentFilter.onlyFavorites) {
+                list = list.filter(s => favorites.includes(s.id));
+            }
+
+            // Sort
+            if (currentFilter.sort === 'rating') {
+                list.sort((a, b) => b.rating - a.rating || b.reviewsCount - a.reviewsCount);
+            } else if (currentFilter.sort === 'name') {
+                list.sort((a, b) => a.name.localeCompare(b.name));
+            }
+
+            return list;
+        }
+
+        /**
+         * Render Cards in Feed Panel
+         */
+        function renderSpotsList() {
+            const listContainer = document.getElementById('spots-list');
+            const countEl = document.getElementById('results-count');
+            const filtered = getFilteredSpots();
+
+            countEl.textContent = filtered.length;
 
             if (filtered.length === 0) {
-                grid.innerHTML = "";
-                emptyState.classList.remove("hidden");
-                return;
-            }
-
-            emptyState.classList.add("hidden");
-
-            grid.innerHTML = filtered.map(prod => {
-                const name = prod.nombre[currentLang] || prod.nombre.es;
-                const desc = prod.descripcion[currentLang] || prod.descripcion.es;
-                const badge = prod.badge[currentLang] || prod.badge.es;
-                const catName = t.cats[prod.categoryKey] || prod.categoryKey;
-
-                return `
-                    <div class="bg-brand-card rounded-2xl border border-brand-gold/25 overflow-hidden flex flex-col justify-between group hover:border-brand-gold/60 transition duration-300">
-                        <div class="relative aspect-square overflow-hidden bg-black cursor-pointer" onclick="openProductModal('${prod.id}')">
-                            <img src="${prod.imagen}" alt="${name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-90 group-hover:opacity-100">
-                            <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-brand-gold text-black text-[10px] font-bold uppercase font-cinzel shadow">
-                                ${badge}
-                            </span>
+                listContainer.innerHTML = `
+                    <div class="text-center py-12 px-4">
+                        <div class="w-16 h-16 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center mx-auto mb-3 text-2xl text-brand-gold">
+                            🔍
                         </div>
-
-                        <div class="p-4 flex flex-col flex-grow justify-between space-y-3">
-                            <div class="space-y-1">
-                                <span class="text-[10px] font-semibold text-brand-gold uppercase">${catName}</span>
-                                <h3 class="font-cinzel text-sm font-bold text-white group-hover:text-brand-goldLight transition line-clamp-1 cursor-pointer" onclick="openProductModal('${prod.id}')">
-                                    ${name}
-                                </h3>
-                                <p class="text-xs text-gray-400 line-clamp-2 leading-relaxed">
-                                    ${desc}
-                                </p>
-                            </div>
-
-                            <div class="pt-2 border-t border-brand-gold/15 flex items-center justify-between gap-2">
-                                <span class="font-mono text-base font-bold gold-text-gradient">${formatMoney(prod.precio)}</span>
-                                <button onclick="addToCart('${prod.id}')" class="px-3 py-1.5 rounded-xl bg-gold-gradient text-black font-cinzel font-bold text-xs shadow-sm hover:brightness-110 active:scale-95 transition flex items-center gap-1">
-                                    <i class="fa-solid fa-cart-plus text-[11px]"></i>
-                                    <span>+</span>
-                                </button>
-                            </div>
-                        </div>
+                        <h4 class="font-cinzel text-lg text-white font-bold mb-1">Sin resultados encontrados</h4>
+                        <p class="text-xs text-gray-400 mb-4">Prueba cambiando los filtros de zona o categoría para descubrir más spots en Mendoza.</p>
+                        <button onclick="resetFiltersAndCenter()" class="px-4 py-2 rounded-full bg-brand-gold/20 border border-brand-gold text-brand-goldLight text-xs font-bold hover:bg-brand-gold hover:text-black transition-all">
+                            Restablecer Filtros
+                        </button>
                     </div>
                 `;
-            }).join("");
-        }
-
-
-        /* ==================== 5. SECCIONADO DEL FORO MÍSTICO ==================== */
-        function renderForumSectionTabs() {
-            const container = document.getElementById("forum-sections-tabs");
-            const t = i18n[currentLang];
-            const sections = ["all", "rituals", "gems", "alchemy", "community"];
-
-            container.innerHTML = sections.map(secKey => {
-                const isActive = secKey === selectedForumSection;
-                const label = t.forumSections[secKey] || secKey;
-                const count = secKey === "all" 
-                    ? forumPosts.length 
-                    : forumPosts.filter(p => p.sectionKey === secKey).length;
-
-                return `
-                    <button onclick="setForumSection('${secKey}')" 
-                        class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
-                            isActive 
-                            ? 'bg-brand-gold/20 text-brand-goldLight border border-brand-gold font-bold' 
-                            : 'bg-brand-surface text-gray-400 hover:text-white border border-transparent'
-                        }">
-                        <span>${label}</span>
-                        <span class="text-[10px] px-1.5 py-0.2 rounded-full ${isActive ? 'bg-brand-gold text-black' : 'bg-black/50 text-gray-400'}">${count}</span>
-                    </button>
-                `;
-            }).join("");
-        }
-
-        function setForumSection(secKey) {
-            selectedForumSection = secKey;
-            renderForumSectionTabs();
-            renderForumGrid();
-        }
-
-        function renderForumGrid() {
-            const grid = document.getElementById("forum-grid");
-            const t = i18n[currentLang];
-
-            const filtered = forumPosts.filter(item => {
-                return (selectedForumSection === "all") || (item.sectionKey === selectedForumSection);
-            });
-
-            grid.innerHTML = filtered.map(post => {
-                const title = post.titulo[currentLang] || post.titulo.es;
-                const extract = post.extracto[currentLang] || post.extracto.es;
-                const sectionLabel = t.forumSections[post.sectionKey] || post.sectionKey;
-
-                return `
-                    <article class="bg-brand-card rounded-2xl border border-brand-gold/20 p-5 flex flex-col justify-between space-y-3 hover:border-brand-gold/50 transition">
-                        <div class="space-y-2">
-                            <div class="flex items-center justify-between text-[10px] text-gray-400">
-                                <span class="px-2 py-0.5 rounded bg-brand-surface text-brand-gold border border-brand-gold/20 font-bold uppercase">${sectionLabel}</span>
-                                <span>${post.fecha}</span>
-                            </div>
-                            <h3 class="font-cinzel text-sm font-bold text-white cursor-pointer hover:text-brand-goldLight" onclick="openNewsModal('${post.id}')">
-                                ${title}
-                            </h3>
-                            <p class="text-xs text-gray-400 line-clamp-2">
-                                ${extract}
-                            </p>
-                        </div>
-
-                        <div class="pt-2 border-t border-brand-gold/10 flex items-center justify-between text-xs">
-                            <button onclick="openNewsModal('${post.id}')" class="font-semibold text-brand-gold hover:text-brand-goldLight flex items-center gap-1">
-                                <span>${t.readMore}</span>
-                                <i class="fa-solid fa-arrow-right text-[9px]"></i>
-                            </button>
-                            <span class="text-[10px] text-gray-500 flex items-center gap-1">
-                                <i class="fa-regular fa-comment text-brand-gold/70"></i> ${post.respuestas}
-                            </span>
-                        </div>
-                    </article>
-                `;
-            }).join("");
-        }
-
-        function openNewsModal(postId) {
-            const post = forumPosts.find(n => n.id === postId);
-            if (!post) return;
-
-            const t = i18n[currentLang];
-            document.getElementById("modal-news-tag").textContent = t.forumSections[post.sectionKey] || post.sectionKey;
-            document.getElementById("modal-news-title").textContent = post.titulo[currentLang] || post.titulo.es;
-            document.getElementById("modal-news-date").textContent = `${post.fecha} • Por ${post.autor}`;
-            document.getElementById("modal-news-content").innerHTML = post.contenido[currentLang] || post.contenido.es;
-
-            document.getElementById("news-modal").classList.remove("hidden");
-            document.body.style.overflow = "hidden";
-        }
-
-        function closeNewsModal() {
-            document.getElementById("news-modal").classList.add("hidden");
-            document.body.style.overflow = "";
-        }
-
-        function openAskModal() {
-            document.getElementById("ask-modal").classList.remove("hidden");
-            document.body.style.overflow = "hidden";
-        }
-
-        function closeAskModal() {
-            document.getElementById("ask-modal").classList.add("hidden");
-            document.body.style.overflow = "";
-        }
-
-        function submitForumQuestion() {
-            const name = document.getElementById("ask-name").value.trim() || "Buscador Arcano";
-            const sectionVal = document.getElementById("ask-section").value;
-            const text = document.getElementById("ask-text").value.trim();
-
-            if (!text) {
-                alert("Por favor escribe tu consulta.");
                 return;
             }
 
-            const t = i18n[currentLang];
-            const sectionLabel = t.forumSections[sectionVal] || sectionVal;
-            
-            let message = `📜 *CONSULTA PARA EL FORO MYSTERIX* 📜\n`;
-            message += `👤 *De:* ${name}\n`;
-            message += `🔮 *Sección:* ${sectionLabel}\n`;
-            message += `❓ *Pregunta/Aporte:* ${text}\n`;
-
-            window.open(`https://wa.me/5492617094195?text=${encodeURIComponent(message)}`, '_blank');
-            closeAskModal();
-        }
-
-
-        /* ==================== 6. CARRITO & WHATSAPP ==================== */
-        function loadCart() {
-            try {
-                const stored = localStorage.getItem(STORAGE_KEY);
-                cart = stored ? JSON.parse(stored) : [];
-            } catch (e) {
-                cart = [];
-            }
-            updateCartUI();
-        }
-
-        function saveCart() {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
-            } catch (e) {}
-            updateCartUI();
-        }
-
-        function addToCart(productId) {
-            const prod = products.find(p => p.id === productId);
-            if (!prod) return;
-
-            const existing = cart.find(item => item.id === productId);
-            if (existing) {
-                existing.quantity += 1;
-            } else {
-                cart.push({ id: prod.id, quantity: 1 });
-            }
-
-            saveCart();
-            const name = prod.nombre[currentLang] || prod.nombre.es;
-            showToast(`${name} ${i18n[currentLang].toastAdded}`);
-        }
-
-        function updateCartItemQty(productId, delta) {
-            const index = cart.findIndex(item => item.id === productId);
-            if (index === -1) return;
-
-            cart[index].quantity += delta;
-            if (cart[index].quantity <= 0) {
-                cart.splice(index, 1);
-            }
-            saveCart();
-        }
-
-        function removeCartItem(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            saveCart();
-            showToast(i18n[currentLang].toastRemoved);
-        }
-
-        function clearCart() {
-            if (cart.length === 0) return;
-            cart = [];
-            saveCart();
-            showToast(i18n[currentLang].toastCleared);
-        }
-
-        function toggleCart(open = null) {
-            const drawer = document.getElementById("cart-drawer");
-            const overlay = document.getElementById("cart-overlay");
-            const shouldOpen = (open !== null) ? open : drawer.classList.contains("closed");
-
-            if (shouldOpen) {
-                drawer.classList.remove("closed");
-                drawer.classList.add("open");
-                overlay.classList.remove("opacity-0", "pointer-events-none");
-                overlay.classList.add("opacity-100");
-                document.body.style.overflow = "hidden";
-            } else {
-                drawer.classList.add("closed");
-                drawer.classList.remove("open");
-                overlay.classList.add("opacity-0", "pointer-events-none");
-                overlay.classList.remove("opacity-100");
-                document.body.style.overflow = "";
-            }
-        }
-
-        function updateCartUI() {
-            const container = document.getElementById("cart-items-container");
-            const emptyView = document.getElementById("cart-empty-view");
-            const footerView = document.getElementById("cart-footer");
-            const badgeCount = document.getElementById("cart-count");
-            const totalBadge = document.getElementById("cart-items-total-badge");
-            const totalEl = document.getElementById("cart-total-price");
-
-            const totalItems = cart.reduce((sum, i) => sum + i.quantity, 0);
-            badgeCount.textContent = totalItems;
-            totalBadge.textContent = `(${totalItems})`;
-
-            if (cart.length === 0) {
-                container.innerHTML = "";
-                container.classList.add("hidden");
-                emptyView.classList.remove("hidden");
-                footerView.classList.add("opacity-50", "pointer-events-none");
-                totalEl.textContent = formatMoney(0);
-                return;
-            }
-
-            container.classList.remove("hidden");
-            emptyView.classList.add("hidden");
-            footerView.classList.remove("opacity-50", "pointer-events-none");
-
-            let subtotal = 0;
-
-            container.innerHTML = cart.map(item => {
-                const prod = products.find(p => p.id === item.id);
-                if (!prod) return "";
-                
-                const itemSubtotal = prod.precio * item.quantity;
-                subtotal += itemSubtotal;
-                const name = prod.nombre[currentLang] || prod.nombre.es;
-
+            listContainer.innerHTML = filtered.map(spot => {
+                const isFav = favorites.includes(spot.id);
                 return `
-                    <div class="py-2.5 flex gap-3 items-center">
-                        <img src="${prod.imagen}" alt="${name}" class="w-12 h-12 rounded-lg object-cover border border-brand-gold/20 flex-shrink-0 bg-black">
+                    <article 
+                        id="card-${spot.id}" 
+                        class="glass-card gold-border-glow rounded-2xl p-3.5 sm:p-4 cursor-pointer transition-all duration-300 hover:scale-[1.01] hover:bg-[#181818] relative group"
+                        onclick="onSpotCardClick('${spot.id}')">
                         
-                        <div class="flex-grow min-w-0">
-                            <h4 class="font-cinzel text-xs font-bold text-white truncate">${name}</h4>
-                            <p class="text-[10px] text-gray-400 font-mono">${formatMoney(prod.precio)}</p>
-                            
-                            <div class="flex items-center gap-2 mt-1">
-                                <div class="flex items-center border border-brand-gold/30 rounded overflow-hidden bg-brand-surface text-xs">
-                                    <button onclick="updateCartItemQty('${prod.id}', -1)" class="px-1.5 py-0.5 text-gray-300 hover:text-brand-gold">-</button>
-                                    <span class="px-2 font-mono font-bold text-brand-goldLight">${item.quantity}</span>
-                                    <button onclick="updateCartItemQty('${prod.id}', 1)" class="px-1.5 py-0.5 text-gray-300 hover:text-brand-gold">+</button>
+                        <div class="flex gap-3.5">
+                            <!-- Image Thumbnail -->
+                            <div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden flex-shrink-0 bg-black/60">
+                                <img src="${spot.image}" alt="${spot.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-black/80 text-[10px] text-brand-gold font-bold backdrop-blur border border-brand-gold/30">
+                                    ${spot.icon}
+                                </span>
+                            </div>
+
+                            <!-- Info -->
+                            <div class="flex-1 min-w-0 flex flex-col justify-between">
+                                <div>
+                                    <!-- Header / Badge -->
+                                    <div class="flex items-start justify-between gap-1 mb-1">
+                                        <h3 class="font-cinzel font-bold text-sm sm:text-base text-white group-hover:text-brand-gold transition-colors truncate">
+                                            ${spot.name}
+                                        </h3>
+                                        <button 
+                                            onclick="event.stopPropagation(); toggleFavorite('${spot.id}')" 
+                                            class="p-1 text-gray-400 hover:text-rose-500 transition-colors" 
+                                            title="Guardar favorito">
+                                            <i class="${isFav ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart text-xs"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="flex items-center gap-2 text-[11px] text-gray-400 mb-1.5">
+                                        <span class="text-brand-gold/90 font-medium flex items-center gap-1">
+                                            <i class="fa-solid fa-location-dot text-[10px]"></i> ${spot.zoneLabel.split(',')[0]}
+                                        </span>
+                                        <span>•</span>
+                                        <span class="flex items-center gap-1 text-amber-400 font-bold">
+                                            <i class="fa-solid fa-star text-[10px]"></i> ${spot.rating}
+                                        </span>
+                                        <span>•</span>
+                                        <span class="text-emerald-400 font-mono text-[10px]">${spot.priceRange}</span>
+                                    </div>
+
+                                    <p class="text-xs text-gray-300 line-clamp-2 leading-relaxed mb-2">
+                                        ${spot.description}
+                                    </p>
                                 </div>
 
-                                <button onclick="removeCartItem('${prod.id}')" class="text-[10px] text-red-400/80 hover:text-red-400">
-                                    <i class="fa-solid fa-trash-can"></i>
+                                <!-- Beneficio Highlight Pill -->
+                                <div class="bg-gradient-to-r from-amber-500/15 via-brand-gold/20 to-transparent border-l-2 border-brand-gold px-2.5 py-1 rounded-r-lg text-[10px] text-brand-goldLight flex items-center justify-between gap-1">
+                                    <span class="truncate font-medium">✨ <strong>Beneficio Mysterik:</strong> ${spot.mysterikPerk}</span>
+                                    <i class="fa-brands fa-whatsapp text-emerald-400 text-xs flex-shrink-0"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                    </article>
+                `;
+            }).join('');
+        }
+
+        /**
+         * Card click behavior: Focus map & open modal
+         */
+        function onSpotCardClick(spotId) {
+            const spot = SPOTS_DATA.find(s => s.id === spotId);
+            if (!spot) return;
+
+            // Pan map smoothly
+            if (map) {
+                map.flyTo([spot.lat, spot.lng], 15, {
+                    animate: true,
+                    duration: 1.2
+                });
+            }
+
+            // Open detail modal
+            openDetailModal(spotId);
+        }
+
+        /**
+         * Highlight a card in the feed when marker is clicked
+         */
+        function highlightSpotCard(spotId) {
+            const card = document.getElementById(`card-${spotId}`);
+            if (card) {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                card.classList.add('ring-2', 'ring-brand-gold', 'bg-[#222222]');
+                setTimeout(() => {
+                    card.classList.remove('ring-2', 'ring-brand-gold', 'bg-[#222222]');
+                }, 2000);
+            }
+        }
+
+        /**
+         * Open Detail Modal with WhatsApp Booking Concierge
+         */
+        function openDetailModal(spotId) {
+            const spot = SPOTS_DATA.find(s => s.id === spotId);
+            if (!spot) return;
+
+            currentSelectedSpot = spot;
+            bookingState.guests = 2; // default
+            bookingState.moment = 'Hoy por la noche';
+            bookingState.experienceType = 'Cena & Tragos VIP';
+
+            const modal = document.getElementById('detail-modal');
+            const card = document.getElementById('detail-modal-card');
+            const container = document.getElementById('modal-content-container');
+
+            const isFav = favorites.includes(spot.id);
+
+            container.innerHTML = `
+                <!-- Gallery Carousel / Cover Image -->
+                <div class="relative h-60 sm:h-72 w-full bg-black overflow-hidden">
+                    <img id="detail-main-img" src="${spot.image}" alt="${spot.name}" class="w-full h-full object-cover transition-all duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#121212] via-black/40 to-transparent"></div>
+                    
+                    <!-- Floating Tags -->
+                    <div class="absolute top-4 left-4 flex flex-wrap gap-2">
+                        <span class="px-3 py-1 rounded-full bg-black/80 backdrop-blur border border-brand-gold/50 text-xs font-bold text-brand-gold flex items-center gap-1.5 shadow-lg">
+                            <span>${spot.icon}</span>
+                            <span>${spot.categoryLabel}</span>
+                        </span>
+                        <span class="px-3 py-1 rounded-full bg-black/80 backdrop-blur border border-white/20 text-xs font-semibold text-white">
+                            ${spot.zoneLabel.split(',')[0]}
+                        </span>
+                    </div>
+
+                    <!-- Title & Rating Overlay -->
+                    <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+                        <div>
+                            <h2 class="font-cinzel text-xl sm:text-3xl font-bold text-white leading-tight drop-shadow-md">
+                                ${spot.name}
+                            </h2>
+                            <p class="text-xs sm:text-sm text-brand-goldLight flex items-center gap-2 mt-1">
+                                <i class="fa-solid fa-location-dot text-brand-gold"></i>
+                                <span>${spot.address}</span>
+                            </p>
+                        </div>
+                        <div class="bg-black/80 backdrop-blur px-3 py-1.5 rounded-xl border border-brand-gold/40 text-center flex-shrink-0">
+                            <div class="text-amber-400 font-bold text-sm sm:text-base flex items-center gap-1">
+                                <i class="fa-solid fa-star"></i> ${spot.rating}
+                            </div>
+                            <div class="text-[9px] text-gray-400">${spot.reviewsCount} opiniones</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery Thumbnails (if multiple) -->
+                ${spot.gallery && spot.gallery.length > 1 ? `
+                    <div class="flex gap-2 px-6 pt-3 overflow-x-auto no-scrollbar">
+                        ${spot.gallery.map((img, i) => `
+                            <button onclick="document.getElementById('detail-main-img').src='${img}'" class="w-16 h-12 rounded-lg overflow-hidden border border-brand-gold/30 hover:border-brand-gold flex-shrink-0 transition-all">
+                                <img src="${img}" class="w-full h-full object-cover">
+                            </button>
+                        `).join('')}
+                    </div>
+                ` : ''}
+
+                <!-- Content Info -->
+                <div class="p-6 space-y-6">
+                    
+                    <!-- BENEFICIO EXCLUSIVO MYSTERIK NET -->
+                    <div class="bg-gradient-to-r from-brand-gold/20 via-amber-950/40 to-brand-gold/10 border-2 border-brand-gold rounded-2xl p-4 shadow-gold-glow relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-brand-gold/20 rounded-full blur-2xl"></div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-gold to-brand-goldDark text-black flex items-center justify-center text-lg font-bold flex-shrink-0 shadow-md">
+                                💎
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-mono font-bold tracking-widest uppercase text-brand-gold px-2 py-0.5 rounded bg-black/60 border border-brand-gold/30">
+                                    Beneficio Exclusivo Mysterik Net
+                                </span>
+                                <p class="text-sm sm:text-base font-bold text-white mt-1 leading-snug">
+                                    ${spot.mysterikPerk}
+                                </p>
+                                <p class="text-[11px] text-brand-goldLight/80 mt-1">
+                                    Válido al enviar tu consulta o reserva mediante el botón de WhatsApp debajo.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description & Hours -->
+                    <div>
+                        <h4 class="font-cinzel font-bold text-sm text-brand-gold uppercase tracking-wider mb-2">Sobre este Comercio</h4>
+                        <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                            ${spot.description}
+                        </p>
+                        <div class="mt-3 flex flex-wrap gap-4 text-xs text-gray-400">
+                            <span class="flex items-center gap-1.5"><i class="fa-regular fa-clock text-brand-gold"></i> ${spot.hours}</span>
+                            <span class="flex items-center gap-1.5"><i class="fa-solid fa-wallet text-brand-gold"></i> Rango: <strong class="text-emerald-400 font-mono">${spot.priceRange}</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Atmosphere / Vibes Tags -->
+                    <div>
+                        <h4 class="font-cinzel font-bold text-xs text-brand-gold uppercase tracking-wider mb-2">Atmósfera & Estilo</h4>
+                        <div class="flex flex-wrap gap-2">
+                            ${spot.vibes.map(vibe => `
+                                <span class="px-3 py-1 rounded-full bg-[#1e1e1e] border border-brand-gold/20 text-xs text-gray-200">
+                                    ✨ ${vibe}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Especialidades Recomendadas -->
+                    ${spot.specialties ? `
+                        <div>
+                            <h4 class="font-cinzel font-bold text-xs text-brand-gold uppercase tracking-wider mb-2">Especialidades de la Casa</h4>
+                            <ul class="space-y-1.5 text-xs text-gray-300">
+                                ${spot.specialties.map(spec => `
+                                    <li class="flex items-center gap-2">
+                                        <i class="fa-solid fa-check text-brand-gold text-[10px]"></i>
+                                        <span>${spec}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+
+                    <div class="border-t border-brand-gold/20 pt-6"></div>
+
+                    <!-- WHATSAPP CONCIERGE BOOKING GENERATOR -->
+                    <div class="bg-[#0e0e0e] border border-brand-gold/40 rounded-2xl p-5 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="font-cinzel font-bold text-base text-white flex items-center gap-2">
+                                    <i class="fa-brands fa-whatsapp text-emerald-400 text-lg"></i>
+                                    <span>Asistente de Reserva Mysterik</span>
+                                </h3>
+                                <p class="text-[11px] text-gray-400">Personaliza tu salida y genera el mensaje con beneficio activado.</p>
+                            </div>
+                        </div>
+
+                        <!-- Selector Personas -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1.5">¿Cuántas personas son?</label>
+                                <div class="flex items-center bg-[#181818] border border-brand-gold/30 rounded-xl p-1 justify-between">
+                                    <button onclick="updateGuests(-1)" class="w-9 h-9 rounded-lg bg-[#252525] hover:bg-brand-gold hover:text-black text-brand-gold font-bold text-sm transition-all flex items-center justify-center">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                    <div class="text-center">
+                                        <span id="booking-guests-count" class="font-bold text-sm text-white font-mono">2</span>
+                                        <span class="text-[10px] text-gray-400 block -mt-1">personas</span>
+                                    </div>
+                                    <button onclick="updateGuests(1)" class="w-9 h-9 rounded-lg bg-[#252525] hover:bg-brand-gold hover:text-black text-brand-gold font-bold text-sm transition-all flex items-center justify-center">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Selector Momento / Fecha -->
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1.5">¿Cuándo planeas ir?</label>
+                                <select id="booking-moment" onchange="bookingState.moment = this.value; updateWhatsAppPreview();" class="w-full h-11 bg-[#181818] border border-brand-gold/30 rounded-xl px-3 text-xs text-white focus:outline-none focus:border-brand-gold font-medium cursor-pointer">
+                                    <option value="Hoy por la noche">🌙 Hoy por la noche</option>
+                                    <option value="Mañana por la tarde/noche">✨ Mañana por la noche</option>
+                                    <option value="Este fin de semana">🎉 Este fin de semana</option>
+                                    <option value="Almuerzo / Sunset">🌅 Almuerzo / Sunset</option>
+                                    <option value="Consultar disponibilidad general">📅 Consultar fecha puntual</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Selector Tipo de Experiencia -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1.5">Tipo de Experiencia</label>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                <button onclick="setExperienceType('Cena & Tragos VIP', this)" class="exp-type-btn active-exp px-2.5 py-2 rounded-xl border border-brand-gold bg-brand-gold/20 text-brand-goldLight text-[11px] font-bold text-center transition-all">
+                                    🍽️ Cena & Tragos
+                                </button>
+                                <button onclick="setExperienceType('Sunset & Vinos', this)" class="exp-type-btn px-2.5 py-2 rounded-xl border border-gray-800 bg-[#161616] text-gray-300 hover:text-white hover:border-brand-gold/40 text-[11px] font-medium text-center transition-all">
+                                    🌅 Sunset / Vinos
+                                </button>
+                                <button onclick="setExperienceType('Mesa Boliche / Fiesta', this)" class="exp-type-btn px-2.5 py-2 rounded-xl border border-gray-800 bg-[#161616] text-gray-300 hover:text-white hover:border-brand-gold/40 text-[11px] font-medium text-center transition-all">
+                                    🪩 Mesa VIP / Fiesta
                                 </button>
                             </div>
                         </div>
 
-                        <div class="text-right flex-shrink-0">
-                            <span class="font-mono text-xs font-bold text-brand-goldLight">${formatMoney(itemSubtotal)}</span>
+                        <!-- Preview del Mensaje -->
+                        <div class="bg-black/70 border border-brand-gold/20 rounded-xl p-3 text-[11px] text-gray-300 font-mono">
+                            <span class="text-[9px] uppercase tracking-widest text-brand-gold/70 block mb-1 font-sans">Vista previa del mensaje WhatsApp:</span>
+                            <p id="whatsapp-message-preview" class="italic text-gray-400 whitespace-pre-line"></p>
                         </div>
+
+                        <!-- CTA WHATSAPP BUTTON -->
+                        <div class="pt-2">
+                            <button 
+                                onclick="sendWhatsAppBooking()" 
+                                class="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-700 hover:brightness-110 active:scale-[0.99] text-white font-extrabold text-sm tracking-wide shadow-xl flex items-center justify-center gap-2.5 transition-all">
+                                <i class="fa-brands fa-whatsapp text-xl"></i>
+                                <span>Contactar por WhatsApp con Beneficio Mysterik Net</span>
+                            </button>
+                        </div>
+
+                        <!-- Google Maps Navigation Button -->
+                        <div class="text-center pt-1">
+                            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot.name + ' ' + spot.address)}" target="_blank" rel="noopener noreferrer" class="text-xs text-brand-gold/80 hover:text-brand-gold hover:underline inline-flex items-center gap-1.5">
+                                <i class="fa-solid fa-location-arrow"></i>
+                                <span>Abrir ubicación exacta en Google Maps</span>
+                            </a>
+                        </div>
+
                     </div>
-                `;
-            }).join("");
 
-            totalEl.textContent = formatMoney(subtotal);
+                </div>
+            `;
+
+            updateWhatsAppPreview();
+
+            // Show Modal with Animation
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                card.classList.remove('scale-95');
+            }, 10);
         }
 
-        function checkoutWhatsApp() {
-            if (cart.length === 0) return;
+        /**
+         * Update Guests Count in Booking Widget
+         */
+        function updateGuests(delta) {
+            let next = bookingState.guests + delta;
+            if (next < 1) next = 1;
+            if (next > 30) next = 30;
+            bookingState.guests = next;
+            const el = document.getElementById('booking-guests-count');
+            if (el) el.textContent = next;
+            updateWhatsAppPreview();
+        }
 
-            const t = i18n[currentLang];
-            const phoneNumber = "5492617094195";
-            const note = document.getElementById("cart-note").value.trim();
-            const now = new Date();
-            const localeCode = currentLang === 'en' ? 'en-US' : (currentLang === 'pt' ? 'pt-BR' : 'es-AR');
-            const fechaStr = now.toLocaleDateString(localeCode, { 
-                year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' 
+        /**
+         * Update Experience Type
+         */
+        function setExperienceType(type, btn) {
+            bookingState.experienceType = type;
+            document.querySelectorAll('.exp-type-btn').forEach(b => {
+                b.className = 'exp-type-btn px-2.5 py-2 rounded-xl border border-gray-800 bg-[#161616] text-gray-300 hover:text-white hover:border-brand-gold/40 text-[11px] font-medium text-center transition-all';
             });
+            btn.className = 'exp-type-btn active-exp px-2.5 py-2 rounded-xl border border-brand-gold bg-brand-gold/20 text-brand-goldLight text-[11px] font-bold text-center transition-all';
+            updateWhatsAppPreview();
+        }
 
-            let total = 0;
-            let message = `${t.waHeader}\n`;
-            message += `${t.waDate} ${fechaStr}\n`;
-            if (note) message += `${t.waClient} ${note}\n`;
-            message += `━━━━━━━━━━━━━━━━━━━━━\n`;
-            message += `${t.waDetail}\n\n`;
+        /**
+         * Generate the formatted WhatsApp Message
+         */
+        function generateWhatsAppMessage() {
+            if (!currentSelectedSpot) return '';
+            const spot = currentSelectedSpot;
+            const text = 
+`¡Hola ${spot.name}! 👋
+Me comunico de parte de ✨ *Mysterik Net* ✨ para coordinar una experiencia especial.
 
-            cart.forEach((item, idx) => {
-                const prod = products.find(p => p.id === item.id);
-                if (prod) {
-                    const sub = prod.precio * item.quantity;
-                    total += sub;
-                    const name = prod.nombre[currentLang] || prod.nombre.es;
-                    message += `${idx + 1}. *${name}*\n`;
-                    message += `   • Cant/Qty: ${item.quantity} | Subtotal: $${sub.toLocaleString('es-AR')}\n\n`;
+📍 *Lugar:* ${spot.name} (${spot.zoneLabel.split(',')[0]})
+👥 *Número de Personas:* ${bookingState.guests} ${bookingState.guests === 1 ? 'persona' : 'personas'}
+📅 *Momento estimado:* ${bookingState.moment}
+🍸 *Plan:* ${bookingState.experienceType}
+💎 *Beneficio Mysterik Activo:* ${spot.mysterikPerk}
+
+¿Tienen disponibilidad y nos podrían confirmar la reserva/beneficio? ¡Muchas gracias!`;
+
+            return text;
+        }
+
+        /**
+         * Update Live WhatsApp Message Preview
+         */
+        function updateWhatsAppPreview() {
+            const previewEl = document.getElementById('whatsapp-message-preview');
+            if (previewEl) {
+                previewEl.textContent = generateWhatsAppMessage();
+            }
+        }
+
+        /**
+         * Send WhatsApp Booking
+         */
+        function sendWhatsAppBooking() {
+            if (!currentSelectedSpot) return;
+            const message = generateWhatsAppMessage();
+            const phone = currentSelectedSpot.phone || '5492617094195';
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        /**
+         * Close Detail Modal
+         */
+        function closeDetailModal() {
+            const modal = document.getElementById('detail-modal');
+            const card = document.getElementById('detail-modal-card');
+            modal.classList.add('opacity-0');
+            card.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                currentSelectedSpot = null;
+            }, 300);
+        }
+
+        /**
+         * Filter Handlers
+         */
+        function setCategory(cat) {
+            currentFilter.category = cat;
+            document.querySelectorAll('.category-chip').forEach(c => {
+                if (c.dataset.cat === cat) {
+                    c.className = 'category-chip px-3 py-1.5 rounded-full border border-brand-gold/40 bg-brand-gold/20 text-brand-goldLight font-bold whitespace-nowrap flex items-center gap-1.5 active-chip shadow-gold-sm';
+                } else {
+                    c.className = 'category-chip px-3 py-1.5 rounded-full border border-gray-800 bg-[#141414] text-gray-300 hover:text-white hover:border-brand-gold/40 whitespace-nowrap flex items-center gap-1.5';
                 }
             });
-
-            message += `━━━━━━━━━━━━━━━━━━━━━\n`;
-            message += `${t.waTotal} $${total.toLocaleString('es-AR')}\n`;
-            message += `━━━━━━━━━━━━━━━━━━━━━\n`;
-            message += `${t.waFooter}`;
-
-            window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+            renderSpotsList();
+            renderMapMarkers();
         }
 
+        function setZone(zone) {
+            currentFilter.zone = zone;
+            renderSpotsList();
+            renderMapMarkers();
 
-        /* ==================== 7. VISTA RÁPIDA PRODUCTO ==================== */
-        function openProductModal(productId) {
-            const prod = products.find(p => p.id === productId);
-            if (!prod) return;
+            // Auto-pan map to zone center
+            if (map) {
+                const zoneCoordinates = {
+                    'all': [-32.9300, -68.8650, 12],
+                    'aristides': [-32.8942, -68.8558, 15],
+                    'chacras': [-33.0050, -68.8870, 14],
+                    'bodegas': [-32.9300, -68.8200, 13],
+                    'palmares': [-32.9515, -68.8610, 15],
+                    'uco': [-33.5500, -69.1000, 11]
+                };
+                const coords = zoneCoordinates[zone] || zoneCoordinates['all'];
+                map.flyTo([coords[0], coords[1]], coords[2], { duration: 1.2 });
+            }
+        }
 
-            const t = i18n[currentLang];
-            document.getElementById("modal-product-img").src = prod.imagen;
-            document.getElementById("modal-product-category").textContent = t.cats[prod.categoryKey] || prod.categoryKey;
-            document.getElementById("modal-product-name").textContent = prod.nombre[currentLang] || prod.nombre.es;
-            document.getElementById("modal-product-price").textContent = formatMoney(prod.precio);
-            document.getElementById("modal-product-desc").textContent = prod.descripcion[currentLang] || prod.descripcion.es;
+        function handleSearch(val) {
+            currentFilter.search = val;
+            const clearBtn = document.getElementById('clear-search-btn');
+            if (clearBtn) {
+                if (val) clearBtn.classList.remove('hidden');
+                else clearBtn.classList.add('hidden');
+            }
+            renderSpotsList();
+            renderMapMarkers();
+        }
 
-            const btn = document.getElementById("modal-add-cart-btn");
-            btn.onclick = () => {
-                addToCart(prod.id);
-                closeProductModal();
-                toggleCart(true);
+        function clearSearch() {
+            const input = document.getElementById('search-input');
+            const inputM = document.getElementById('search-input-mobile');
+            if (input) input.value = '';
+            if (inputM) inputM.value = '';
+            handleSearch('');
+        }
+
+        function handleSort(val) {
+            currentFilter.sort = val;
+            renderSpotsList();
+        }
+
+        function toggleFavoritesFilter() {
+            currentFilter.onlyFavorites = !currentFilter.onlyFavorites;
+            const btn = document.getElementById('btn-favorites-filter');
+            if (currentFilter.onlyFavorites) {
+                btn.classList.add('bg-rose-950/40', 'border-rose-500', 'text-rose-400');
+            } else {
+                btn.classList.remove('bg-rose-950/40', 'border-rose-500', 'text-rose-400');
+            }
+            renderSpotsList();
+            renderMapMarkers();
+        }
+
+        function toggleFavorite(spotId) {
+            if (favorites.includes(spotId)) {
+                favorites = favorites.filter(id => id !== spotId);
+            } else {
+                favorites.push(spotId);
+            }
+            localStorage.setItem('mysterik_favorites', JSON.stringify(favorites));
+            updateFavCount();
+            renderSpotsList();
+        }
+
+        function updateFavCount() {
+            const badge = document.getElementById('fav-count-badge');
+            if (badge) badge.textContent = favorites.length;
+        }
+
+        function resetFiltersAndCenter() {
+            currentFilter = {
+                category: 'all',
+                zone: 'all',
+                search: '',
+                onlyFavorites: false,
+                sort: 'recommended'
             };
-
-            document.getElementById("product-modal").classList.remove("hidden");
-            document.body.style.overflow = "hidden";
+            const zoneSelect = document.getElementById('zone-select');
+            if (zoneSelect) zoneSelect.value = 'all';
+            clearSearch();
+            setCategory('all');
+            recenterMap();
         }
 
-        function closeProductModal() {
-            document.getElementById("product-modal").classList.add("hidden");
-            document.body.style.overflow = "";
+        function recenterMap() {
+            if (map) {
+                map.flyTo([-32.9300, -68.8650], 12, { duration: 1.0 });
+            }
         }
 
+        /**
+         * View Mode Switcher: Split / Map Only / Cards Only
+         */
+        function setViewMode(mode) {
+            const feedPanel = document.getElementById('feed-panel');
+            const mapPanel = document.getElementById('map-panel');
+            const btnSplit = document.getElementById('view-split-btn');
+            const btnMap = document.getElementById('view-map-btn');
+            const btnCards = document.getElementById('view-cards-btn');
 
-        /* ==================== 8. TOAST & LISTENERS ==================== */
-        let toastTimer = null;
-        function showToast(message) {
-            const toast = document.getElementById("toast");
-            document.getElementById("toast-msg").textContent = message;
-
-            toast.classList.remove("translate-y-24", "opacity-0", "pointer-events-none");
-            toast.classList.add("translate-y-0", "opacity-100");
-
-            if (toastTimer) clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => {
-                toast.classList.remove("translate-y-0", "opacity-100");
-                toast.classList.add("translate-y-24", "opacity-0", "pointer-events-none");
-            }, 2500);
-        }
-
-        function setupEventListeners() {
-            document.getElementById("cart-toggle-btn").addEventListener("click", () => toggleCart(true));
-
-            const searchInput = document.getElementById("search-input");
-            const clearBtn = document.getElementById("clear-search-btn");
-
-            searchInput.addEventListener("input", (e) => {
-                searchQuery = e.target.value;
-                clearBtn.classList.toggle("hidden", !searchQuery);
-                renderProducts();
+            [btnSplit, btnMap, btnCards].forEach(b => {
+                b.className = 'p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium text-gray-400 hover:text-white transition-all flex items-center gap-1';
             });
 
-            clearBtn.addEventListener("click", () => {
-                searchInput.value = "";
-                searchQuery = "";
-                clearBtn.classList.add("hidden");
-                renderProducts();
-            });
-
-            document.getElementById("news-modal").addEventListener("click", closeNewsModal);
-            document.getElementById("ask-modal").addEventListener("click", closeAskModal);
-            document.getElementById("product-modal").addEventListener("click", closeProductModal);
-
-            window.addEventListener("keydown", (e) => {
-                if (e.key === "Escape") {
-                    toggleCart(false);
-                    closeNewsModal();
-                    closeAskModal();
-                    closeProductModal();
-                }
-            });
-        }
-
-
-        /* ==================== 9. PWA SERVICE WORKER ==================== */
-        function initPWA() {
-            const manifestObject = {
-                name: "Mysterix • Bazar & Foro Místico",
-                short_name: "Mysterix",
-                start_url: "./index.html",
-                display: "standalone",
-                background_color: "#050505",
-                theme_color: "#050505",
-                icons: [
-                    { src: "logomysterik.png", sizes: "192x192", type: "image/png" },
-                    { src: "logomysterik.png", sizes: "512x512", type: "image/png" }
-                ]
-            };
-
-            const manifestBlob = new Blob([JSON.stringify(manifestObject)], { type: 'application/manifest+json' });
-            const manifestLink = document.createElement('link');
-            manifestLink.rel = 'manifest';
-            manifestLink.href = URL.createObjectURL(manifestBlob);
-            document.head.appendChild(manifestLink);
-
-            if ('serviceWorker' in navigator) {
-                const swCode = `
-                    const CACHE_NAME = 'mysterix-v3';
-                    self.addEventListener('install', (e) => self.skipWaiting());
-                    self.addEventListener('activate', (e) => self.clients.claim());
-                    self.addEventListener('fetch', (e) => {
-                        if (e.request.method !== 'GET') return;
-                        e.respondWith(caches.match(e.request).then(cached => cached || fetch(e.request).catch(() => caches.match('./index.html'))));
-                    });
-                `;
-                try {
-                    const swBlob = new Blob([swCode], { type: 'application/javascript' });
-                    navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
-                } catch(e) {}
+            if (mode === 'split') {
+                feedPanel.classList.remove('hidden', 'w-full', 'h-full');
+                feedPanel.classList.add('w-full', 'lg:w-[480px]', 'xl:w-[540px]', 'h-1/2', 'lg:h-full');
+                mapPanel.classList.remove('hidden');
+                btnSplit.className = 'p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium transition-all nav-tab-active flex items-center gap-1';
+            } else if (mode === 'map') {
+                feedPanel.classList.add('hidden');
+                mapPanel.classList.remove('hidden');
+                btnMap.className = 'p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium transition-all nav-tab-active flex items-center gap-1';
+            } else if (mode === 'cards') {
+                mapPanel.classList.add('hidden');
+                feedPanel.classList.remove('hidden', 'lg:w-[480px]', 'xl:w-[540px]', 'h-1/2');
+                feedPanel.classList.add('w-full', 'h-full');
+                btnCards.className = 'p-1.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-medium transition-all nav-tab-active flex items-center gap-1';
             }
 
-            let deferredPrompt;
-            const installBtn = document.getElementById('pwa-install-btn');
-
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
-                installBtn.classList.remove('hidden');
-                installBtn.classList.add('flex');
-            });
-
-            installBtn.addEventListener('click', async () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    deferredPrompt = null;
-                    installBtn.classList.add('hidden');
-                }
-            });
+            setTimeout(() => {
+                if (map) map.invalidateSize();
+            }, 300);
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            loadCart();
-            updateLanguageUI();
-            renderCategoryFilters();
-            renderProducts();
-            renderForumSectionTabs();
-            renderForumGrid();
-            setupEventListeners();
-            initPWA();
-            document.getElementById('current-year').textContent = new Date().getFullYear();
+        /**
+         * User Geolocation in Mendoza
+         */
+        function locateUser() {
+            if (!navigator.geolocation) {
+                alert('La geolocalización no está soportada por tu navegador.');
+                return;
+            }
+
+            const btn = document.getElementById('btn-geolocate');
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-brand-gold"></i> <span class="hidden lg:inline">Buscando...</span>`;
+
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const { latitude, longitude } = pos.coords;
+                    btn.innerHTML = `<i class="fa-solid fa-location-dot text-emerald-400"></i> <span class="hidden lg:inline text-emerald-400">Ubicado</span>`;
+
+                    if (map) {
+                        if (userLocationMarker) map.removeLayer(userLocationMarker);
+
+                        const userIcon = L.divIcon({
+                            html: `<div class="w-5 h-5 rounded-full bg-blue-500 border-2 border-white shadow-lg animate-ping"></div><div class="w-5 h-5 rounded-full bg-blue-600 border-2 border-white shadow-lg -mt-5"></div>`,
+                            className: 'user-loc-icon',
+                            iconSize: [20, 20]
+                        });
+
+                        userLocationMarker = L.marker([latitude, longitude], { icon: userIcon }).addTo(map);
+                        userLocationMarker.bindPopup('📍 Tu ubicación actual').openPopup();
+
+                        map.flyTo([latitude, longitude], 14, { duration: 1.2 });
+                    }
+                },
+                (err) => {
+                    // Fallback to Arístides center if user is outside or refuses GPS
+                    btn.innerHTML = `<i class="fa-solid fa-location-crosshairs text-brand-gold"></i> <span class="hidden lg:inline">Cerca de mí</span>`;
+                    alert('No pudimos acceder a tu GPS. Te centramos en Calle Arístides, Mendoza.');
+                    if (map) map.flyTo([-32.8942, -68.8558], 15, { duration: 1.0 });
+                },
+                { timeout: 8000 }
+            );
+        }
+
+        /**
+         * ROULETTE / ORACULO GAMIFICATION LOGIC
+         */
+        let rouletteWinner = null;
+        let isSpinning = false;
+
+        function openRouletteModal() {
+            const modal = document.getElementById('roulette-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeRouletteModal() {
+            const modal = document.getElementById('roulette-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        function spinRoulette() {
+            if (isSpinning) return;
+            isSpinning = true;
+
+            const spinnerIcon = document.getElementById('roulette-spinner-icon');
+            const titleEl = document.getElementById('roulette-result-title');
+            const subEl = document.getElementById('roulette-result-subtitle');
+            const benefitEl = document.getElementById('roulette-result-benefit');
+            const viewBtn = document.getElementById('btn-view-roulette-spot');
+            const spinBtn = document.getElementById('btn-spin-roulette');
+
+            spinBtn.disabled = true;
+            spinBtn.classList.add('opacity-60');
+            viewBtn.classList.add('hidden');
+            benefitEl.classList.add('hidden');
+
+            spinnerIcon.classList.add('roulette-spinning');
+            titleEl.textContent = 'Consultando los astros de Mendoza...';
+
+            let count = 0;
+            const interval = setInterval(() => {
+                const randomSpot = SPOTS_DATA[Math.floor(Math.random() * SPOTS_DATA.length)];
+                spinnerIcon.textContent = randomSpot.icon;
+                titleEl.textContent = randomSpot.name;
+                subEl.textContent = randomSpot.zoneLabel;
+                count++;
+
+                if (count > 18) {
+                    clearInterval(interval);
+                    spinnerIcon.classList.remove('roulette-spinning');
+                    
+                    // Final Pick
+                    rouletteWinner = SPOTS_DATA[Math.floor(Math.random() * SPOTS_DATA.length)];
+                    spinnerIcon.textContent = rouletteWinner.icon;
+                    titleEl.textContent = `✨ ${rouletteWinner.name} ✨`;
+                    subEl.textContent = `📍 ${rouletteWinner.zoneLabel} • Rating: ⭐ ${rouletteWinner.rating}`;
+                    
+                    benefitEl.textContent = `💎 Desbloqueado: ${rouletteWinner.mysterikPerk}`;
+                    benefitEl.classList.remove('hidden');
+
+                    viewBtn.classList.remove('hidden');
+                    spinBtn.disabled = false;
+                    spinBtn.classList.remove('opacity-60');
+                    spinBtn.textContent = '🔄 Girar de Nuevo';
+                    isSpinning = false;
+                }
+            }, 100);
+        }
+
+        function viewRouletteWinner() {
+            if (!rouletteWinner) return;
+            closeRouletteModal();
+            setTimeout(() => {
+                onSpotCardClick(rouletteWinner.id);
+            }, 350);
+        }
+
+        /**
+         * B2B Sumar Comercio Logic
+         */
+        function openJoinModal() {
+            const modal = document.getElementById('join-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeJoinModal() {
+            const modal = document.getElementById('join-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        function submitB2B() {
+            const name = document.getElementById('b2b-name').value || 'Comercio Mendoza';
+            const zone = document.getElementById('b2b-zone').value || 'Mendoza';
+            const cat = document.getElementById('b2b-cat').value;
+            const perk = document.getElementById('b2b-perk').value || 'Beneficio especial a definir';
+
+            const msg = `¡Hola Mysterik Net! 👋 Quiero sumar mi comercio a la red de Mendoza:
+🏛️ *Nombre:* ${name}
+📍 *Zona:* ${zone}
+🏷️ *Categoría:* ${cat}
+💎 *Propuesta de Beneficio Mysterik:* ${perk}`;
+
+            window.open(`https://wa.me/5492617094195?text=${encodeURIComponent(msg)}`, '_blank');
+            closeJoinModal();
+        }
+
+        // Close modal when clicking backdrop
+        window.addEventListener('click', (e) => {
+            const detailModal = document.getElementById('detail-modal');
+            const rouletteModal = document.getElementById('roulette-modal');
+            const joinModal = document.getElementById('join-modal');
+
+            if (e.target === detailModal) closeDetailModal();
+            if (e.target === rouletteModal) closeRouletteModal();
+            if (e.target === joinModal) closeJoinModal();
+        });
+
+        // Initialize on DOM load
+        document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+            renderSpotsList();
+            updateFavCount();
         });
     </script>
-
 </body>
 </html>
