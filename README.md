@@ -1,32 +1,27 @@
-# ✨ Mysterik Net • Mendoza Experience Map
+# ✨ Mysterik Net • Mendoza Hotspots & Fiestas
 
-Plataforma interactiva para descubrir los mejores bares speakeasy, bodegas, restaurantes gourmet y clubes de **Mendoza, Argentina**, con mapa regional detallado, botón directo a Google Maps, soporte multilingüe y asistente de contacto para experiencias especiales por WhatsApp de parte de **Mysterik Net**.
+Plataforma exclusiva e interactiva para descubrir, ubicarse y reservar en las 4 experiencias y fiestas de élite de **Mendoza, Argentina**:
+
+1. **🍷 Martino Wines:** Bodega boutique de autor en Luján de Cuyo (Est. 1924), menú maridaje de pasos, cepas inusuales de colección y sunsets mágicos frente a los viñedos.
+2. **🎸 La New Rock:** La fiesta más icónica de Mendoza. Rock nacional, pop, hits inoxidables, producción masiva y mesas VIP exclusivas reservadas por WhatsApp directo (+54 9 261 709-4195).
+3. **🍸 La Upstairs:** La fiesta más top de Mendoza. Rooftop lounge en el Piso 17 del Hotel Sheraton con vista panorámica 360° a la ciudad y la Cordillera de los Andes, coctelería de autor y DJs.
+4. **🍻 Frankie en La Reserva Bar:** Bar urbano sobre calle Rivadavia justo frente al Sheraton en el complejo La Reserva Bar; el punto neurálgico para la previa, after office, picadas y cerveza tirada.
 
 ---
 
-## 🌟 Características
+## 🌟 Características Principales
 
-- **🗺️ Mapa Cartográfico Real de Mendoza:**
-  - Cobertura completa: *Las Heras*, *Ciudad de Mendoza*, *Arístides*, *Godoy Cruz / Palmares*, *Guaymallén*, *Chacras de Coria*, *Luján de Cuyo*, *Maipú* y *Vistalba*.
-  - Selector de estilos: **Modo Urbano (Estilo Google Maps / OSM)** y **Modo Oscuro**.
-
-- **📱 Diseño Optimizado para Celulares (Anti-Solapamiento):**
-  - Botones, chips y controles flotantes adaptados con espaciados calculados y navegación táctil sin interferencias.
-
-- **🌐 Soporte Multilingüe (3 Idiomas):**
-  - **Español (ES 🇪🇸)**, **Inglés (EN 🇺🇸)** y **Portugués (PT 🇧🇷)** con traducción instantánea de interfaz y generación de mensajes de WhatsApp en el idioma seleccionado.
-
-- **🔞 Verificación de Edad (+18 Gate):**
-  - Modal y botón de verificación de mayoría de edad para el acceso a información de coctelería, bodegas y noche mendocina.
-
-- **📲 Acceso Directo / Instalación PWA:**
-  - Botón interactivo para instalar la aplicación como acceso directo en la pantalla de inicio o aplicaciones de Android, iOS y Desktop.
-
-- **🧹 Limpieza Automática de Caché:**
-  - Purgado de cachés obsoletos en cada inicio para garantizar que los usuarios siempre visualicen la versión más reciente y fluida.
-
-- **📍 Botón Directo a Google Maps:**
-  - Enlace rápido a la ubicación y navegación GPS exacta de cada local.
-
-- **💬 Asistente de Contacto por WhatsApp:**
-  - Selector de número de personas (`- / +`), momento y plan con generación del mensaje oficial de parte de **Mysterik Net**.
+- **📲 Botón Ultra-Llamativo "Crear un acceso directo a la red":**
+  - Ubicado de forma prominente con animación dorada de radar y llamada a la acción instantánea.
+  - Integración PWA (`manifest.json` y `sw.js` v6) para instalar el acceso directo en la pantalla o menú del dispositivo (Android/PC/iOS).
+- **🎯 Enfoque Exclusivo sin Opciones Redundantes:**
+  - Sin menús desplegables de zonas repetitivos ni selectores de ordenamiento innecesarios.
+  - Pestañas directas e instantáneas para cada uno de los 4 hotspots con encuadre automático en el mapa interactivo.
+- **📋 Formularios Dedicados de Reserva por WhatsApp:**
+  - Formulario en modal para cada experiencia (Nombre, Comensales, Fecha/Momento, Tipo de Plan y Observaciones).
+  - Previsualización en tiempo real del mensaje y redirección oficial directa a WhatsApp **+54 9 261 709-4195**.
+- **🗺️ Mapa Regional con Pines Personalizados por Hotspot:**
+  - Colores temáticos y contrastes de alta gama en Leaflet (conmutador Urbano/Oscuro).
+  - Botón de navegación directa hacia Google Maps para cada lugar.
+- **🌐 Soporte Multilingüe Completo (Español 🇪🇸, Inglés 🇺🇸, Portugués 🇧🇷).**
+- **🔞 Verificación de Mayoría de Edad (+18 Gate).**
